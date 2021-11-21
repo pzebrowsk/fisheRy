@@ -1,30 +1,9 @@
+rm(list=ls())
 library(rfish)
 library(tidyverse)
-a = 1:30
-l = numeric(30)
-f = new(Fish)
 
 source("tests/ref/parameters.cod.R")
 source("tests/ref/simulator.7.R")
-
-simulate_ibm = function(pop, h){
-  # h = 0.5
-  pop$set_harvestProp(h)
-  pop$init(1000)
-  pop$get_state()
-  pop$print_summary()
-
-  nsteps = 200
-  nfish = numeric(nsteps)
-  nfish[1]=1000
-  ssb = numeric(nsteps)
-  for (i in 2:nsteps){
-    ssb[i] = pop$update()
-    nfish[i] = pop$nfish()
-  }
-  
-  ssb
-}
 
 fish.par = new(FishParams)
 fish = new(Fish)
@@ -35,14 +14,21 @@ K_ibm = pop$calcK()
 hvec = seq(0.1,0.8,0.1)
 ovec_ibm = numeric(length(hvec))
 ovec = ovec_ibm
+
+sim = new(Simulator)
+
+ssb1 = sim$simulate(pop, 0, 200, T)
+ssb2 = sim$simulate(pop, 0.2, 100, F)
+plot(c(ssb1, ssb2), type="l")
+
 for(i in 1:length(hvec)){
-  res_ibm = simulate_ibm(pop, hvec[i])
+  res_ibm = sim$simulate(pop, hvec[i], T)
   res = simulate(hvec[i], LF50, F)
   ovec_ibm[i] = mean(res_ibm[61:100], na.rm=T)/1e9
   ovec[i] = mean(res$summaries$SSB[61:100])/1e9
   # plot(y=res$summaries$SSB/1e9, x=res$summaries$year)
 }
-points(ovec~hvec, ylim=c(0,8), xlab="Harvest fraction", ylab="SSB", type="l", col="green4")
+plot(ovec~hvec, ylim=c(0,8), xlab="Harvest fraction", ylab="SSB", type="l", col="green4")
 points(ovec_ibm~hvec, col="green3", pch=1, cex=1.5)
 # 
 # ssb_mean = numeric(10)

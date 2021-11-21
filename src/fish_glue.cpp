@@ -66,17 +66,16 @@ RCPP_MODULE(population_module){
 	;
 }
 
-//#include "simulator.h"
 
-//RCPP_MODULE(simulator_module){
-	//class_ <Simulator>("Simulator")
-		//.constructor()
-		//.method("init", &Simulator::init)
-		//.method("finish", &Simulator::finish)
-		//.method("update", &Simulator::update)
-		//.method("get_state", &Simulator::get_state)
-	//;
-//}
+#include "simulator.h"
+RCPP_EXPOSED_CLASS(Population);
+
+RCPP_MODULE(simulator_module){
+	class_ <Simulator>("Simulator")
+		.constructor()
+		.method("simulate", &Simulator::simulate)
+	;
+}
 
 
 

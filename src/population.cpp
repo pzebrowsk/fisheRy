@@ -94,6 +94,18 @@ double Population::effort(double Nr, double F){
 }
 
 
+inline double runif(double rmin=0, double rmax=1){
+	double r = double(rand())/RAND_MAX; 
+	return rmin + (rmax-rmin)*r;
+}
+
+inline double rnorm(double mu=0, double sd=1){
+	double u = runif(), v = runif();		// uniform rn's [0,1] for box-muller
+	double x = sqrt(-2.0*log(u)) * cos(2*M_PI*v);
+	return mu + sd*x;
+}
+
+
 double Population::update(){
 	// 1. Maturation
 	// update maturity 
@@ -106,7 +118,7 @@ double Population::update(){
 	// 2. Reproduction 
 	// implement spawning for remaining fish
 	double ssb = calcSSB();
-	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf);
+	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf); // * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
 	//double nrecruits = 0;
 	//for (auto &f: fishes) if (f.isAlive && f.isMature) nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 	//nrecruits = std::min(nrecruits, rmax);

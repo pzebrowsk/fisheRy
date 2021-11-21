@@ -9,3 +9,7 @@ src/*.dll
 **/*.swp
 **/*.swo
 **/*.swn
+gmon.out
+**/*.txt
+**/*.o
+**/*.test

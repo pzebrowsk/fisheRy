@@ -19,6 +19,9 @@ class PopulationParams {
 	
 	double b = 0.75;		// density dependence
 
+	// environmental stochasticity
+	double sigmaf = 0.4858775;
+
 	// effort dynamics
 	double q = 2.83e-6;		// scaling parameter relating to catchability and density
 	double dsea = 0.054;	// Required Person-hours per vessel day
