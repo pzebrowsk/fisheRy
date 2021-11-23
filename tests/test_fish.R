@@ -11,25 +11,72 @@ fish.par$flag = 1
 fish$par = fish.par
 pop = new(Population, fish)
 K_ibm = pop$calcK()
-hvec = seq(0.1,0.8,0.1)
-ovec_ibm = numeric(length(hvec))
-ovec = ovec_ibm
+# hvec = seq(0.01,0.45,0.02)
+hvec = seq(0.01,0.5,0.02)
 
 sim = new(Simulator)
+sim$simulate(pop, 0.45, 200, T)
 
-ssb1 = sim$simulate(pop, 0, 200, T)
-ssb2 = sim$simulate(pop, 0.2, 100, F)
-plot(c(ssb1, ssb2), type="l")
+res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
+arr = array(data=res_ibm_full, dim=c(50, 4, length(hvec)))
 
-for(i in 1:length(hvec)){
-  res_ibm = sim$simulate(pop, hvec[i], T)
-  res = simulate(hvec[i], LF50, F)
-  ovec_ibm[i] = mean(res_ibm[61:100], na.rm=T)/1e9
-  ovec[i] = mean(res$summaries$SSB[61:100])/1e9
-  # plot(y=res$summaries$SSB/1e9, x=res$summaries$year)
+sim = new(Simulator)
+d = sim$max_avg_utils(c(length(hvec),4,50), res_ibm_full)
+par(mfrow=c(1,2), mar=c(4,4,1,1))
+matplot(y=matrix(data=d, byrow=T, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3)
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
+
+format_ibm = function(mat){
+  d = data.frame(mat)
+  colnames(d) = c("ssb", "yield", "employment", "profit")
+  d
 }
-plot(ovec~hvec, ylim=c(0,8), xlab="Harvest fraction", ylab="SSB", type="l", col="green4")
-points(ovec_ibm~hvec, col="green3", pch=1, cex=1.5)
+
+# ssb1 = sim$simulate(pop, 0, 200, T)
+# ssb2 = sim$simulate(pop, 0.2, 100, F)
+# plot(c(ssb1, ssb2), type="l")
+
+plot_compare = function(res_ibm, res, nsteps){
+  ssb.max = max(c(res_ibm$ssb/1e9, res$summaries$SSB/1e9))
+  plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="red", ylim=c(0,ssb.max))
+  points(y=res$summaries$SSB/1e9, x=res$summaries$year, type="l")
+  
+  yield.max = max(c(res_ibm$yield/1e9, res$summaries$Y/1e9))
+  plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (MT)", xlab="Year", col="red", ylim=c(0,yield.max))
+  points(y=res$summaries$Y/1e9, x=res$summaries$year, type="l")
+  
+  emp.max = max(c(res_ibm$employment, res$summaries$Ereal))
+  plot(y=res_ibm$employment, x=seq(1,nsteps,1), ylab="Employment (person-years)", xlab="Year", col="red", ylim=c(0,emp.max))
+  points(y=res$summaries$Ereal, x=res$summaries$year, type="l")
+
+  profit.max = max(c(res_ibm$profit/1e9, res$summaries$P.tot/1e9))
+  profit.min = min(c(res_ibm$profit/1e9, res$summaries$P.tot/1e9))
+  plot(y=res_ibm$profit/1e9, x=seq(1,nsteps,1), ylab="Profit (Billions NOK)", xlab="Year", col="red", ylim=c(profit.min,profit.max))
+  points(y=res$summaries$P.tot/1e9, x=res$summaries$year, type="l")
+  
+}
+
+par(mfrow = c(2,2), mar=c(4,4,1,1))
+for(i in 1:length(hvec)){
+#  res_ibm = sim$simulate(pop, hvec[i], 200, T)
+  res = simulate(hvec[i], LF50, F)
+  res_ibm = format_ibm(arr[,,i])
+  plot_compare(res_ibm, res, 50)
+}
+
+
+dir = "~/Documents/fish_project/"
+plots.dir.path <- list.files(tempdir(), pattern="rs-graphics", full.names = TRUE); 
+plots.png.paths <- list.files(plots.dir.path, pattern=".png", full.names = TRUE)
+file.copy(from=plots.png.paths, to=dir)
+plots.png.detials <- file.info(plots.png.paths)
+plots.png.detials <- plots.png.detials[order(plots.png.detials$mtime),]
+sorted.png.names <- gsub(plots.dir.path, dir, row.names(plots.png.detials), fixed=TRUE)
+numbered.png.names <- paste0(dir, 1:length(sorted.png.names), ".png")
+# Rename all the .png files as: 1.png, 2.png, 3.png, and so on.
+file.rename(from=sorted.png.names, to=numbered.png.names)
+
 # 
 # ssb_mean = numeric(10)
 # ssb_var = numeric(10)

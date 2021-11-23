@@ -24,7 +24,7 @@ bool equals(vector<T> x1, vector<T> x2, double tol=1e-6){
 
 int main(){
 
-	Tensor u({2,3,5});
+	Tensor<double> u({2,3,5});
 	u.fill_sequence();
 	u.print();
 
@@ -82,19 +82,19 @@ int main(){
 
 	
 	vector<double> expected1;
-	Tensor v = u.accumulate(0, 0, std::plus<double>());
+	Tensor<double> v = u.accumulate(0, 0, std::plus<double>());
 	expected1 = {10,35,60,  
 	            85,110,135};
 	v.print();
 	if (!equals(v.vec, expected1)) return 1;
 	
-	Tensor v1 = u.accumulate(0, 1, std::plus<double>());
+	Tensor<double> v1 = u.accumulate(0, 1, std::plus<double>());
 	expected1 = {15, 18, 21, 24, 27, 
                 60, 63, 66, 69, 72};
 	v1.print();
 	if (!equals(v1.vec, expected1)) return 1;
 
-	Tensor v2 = u.accumulate(0, 2, std::plus<double>());
+	Tensor<double> v2 = u.accumulate(0, 2, std::plus<double>());
 	expected1 = {15, 17, 19, 21, 23, 
                 25, 27, 29, 31, 33, 
                 35, 37, 39, 41, 43};
@@ -107,32 +107,44 @@ int main(){
 	u = u - 0.1;
 	u.print();
 
-	Tensor w({2,3,5});
+	Tensor<double> w({2,3,5});
 	w.fill_sequence();
 	w *= 0.01;
 	w.print();
 
-	Tensor z = u+w;
+	Tensor<double> z = u+w;
 	z.print();
 	
 	z /= 100;
 	z.print();
 
-	Tensor u1 = u.max_dim(0);
+	Tensor<double> u1 = u.max_dim(0);
 	u1.print();
 
-	Tensor u2 = u.max_dim(1);
+	Tensor<double> u2 = u.max_dim(1);
 	u2.print();
 
-	Tensor u3 = u.max_dim(2);
+	Tensor<double> u3 = u.max_dim(2);
 	u3.print();
 
-	Tensor u11 = u.avg_dim(0);
+	Tensor<double> u11 = u.avg_dim(0);
 	u11.print();
 
-	Tensor u11 = u.avg_dim(1);
-	u11.print();
+	Tensor<double> u12 = u.avg_dim(1);
+	u12.print();
 
+	Tensor<double> u21 = u.accumulate(0, 1, std::plus<double>(), {3,2,1});
+	u21.print();
+
+	Tensor<double> u31({2,3,5});
+	u31.fill_sequence();
+	u31.transform(0, std::plus<double>(), {4,3,2,1,0});
+	u31.print();
+
+	Tensor<double> u32({2,3,5});
+	u32.fill_sequence();
+	u32.transform(1, std::plus<double>(), {10,5,0});
+	u32.print();
 
 	return 0;
 

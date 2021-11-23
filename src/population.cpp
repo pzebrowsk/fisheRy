@@ -48,7 +48,8 @@ vector<double> Population::calcK(){
 	vector<double> K(proto_fish.par.amax+3);
 	double ssb_mean = 0;
 	for (int t=0; t<nsteps; ++t){
-		double ssb_t = this->update();
+		std::vector<double> state_t = this->update();
+		double ssb_t = state_t[0];
 
 		if (t >= ntrans){
 			this->summarize();
@@ -106,7 +107,7 @@ inline double rnorm(double mu=0, double sd=1){
 }
 
 
-double Population::update(){
+std::vector<double> Population::update(){
 	// 1. Maturation
 	// update maturity 
 	for (auto& f: fishes){
@@ -130,27 +131,32 @@ double Population::update(){
 	// calculate realized mortality rate
 	double F_req = par.mort_fishing_mature; //, M = proto_fish.par.mam[proto_fish.par.amax];
 	double F_real = F_req; 
+	double E_req, E_real;
+	double D_sea_req, D_sea_real;
 	if (par.h > 0){
 		double Nrel = 0; 
-		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);
+		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
 		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
 			
-		double E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
-		double D_sea_req  = par.dsea * E_req;
-		double D_sea_real = par.dmax * D_sea_req / (par.dmax + D_sea_req);
-		double E_real = D_sea_real / par.dsea;
+		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
+		D_sea_req  = par.dsea * E_req;
+		D_sea_real = par.dmax * D_sea_req / (par.dmax + D_sea_req);
 		
+		E_real = D_sea_real / par.dsea;
 		// Solve for F_real
 		F_real = pn::zero(0, F_req, [E_real, Nrel, this](double F){ return (E_real - effort(Nrel, F));}, 1e-6).root;
 	}
 
-	// implement mortality over the year
+	// implement mortality over the year and calculate yield
+	double yield = 0;
 	for (auto& f : fishes){
-		double fishing_mort_rate = F_real; //(f.isMature)? par.mort_fishing_mature : par.mort_fishing_immature;
-		double mortality_rate = f.naturalMortalityRate() + selectivity(f.length)*fishing_mort_rate; // post-spawning mortality rate is same for mature and immature individuals
+		double fishing_mort_rate = selectivity(f.length)*F_real; //(f.isMature)? par.mort_fishing_mature : par.mort_fishing_immature;
+		double mortality_rate = f.naturalMortalityRate() + fishing_mort_rate; // post-spawning mortality rate is same for mature and immature individuals
 		double survival_prob = exp(-mortality_rate*1.0);	// mortality during post-spawining, over full year.
 		
 		f.isAlive = f.isAlive && ((rand() / double(RAND_MAX)) <= survival_prob);	// set the fish to die probabilistically, if not dead already.
+		
+		if (!f.isAlive) yield += fishing_mort_rate/mortality_rate * par.n*f.weight;
 	} 
 
 	// remove dead fish from population
@@ -166,10 +172,17 @@ double Population::update(){
 	// add recruits at age 1
 	int nr = nrecruits/par.n;
 	fishes.resize(fishes.size()+nr, proto_fish);
-	
+
+	// calculate profit for the year
+	double profit_sea = 0, profit_shr = 0;
+	if (par.h > 0){
+		profit_sea = yield*par.price_sea - par.scale_catch*(D_sea_req*par.salary_sea + E_req*par.variable_costs_sea + par.fixed_costs_sea);
+		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
+	}
+
 	cout << "year = " << current_year << " | SSB = " << ssb << ", recruits = " << nrecruits << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%)" << "\n";
 	++current_year;
-	return ssb;	
+	return {ssb, yield, E_real, profit_sea, profit_shr};	
 }
 
 

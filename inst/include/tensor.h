@@ -63,6 +63,7 @@
 //	28: 1 2 3 
 //	29: 1 2 4  
 
+template <class T>
 class Tensor{
 	private:
 	std::vector<int> offsets;
@@ -70,7 +71,7 @@ class Tensor{
 	
 	public:
 	std::vector<int> dim;
-	std::vector<double> vec;
+	std::vector<T> vec;
 
 	Tensor(std::vector<int> _dim){
 		dim = _dim;
@@ -150,19 +151,51 @@ class Tensor{
 		return locs;
 	}
 
+	// axis is counted from the right
+	// [..., 2, 1, 0]
+	//          ^
+	//           axis
+	template <class BinOp>
+	void transform_dim(int loc, int axis, BinOp binary_op, std::vector<double> w){
+		assert(w.size() == dim[dim.size()-1-axis]);
+		
+		axis = dim.size()-1-axis;
+		int off = offsets[axis];
+		
+		for (int i=loc, count=0; count<dim[axis]; i+= off, ++count){
+			vec[i] = binary_op(vec[i], w[count]);	// this order is important, because the operator may not be commutative
+		}
+		
+	}
 
 	// axis is counted from the right
 	// [..., 2, 1, 0]
 	//          ^
 	//           axis
 	template <class BinOp>
-	double accumulate_dim(double v0, int loc, int axis, BinOp binary_op){
+	void transform(int axis, BinOp binary_op, std::vector<double> w){
+		std::vector<int> locs = plane(axis);
+		for (int i=0; i<locs.size(); ++i){
+			transform_dim(locs[i], axis, binary_op, w);
+		}
+	}
+	
+	
+	// axis is counted from the right
+	// [..., 2, 1, 0]
+	//          ^
+	//           axis
+	template <class BinOp>
+	double accumulate_dim(double v0, int loc, int axis, BinOp binary_op, std::vector<double> weights={}){
+		assert(weights.size() == 0 || weights.size() == dim[dim.size()-1-axis]);
+		
 		axis = dim.size()-1-axis;
 		int off = offsets[axis];
 		
 		double v = 0;
 		for (int i=loc, count=0; count<dim[axis]; i+= off, ++count){
-			v = binary_op(v,vec[i]);
+			double w = (weights.size()>0)? weights[count] : 1;
+			v = binary_op(v, w*vec[i]);
 		}
 		
 		return v;
@@ -174,105 +207,120 @@ class Tensor{
 	//          ^
 	//           axis
 	template <class BinOp>
-	Tensor accumulate(double v0, int axis, BinOp binary_op){
+	Tensor<T> accumulate(T v0, int axis, BinOp binary_op, std::vector<double> weights={}){
 		std::vector<int> dim_new = dim;
 		dim_new.erase(dim_new.begin()+dim_new.size()-1-axis);
-		Tensor T(dim_new);
+		Tensor<T> tens(dim_new);
 		
 		std::vector<int> locs = plane(axis);
 		
 		for (int i=0; i<locs.size(); ++i){
-			T.vec[i] = accumulate_dim(v0, locs[i], axis, binary_op);
+			tens.vec[i] = accumulate_dim(v0, locs[i], axis, binary_op, weights);
 		}
 		
-		return T;
+		return tens;
 	}
 
 
-	Tensor max_dim(int axis){
-		double v0 = vec[1];
-		return accumulate(v0, axis, [](double a, double b){return std::max(a,b);});
+	Tensor<T> max_dim(int axis){
+		T v0 = vec[1];
+		return accumulate(v0, axis, [](T a, T b){return std::max(a,b);});
 	}
 
-	Tensor avg_dim(int axis){
-		Tensor T = accumulate(0, axis, std::plus<double>());
-		T /= double(dim[dim.size()-1-axis]);
-		return T;
+	Tensor<T> avg_dim(int axis, std::vector<double> weights={}){
+		Tensor tens = accumulate(0, axis, std::plus<T>(), weights);
+		tens /= double(dim[dim.size()-1-axis]);
+		return tens;
 	}
 
 
 	// operators
 	public: 	
 	// see https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading/4421719#4421719
-	Tensor& operator += (const Tensor& rhs){
+	template <class S>
+	Tensor<T>& operator += (const Tensor<S>& rhs){
 		assert(dim == rhs.dim);
-		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::plus<double>());
+		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::plus<T>());
 	}
 
-	Tensor& operator += (double s){
-		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const double& x){return x+s;});
+	template<class S>	
+	Tensor<T>& operator += (S s){
+		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x+s;});
 	}
 
-	Tensor& operator -= (const Tensor& rhs){
+	template <class S>
+	Tensor<T>& operator -= (const Tensor<S>& rhs){
 		assert(dim == rhs.dim);
 		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::minus<double>());
 	}
 
-	Tensor& operator -= (double s){
-		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const double& x){return x-s;});
+	template <class S>
+	Tensor<T>& operator -= (S s){
+		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x-s;});
 	}
 
-	Tensor& operator *= (double s){
-		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const double& x){return x*s;});
+	template <class S>
+	Tensor<T>& operator *= (S s){
+		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x*s;});
 	}
 
-	Tensor& operator /= (double s){
-		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const double& x){return x/s;});
+	template<class S>
+	Tensor<T>& operator /= (S s){
+		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x/s;});
 	}
 
 };
 
-Tensor operator + (Tensor lhs, const Tensor& rhs){
+template<class T>
+Tensor<T> operator + (Tensor<T> lhs, const Tensor<T>& rhs){
 	assert(lhs.dim == rhs.dim);
 	lhs += rhs;
 	return lhs;
 }
 
-Tensor operator - (Tensor lhs, const Tensor& rhs){
+template<class T>
+Tensor<T> operator - (Tensor<T> lhs, const Tensor<T>& rhs){
 	assert(lhs.dim == rhs.dim);
 	lhs -= rhs;
 	return lhs;
 }
 
-Tensor operator + (Tensor lhs, double s){
+template<class T, class S>
+Tensor<T> operator + (Tensor<T> lhs, S s){
 	lhs += s;
 	return lhs;
 }
 
-Tensor operator - (Tensor lhs, double s){
+template<class T, class S>
+Tensor<T> operator - (Tensor<T> lhs, S s){
 	lhs -= s;
 	return lhs;
 }
 
-Tensor operator / (Tensor lhs, double s){
+template<class T, class S>
+Tensor<T> operator / (Tensor<T> lhs, S s){
 	lhs /= s;
 	return lhs;
 }
 
-Tensor operator * (Tensor lhs, double s){
+template<class T, class S>
+Tensor<T> operator * (Tensor<T> lhs, S s){
 	lhs *= s;
 	return lhs;
 }
 
-Tensor operator + (double s, Tensor t){
+template<class T, class S>
+Tensor<T> operator + (S s, Tensor<T> t){
 	return t+s;
 }
 
-Tensor operator - (double s, Tensor t){
+template<class T, class S>
+Tensor<T> operator - (S s, Tensor<T> t){
 	return t-s;
 }
 
-Tensor operator * (double s, Tensor t){
+template<class T, class S>
+Tensor<T> operator * (S s, Tensor<T> t){
 	return t*s;
 }
 

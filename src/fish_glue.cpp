@@ -73,7 +73,9 @@ RCPP_EXPOSED_CLASS(Population);
 RCPP_MODULE(simulator_module){
 	class_ <Simulator>("Simulator")
 		.constructor()
-		.method("simulate", &Simulator::simulate)
+    .method("simulate", &Simulator::simulate_r)
+    .method("simulate_multi", &Simulator::simulate_multi)
+    .method("max_avg_utils", &Simulator::max_avg_utils)
 	;
 }
 

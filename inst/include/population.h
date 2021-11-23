@@ -16,8 +16,6 @@ class PopulationParams {
 	// management / fishing selectivity
 	double sf = 0.1222;	// steepness of selectivity curve
 	double lf50 = 61.4806;  // threshold fish length
-	
-	double b = 0.75;		// density dependence
 
 	// environmental stochasticity
 	double sigmaf = 0.4858775;
@@ -26,6 +24,20 @@ class PopulationParams {
 	double q = 2.83e-6;		// scaling parameter relating to catchability and density
 	double dsea = 0.054;	// Required Person-hours per vessel day
 	double dmax = 30000;	// max available person-hours
+	double dshr = 0.000004;	// FTE/kg
+	double b = 0.75;		// density dependence
+
+	// revenue and profit 
+	double price_sea = 13.13;		// landing price NOK/kg
+	double price_shore = 17.0;		// selling price NOK/kg
+
+	double salary_sea = 1078000;			// employment cost sea NOK/FTE
+	double salary_shore = 348000;			// employment cost shore NOK/FTE
+	double fixed_costs_sea = 351123000;	// fixed costs sea NOK (= average per unit * #units)
+	double fixed_costs_shore = 103246800;	// fixed costs shore NOK
+	double variable_costs_sea = 65000; 		// variable costs NOK/vessel day
+	double scale_catch = 0.53; 		// percentage of total codfish catch that is cod
+	
 
 	double h = 0;
 
@@ -78,7 +90,7 @@ class Population{
 	double calcRealizedFishingMortality();
 	double effort(double Nr, double F);
 
-	double update();
+	std::vector<double> update();
 
 	int nfish();
 	void summarize();
