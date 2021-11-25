@@ -75,11 +75,8 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 
 
 vector<double> Simulator::max_avg_utils(vector<int> dims, vector<double> data){
-	vector<int> dimsi(dims.begin(), dims.end());
-	Tensor<double> res(dimsi);
+	Tensor<double> res(dims);
 	res.vec = data;
-	
-	//res.print();
 
 	Tensor<double> res2 = res.avg_dim(0).max_dim(1);
 	res.transform(1, std::divides<double>(), res2.vec);
@@ -88,17 +85,23 @@ vector<double> Simulator::max_avg_utils(vector<int> dims, vector<double> data){
 }
 
 
-//vector<double> Simulator::stakeholder_satisfaction(vector<double> dims, vector<double> data){
-	//vector<int> dimsi(dims.begin(), dims.end());
-	//Tensor<double> res(dimsi);
+//vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<double> data){
+	//Tensor<double> res(dims);
 	//res.vec = data;
-	
-	////res.print();
 
 	//Tensor<double> res2 = res.avg_dim(0).max_dim(1);
-	//res.transform(1, std::divides<double>(), res2.vec);
+	//res.transform(1, std::divides<double>(), res2.vec);	// res is {c1, u, t} 
 
-	//return res.avg_dim(0).vec;
+	//Tensor<double> sp({5,4});	// spvec is {s, u}
+	////        ssb yield emp  profit  
+	//sp.vec = {0.0, 0.3, 0.0, 0.7,	// industrial
+			  //0.3, 0.5, 0.1, 0.1,	// artisanal
+			  //0.3, 0.2, 0.5, 0.0,	// employment-maximizing policymakers
+			  //0.2, 0.2, 0.0, 0.6,	// profit-maximizing policymakers
+			  //0.5, 0.1, 0.2, 0.2	// conservationists
+			 //};
+	
+
+
 //}
-
 
