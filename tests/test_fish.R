@@ -22,8 +22,10 @@ arr = array(data=res_ibm_full, dim=c(50, 4, length(hvec)))
 
 sim = new(Simulator)
 d = sim$max_avg_utils(c(length(hvec),4,50), res_ibm_full)
+
 par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=matrix(data=d, byrow=T, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3)
+matplot(y=matrix(data=d, byrow=T, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
+abline(h=0, col="grey")
 plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
 legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
 

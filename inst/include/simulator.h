@@ -15,7 +15,7 @@ class Simulator{
 	Simulator();
 
 	std::vector<double> simulate_multi(Population &pop, std::vector<double> hvec, int nyears, bool re_init);
-	std::vector<double> max_avg_utils(std::vector<double> dims, std::vector<double> data);
+	std::vector<double> max_avg_utils(std::vector<int> dims, std::vector<double> data);
 
 	Rcpp::DataFrame simulate_r(Population &pop, double h, int nyears, bool re_init);
 };

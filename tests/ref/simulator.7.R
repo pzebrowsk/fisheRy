@@ -10,8 +10,8 @@ mat<-c(mat,rep(1,times=ages-length(mat))); names(mat)<-1:ages
 
 # initialisation of other data structures
 N<-matrix(0,nrow=years+1,ncol=ages)	# numbers at age
-N[1,1]<- 1e9 #N.ini JAI: match IBM
-#for(i in 2:ages) N[1,i]<-N.ini*exp(-sum(M[1:(i-1)])) 	# numbers at age, year 1
+N[1,1]<- N.ini
+#for(i in 2:ages) N[1,i]<-N.ini*exp(-sum(M[1:(i-1)])) 	# numbers at age, year 1 # JAI: commented to match with IBM
 Res<-data.frame(year=1:years,N=NA,TSB=NA,SSB=NA,Y=NA,R=NA,E=NA,Ereal=NA,Fratio=NA,F.hypo=NA,
 	D.sea=NA,D.shr=NA,D.tot=NA,P.sea=NA,P.shr=NA,P.tot=NA) # results
   

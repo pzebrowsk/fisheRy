@@ -173,6 +173,10 @@ std::vector<double> Population::update(){
 	int nr = nrecruits/par.n;
 	fishes.resize(fishes.size()+nr, proto_fish);
 
+	// calculate employment
+	double emp_sea = D_sea_req;
+	double emp_shore = par.dshr * yield;
+
 	// calculate profit for the year
 	double profit_sea = 0, profit_shr = 0;
 	if (par.h > 0){
@@ -182,7 +186,7 @@ std::vector<double> Population::update(){
 
 	cout << "year = " << current_year << " | SSB = " << ssb << ", recruits = " << nrecruits << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%)" << "\n";
 	++current_year;
-	return {ssb, yield, E_real, profit_sea, profit_shr};	
+	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr};	
 }
 
 
