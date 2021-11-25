@@ -146,6 +146,12 @@ int main(){
 	u32.transform(1, std::plus<double>(), {10,5,0});
 	u32.print();
 
+	Tensor<double> v12 = u.repeat_inner(10);
+	v12.print();
+	
+	Tensor<double> v22 = u.repeat_outer(10);
+	v22.print();
+	
 	return 0;
 
 }

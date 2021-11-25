@@ -119,7 +119,7 @@ std::vector<double> Population::update(){
 	// 2. Reproduction 
 	// implement spawning for remaining fish
 	double ssb = calcSSB();
-	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf); // * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
+	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf) * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
 	//double nrecruits = 0;
 	//for (auto &f: fishes) if (f.isAlive && f.isMature) nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 	//nrecruits = std::min(nrecruits, rmax);
@@ -170,7 +170,7 @@ std::vector<double> Population::update(){
 	}
 	
 	// add recruits at age 1
-	int nr = nrecruits/par.n;
+	int nr = ceil(nrecruits/par.n);
 	fishes.resize(fishes.size()+nr, proto_fish);
 
 	// calculate employment

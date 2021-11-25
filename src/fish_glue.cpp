@@ -76,6 +76,7 @@ RCPP_MODULE(simulator_module){
     .method("simulate", &Simulator::simulate_r)
     .method("simulate_multi", &Simulator::simulate_multi)
     .method("max_avg_utils", &Simulator::max_avg_utils)
+    .method("stakeholder_satisfaction", &Simulator::stakeholder_satisfaction)
 	;
 }
 

@@ -89,17 +89,19 @@ class Tensor{
 	}
 
 
-	void print(){
+	void print(bool vals = true){
 	    std::cout << "Tensor:\n";
 	    std::cout << "   dims = "; for (auto d : dim) std::cout << d << " "; std::cout << "\n";
 	    std::cout << "   offs = "; for (auto d : offsets) std::cout << d << " "; std::cout << "\n";
-		std::cout << "   vals = \n      "; std::cout.flush();
-		for (int i=0; i<nelem; ++i){
-			std::cout << vec[i] << " "; 
-			bool flag = true;
-			for (int axis=dim.size()-1; axis>0; --axis){
-				flag = flag && (index(i)[axis] == dim[axis]-1);
-				if (flag) std::cout << "\n      ";
+		if (vals){
+			std::cout << "   vals = \n      "; std::cout.flush();
+			for (int i=0; i<nelem; ++i){
+				std::cout << vec[i] << " "; 
+				bool flag = true;
+				for (int axis=dim.size()-1; axis>0; --axis){
+					flag = flag && (index(i)[axis] == dim[axis]-1);
+					if (flag) std::cout << "\n      ";
+				}
 			}
 		}
 		std::cout << "\n";
@@ -234,6 +236,37 @@ class Tensor{
 	}
 
 
+	Tensor<T> repeat_inner(int n) const {
+		std::vector<int> dim_new = dim;
+		dim_new.push_back(n);
+		
+		Tensor<T> tout(dim_new);
+		int count = 0;
+		for (int i=0; i<nelem; ++i){
+			for (int j=0; j<n; ++j){
+				tout.vec[count++] = vec[i];
+			}
+		}
+
+		return tout;
+	}
+
+	Tensor<T> repeat_outer(int n) const {
+		std::vector<int> dim_new = dim;
+		dim_new.insert(dim_new.begin(), n);
+		
+		Tensor<T> tout(dim_new);
+		int count = 0;
+		for (int j=0; j<n; ++j){
+			for (int i=0; i<nelem; ++i){
+				tout.vec[count++] = vec[i];
+			}
+		}
+
+		return tout;
+	}
+
+
 	// operators
 	public: 	
 	// see https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading/4421719#4421719
@@ -242,16 +275,22 @@ class Tensor{
 		assert(dim == rhs.dim);
 		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::plus<T>());
 	}
-
-	template<class S>	
-	Tensor<T>& operator += (S s){
-		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x+s;});
-	}
-
+	
 	template <class S>
 	Tensor<T>& operator -= (const Tensor<S>& rhs){
 		assert(dim == rhs.dim);
 		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::minus<double>());
+	}
+
+	template <class S>
+	Tensor<T>& operator *= (const Tensor<S>& rhs){
+		assert(dim == rhs.dim);
+		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::multiplies<T>());
+	}
+
+	template<class S>	
+	Tensor<T>& operator += (S s){
+		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x+s;});
 	}
 
 	template <class S>
@@ -285,6 +324,13 @@ Tensor<T> operator - (Tensor<T> lhs, const Tensor<T>& rhs){
 	return lhs;
 }
 
+template<class T>
+Tensor<T> operator * (Tensor<T> lhs, const Tensor<T>& rhs){
+	assert(lhs.dim == rhs.dim);
+	lhs *= rhs;
+	return lhs;
+}
+
 template<class T, class S>
 Tensor<T> operator + (Tensor<T> lhs, S s){
 	lhs += s;
@@ -310,7 +356,7 @@ Tensor<T> operator * (Tensor<T> lhs, S s){
 }
 
 template<class T, class S>
-Tensor<T> operator + (S s, Tensor<T> t){
+Tensor<T> operator + (S s, Tensor<T> t){	// TODO: can passing be ref be used for these?
 	return t+s;
 }
 

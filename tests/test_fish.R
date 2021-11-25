@@ -18,16 +18,34 @@ sim = new(Simulator)
 sim$simulate(pop, 0.45, 200, T)
 
 res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
-arr = array(data=res_ibm_full, dim=c(50, 4, length(hvec)))
+arr = array(data=res_ibm_full, dim=c(50, length(hvec), 4))
 
 sim = new(Simulator)
-d = sim$max_avg_utils(c(length(hvec),4,50), res_ibm_full)
+d = sim$max_avg_utils(c(4,length(hvec),50), res_ibm_full)
 
 par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=matrix(data=d, byrow=T, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
+matplot(y=matrix(data=d, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
 abline(h=0, col="grey")
 plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
 legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
+
+sim = new(Simulator)
+ss = sim$stakeholder_satisfaction(c(4,length(hvec),50), res_ibm_full)
+par(mfrow=c(1,2), mar=c(4,4,1,1))
+matplot(y=matrix(data=ss, ncol=5), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+abline(h=0, col="grey")
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+legend(x = 0.7, y = 1, legend = c("Industrial", "Artisanal", "Emp. policymakers", "Profit. policymakers", "Conservationists"), fill=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+
+mat = matrix(data=ss, ncol=5)
+JSS_min = apply(mat, 1, min)
+JSS_mean = apply(mat, 1, mean)
+JSS_hmean = 1/apply(1/mat, 1, mean)
+
+matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
+
 
 format_ibm = function(mat){
   d = data.frame(mat)
