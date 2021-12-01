@@ -5,47 +5,127 @@ library(tidyverse)
 source("tests/ref/parameters.cod.R")
 source("tests/ref/simulator.7.R")
 
+#### MAIN ####
+
 fish.par = new(FishParams)
 fish = new(Fish)
 fish.par$flag = 1
 fish$par = fish.par
 pop = new(Population, fish)
 K_ibm = pop$calcK()
+
+plot(K/1e6, log="y", type="l")
+points(K_ibm[-1])
+
 # hvec = seq(0.01,0.45,0.02)
-hvec = seq(0.01,0.5,0.02)
+hvec = seq(0.01,0.8,length.out = 20)
+lfvec = seq(20,160,length.out = 20)
 
 sim = new(Simulator)
-sim$simulate(pop, 0.45, 200, T)
+res_ibm_sq = sim$simulate(pop, 45, 0.41, 200, T)
+res_sq = simulate(0.41, 45, F)
 
-res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
-arr = array(data=res_ibm_full, dim=c(50, length(hvec), 4))
+pop_ref = pop
 
-sim = new(Simulator)
-d = sim$max_avg_utils(c(4,length(hvec),50), res_ibm_full)
+niter = 10
+jss_arr = array(dim=c(3, length(hvec), length(lfvec), niter))
+full_arr = array(dim=c(c(50, length(hvec), length(lfvec), 4, niter)))
+for (iter in 1:niter){
+  
+  pop = pop_ref
+  
+  res_ibm_full = sim$simulate_multi_2d(pop, lfvec, hvec, 50, F)
+  arr = array(data=res_ibm_full, dim=c(50, length(hvec), length(lfvec), 4))
+  full_arr[,,,,iter] = arr
+  
+  sim = new(Simulator)
+  d = sim$max_avg_utils_2d(c(4,length(lfvec),length(hvec),50), res_ibm_full)
+  utils = array(data=d, dim=c(length(hvec),length(lfvec), 4))
+  par(mfrow=c(2,2), mar=c(4,4,4,1))
+  for (i in 1:4){
+    image(x=hvec, y=lfvec, z=utils[,,i], col=rainbow(start = 0, end = 0.75, n=100), zlim=c(0,1), main=c("ssb","yield","employment","profit")[i])
+  }
+  
+  sim = new(Simulator)
+  ss = sim$stakeholder_satisfaction_2d(c(4,length(lfvec),length(hvec),50), res_ibm_full)
+  scs = array(data=ss, dim=c(length(hvec),length(lfvec), 5))
+  par(mfrow=c(2,3), mar=c(4,4,4,1))
+  for (i in 1:5){
+    image(x=hvec, y=lfvec, z=scs[,,i], col=rainbow(start = 0, end = 0.75, n=100), zlim=c(0,1), main=c("ssb","yield","employment","profit")[i])
+  }
+  
+  JSS_min = apply(scs, c(1,2), min)
+  JSS_mean = apply(scs, c(1,2), mean)
+  JSS_hmean = 1/apply(1/scs, c(1,2), mean)
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=matrix(data=d, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
-abline(h=0, col="grey")
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
-legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
+  jss_arr[1,,,iter] = JSS_mean
+  jss_arr[2,,,iter] = JSS_hmean
+  jss_arr[3,,,iter] = JSS_min
 
-sim = new(Simulator)
-ss = sim$stakeholder_satisfaction(c(4,length(hvec),50), res_ibm_full)
-par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=matrix(data=ss, ncol=5), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
-abline(h=0, col="grey")
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
-legend(x = 0.7, y = 1, legend = c("Industrial", "Artisanal", "Emp. policymakers", "Profit. policymakers", "Conservationists"), fill=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+  par(mfrow=c(2,2), mar=c(4,4,4,1))
+  for (i in 1:3){
+    image(x=hvec, y=lfvec, z=jss_arr[i,,,iter], col=rainbow(start = 0, end = 0.75, n=100), zlim=c(0,1), main=c("JSS mean","JSS hmean","JSS min")[i])
+  }
+  
+}
 
-mat = matrix(data=ss, ncol=5)
-JSS_min = apply(mat, 1, min)
-JSS_mean = apply(mat, 1, mean)
-JSS_hmean = 1/apply(1/mat, 1, mean)
+JSS_ensavg = apply(jss_arr, MARGIN = c(1,2,3), FUN = mean)
+par(mfrow=c(2,2), mar=c(4,4,4,1))
+for (i in 1:3){
+  image(x=hvec, y=lfvec, z=JSS_ensavg[i,,], col=rainbow(start = 0, end = 0.75, n=100), zlim=c(0,1), main=c("JSS mean","JSS hmean","JSS min")[i])
+}
 
-matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
-legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
 
+# Working 1D code
+# niter = 10
+# jss_arr = array(dim=c(3, length(hvec), niter))
+# full_arr = array(dim=c(c(50, length(hvec), 4, niter)))
+# for (iter in 1:niter){
+# 
+#   pop = pop_ref
+#   
+#   res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
+#   arr = array(data=res_ibm_full, dim=c(50, length(hvec), 4))
+#   full_arr[,,,iter] = arr
+#     
+#   sim = new(Simulator)
+#   d = sim$max_avg_utils(c(4,length(hvec),50), res_ibm_full)
+#   
+#   par(mfrow=c(1,2), mar=c(4,4,1,1))
+#   matplot(y=matrix(data=d, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
+#   abline(h=0, col="grey")
+#   plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+#   legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
+#   
+#   sim = new(Simulator)
+#   ss = sim$stakeholder_satisfaction(c(4,length(hvec),50), res_ibm_full)
+#   par(mfrow=c(1,2), mar=c(4,4,1,1))
+#   matplot(y=matrix(data=ss, ncol=5), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+#   abline(h=0, col="grey")
+#   plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+#   legend(x = 0.7, y = 1, legend = c("Industrial", "Artisanal", "Emp. policymakers", "Profit. policymakers", "Conservationists"), fill=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+#     
+#   mat = matrix(data=ss, ncol=5)
+#   JSS_min = apply(mat, 1, min)
+#   JSS_mean = apply(mat, 1, mean)
+#   JSS_hmean = 1/apply(1/mat, 1, mean)
+#   
+#   jss_arr[1,,iter] = JSS_mean
+#   jss_arr[2,,iter] = JSS_hmean
+#   jss_arr[3,,iter] = JSS_min
+#   
+#   matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
+#   plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+#   legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
+# }
+# 
+# JSS_ensavg = apply(jss_arr, MARGIN = c(1,2), FUN = mean)
+# matplot(y=t(JSS_ensavg), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
+# plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+# legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
+
+
+#### DEBUG ####
 
 format_ibm = function(mat){
   d = data.frame(mat)
@@ -66,13 +146,13 @@ plot_compare = function(res_ibm, res, nsteps){
   plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (MT)", xlab="Year", col="red", ylim=c(0,yield.max))
   points(y=res$summaries$Y/1e9, x=res$summaries$year, type="l")
   
-  emp.max = max(c(res_ibm$employment, res$summaries$Ereal))
-  plot(y=res_ibm$employment, x=seq(1,nsteps,1), ylab="Employment (person-years)", xlab="Year", col="red", ylim=c(0,emp.max))
-  points(y=res$summaries$Ereal, x=res$summaries$year, type="l")
+  emp.max = max(c(res_ibm$employment.sea+res_ibm$employment.shore, res$summaries$D.tot))
+  plot(y=res_ibm$employment.sea+res_ibm$employment.shore, x=seq(1,nsteps,1), ylab="Employment (person-years)", xlab="Year", col="red", ylim=c(0,emp.max))
+  points(y=res$summaries$D.tot, x=res$summaries$year, type="l")
 
-  profit.max = max(c(res_ibm$profit/1e9, res$summaries$P.tot/1e9))
-  profit.min = min(c(res_ibm$profit/1e9, res$summaries$P.tot/1e9))
-  plot(y=res_ibm$profit/1e9, x=seq(1,nsteps,1), ylab="Profit (Billions NOK)", xlab="Year", col="red", ylim=c(profit.min,profit.max))
+  profit.max = max(c((res_ibm$profit.sea+res_ibm$profit.shore)/1e9, res$summaries$P.tot/1e9))
+  profit.min = min(c((res_ibm$profit.sea+res_ibm$profit.shore)/1e9, res$summaries$P.tot/1e9))
+  plot(y=(res_ibm$profit.sea+res_ibm$profit.shore)/1e9, x=seq(1,nsteps,1), ylab="Profit (Billions NOK)", xlab="Year", col="red", ylim=c(profit.min,profit.max))
   points(y=res$summaries$P.tot/1e9, x=res$summaries$year, type="l")
   
 }

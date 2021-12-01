@@ -9,8 +9,21 @@ using namespace std;
 
 Population::Population(Fish f){
 	proto_fish = f;
-	
+	calc_athresh();
+}
+
+
+void Population::set_harvestProp(double _h){
+	par.h = _h;
+	par.mort_fishing_mature = -log(1-_h);
+	par.mort_fishing_immature = -log(1-_h);
+}
+
+
+void Population::calc_athresh(){
 	// set a_thresh
+	Fish f = proto_fish;
+	par.a_thresh = 99999;
 	for (int i=1; i <= f.par.amax; ++i){
 		f.set_age(i);
 		if (selectivity(f.length) > 0.5){
@@ -22,10 +35,9 @@ Population::Population(Fish f){
 }
 
 
-void Population::set_harvestProp(double _h){
-	par.h = _h;
-	par.mort_fishing_mature = -log(1-_h);
-	par.mort_fishing_immature = -log(1-_h);
+void Population::set_minSizeLimit(double _lf50){
+	par.lf50 = _lf50;
+	calc_athresh();
 }
 
 
@@ -40,6 +52,7 @@ vector<double> Population::calcK(){
 	// backup params
 	auto par_back = par;
 	set_harvestProp(0);
+	//par.sigmaf = 0;	// no env stochasticity while calculating carrying capacity
 
 	init(1000);
 	int nsteps = 500;

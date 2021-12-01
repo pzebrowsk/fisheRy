@@ -52,6 +52,7 @@ RCPP_MODULE(population_module){
 	class_ <Population>("Population")
 		.constructor<Fish>()
 		.method("set_harvestProp", &Population::set_harvestProp) 
+		.method("set_minSizeLimit", &Population::set_minSizeLimit) 
 
 		.method("calcK", &Population::calcK) 
 		.method("selectivity", &Population::selectivity) 
@@ -74,9 +75,14 @@ RCPP_MODULE(simulator_module){
 	class_ <Simulator>("Simulator")
 		.constructor()
     .method("simulate", &Simulator::simulate_r)
-    .method("simulate_multi", &Simulator::simulate_multi)
+    
+	.method("simulate_multi", &Simulator::simulate_multi)
     .method("max_avg_utils", &Simulator::max_avg_utils)
     .method("stakeholder_satisfaction", &Simulator::stakeholder_satisfaction)
+	
+	.method("simulate_multi_2d", &Simulator::simulate_multi_2d)
+    .method("max_avg_utils_2d", &Simulator::max_avg_utils_2d)
+    .method("stakeholder_satisfaction_2d", &Simulator::stakeholder_satisfaction_2d)
 	;
 }
 

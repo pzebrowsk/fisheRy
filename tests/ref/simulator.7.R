@@ -78,7 +78,7 @@ simulate<-function(h.prop,LF50,display=FALSE){
 		}else F.hypo<-0
 		TSB<-sum(N[year,]*W)
 		SSB<-sum(N[year,]*W*mat)
-		N[year+1,1]<-r0*SSB/(1+SSB/Bhalf)#*exp(rnorm(n=1,mean=-sf^2/2,sd=sf))  # JAI:: Remove environmental stoch for testing
+		N[year+1,1]<-r0*SSB/(1+SSB/Bhalf)*exp(rnorm(n=1,mean=-sf^2/2,sd=sf))  # JAI:: Remove environmental stoch for testing
 		N[year+1,2:ages]<-N[year,1:(ages-1)]*s[1:(ages-1)]
 		# economic calculations
 		profit.sea<-Y*price.sea - scale.catch*(D.sea.demand*s.sea + E*varC.sea + fixedC.sea)

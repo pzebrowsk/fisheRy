@@ -78,7 +78,10 @@ class Population{
 	public:
 	Population(Fish f);
 	
+
+	void calc_athresh();
 	void set_harvestProp(double _h);
+	void set_minSizeLimit(double _lf50);
 	void init(int n);	// initialize population with n individuals
 
 	std::vector<double> calcK();	
