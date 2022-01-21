@@ -72,7 +72,7 @@ for (iter in 1:niter){
 JSS_ensavg = apply(jss_arr, MARGIN = c(1,2,3), FUN = mean)
 par(mfrow=c(2,2), mar=c(4,4,4,1))
 for (i in 1:3){
-  image(x=hvec, y=lfvec, z=JSS_ensavg[i,,], col=rainbow(start = 0, end = 0.75, n=100), zlim=c(0,1), main=c("JSS mean","JSS hmean","JSS min")[i])
+  image(x=hvec, y=lfvec, z=JSS_ensavg[i,,], col=scales::viridis_pal()(100), zlim=c(0,1), main=c("JSS mean","JSS hmean","JSS min")[i])
 }
 
 
