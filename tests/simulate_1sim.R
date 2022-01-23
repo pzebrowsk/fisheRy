@@ -12,7 +12,7 @@ fish.par$flag = 1
 fish$par = fish.par
 pop = new(Population, fish)
 K_ibm = pop$calcK()
-h = 0.3
+h = 0.0
 lf = 60
 
 nsteps = 200
@@ -28,7 +28,7 @@ par(mfrow = c(2,3), mar=c(4,4,1,1))
 # plot(y=ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year")
   
 ssb.max = max(c(res_ibm$ssb/1e9, res$summaries$SSB/1e9))
-plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,ssb.max))
+plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="cyan3", type="l")#, ylim=c(0,ssb.max))
 points(y=res$summaries$SSB/1e9, x=res$summaries$year, type="l")
 
 yield.max = max(c(res_ibm$yield/1e9, res$summaries$Y/1e9))

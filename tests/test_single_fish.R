@@ -2,8 +2,8 @@ rm(list=ls())
 library(rfish)
 library(tidyverse)
 
-
-plot(x=1, y=NA, xlim=c(0,21), ylim=c(0,50), xlab="age", ylab = "length")
+    
+plot(x=1, y=NA, xlim=c(0,21), ylim=c(0,160), xlab="age", ylab = "length")
 
 mat_ages = numeric(0)
 for (f in 1:500){
@@ -29,19 +29,19 @@ for (f in 1:500){
 }
 table(mat_ages)
 
-plot(x=1, y=NA, xlim=c(0,35), ylim=c(0,1), xlab="length", ylab = "mat prob")
-for (age in 1:15){
-  curve(1 / (1 + exp( -(x - (1.604122 * age + 18.399575)) / 1.93031)), 0, 35, col=rainbow(15)[age], add=T)
-}
+# plot(x=1, y=NA, xlim=c(0,35), ylim=c(0,1), xlab="length", ylab = "mat prob")
+# for (age in 1:15){
+#   curve(1 / (1 + exp( -(x - (1.604122 * age + 18.399575)) / 1.93031)), 0, 35, col=rainbow(15)[age], add=T)
+# }
+# 
+# plot(x=1, y=NA, xlim=c(0,15), ylim=c(0,1), xlab="age", ylab = "mat prob")
+# for (length in 1:35){
+#   curve(1 / (1 + exp( -(length - (1.604122 * x + 18.399575)) / 1.93031)), 0, 35, col=rainbow(35)[length], add=T)
+# }
 
-plot(x=1, y=NA, xlim=c(0,15), ylim=c(0,1), xlab="age", ylab = "mat prob")
-for (length in 1:35){
-  curve(1 / (1 + exp( -(length - (1.604122 * x + 18.399575)) / 1.93031)), 0, 35, col=rainbow(35)[length], add=T)
-}
-
-mat = matrix(nrow=15, ncol=35)
-for (age in 1:15){
-  for (length in 1:35){
+mat = matrix(nrow=20, ncol=160)
+for (age in 1:20){
+  for (length in 1:160){
     mat[age, length] = 1 / (1 + exp( -(length - (1.604122 * age + 18.399575)) / 1.93031))
   }   
 }

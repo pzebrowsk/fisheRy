@@ -48,7 +48,7 @@ void Fish::set_length(double s){
 double Fish::naturalMortalityRate(){
 	double rate;
 	if (age > par.amax) return 1e20;
-	else return fish::natural_mortality(length, par.gamma3, par.alpha3, par.lref);
+	else return fish::natural_mortality(length, par.gamma3, par.alpha3, par.Lref);
 	  
 //   	if (isMature) rate = (age > par.amax)? 1e20 : par.mam[age]; // FIXME: use inf
 //	else          rate = (age > par.amax)? 1e20 : par.mai[age]; // FIXME: use inf
@@ -83,8 +83,14 @@ void Fish::grow(){
 	else{
 		lnew = fish::length_juvenile(length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 	}
+	gsi_effective = fish::gsi(lnew, length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 	set_length(lnew);
 }
+
+double Fish::produceEggs(){
+	return par.delta * gsi_effective * weight;
+}
+
 
 void Fish::print(){
 	cout << "Fish: \n";

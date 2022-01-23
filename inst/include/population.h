@@ -11,7 +11,9 @@ class PopulationParams {
 	// reproduction
 	double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
-	double Bhalf = 365426284;	// Half saturation constant of recruitment
+	double Bhalf = 36542628.4;	// Half saturation constant of recruitment
+
+	double s0 = 0.002;          // Egg survival propbability
 
 	// management / fishing selectivity
 	double sf = 0.1222;	// steepness of selectivity curve
@@ -40,7 +42,7 @@ class PopulationParams {
 	
 	double h = 0;
 
-	double n = 1e6;	// superfish size
+	double n = 1e5;	// superfish size
 
 	// ***
 	// calculated variables
@@ -78,6 +80,7 @@ class Population{
 	public:
 	Population(Fish f);
 	
+	void set_superFishSize(double _n);
 
 	void calc_athresh();
 	void set_harvestProp(double _h);

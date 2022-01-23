@@ -73,6 +73,8 @@ RCPP_MODULE(population_module){
 	
 	class_ <Population>("Population")
 		.constructor<Fish>()
+		.method("set_superFishSize", &Population::set_superFishSize) 
+		
 		.method("set_harvestProp", &Population::set_harvestProp) 
 		.method("set_minSizeLimit", &Population::set_minSizeLimit) 
 

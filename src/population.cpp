@@ -12,6 +12,9 @@ Population::Population(Fish f){
 	calc_athresh();
 }
 
+void Population::set_superFishSize(double _n){
+	par.n = _n;
+}
 
 void Population::set_harvestProp(double _h){
 	par.h = _h;
@@ -103,8 +106,8 @@ double Population::calcRealizedFishingMortality(){
 
 
 double Population::effort(double Nr, double F){
-	double M = proto_fish.par.mam[proto_fish.par.amax];
-	return pow(Nr, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1)); 
+//	double M = proto_fish.par.mam[proto_fish.par.amax];
+//	return pow(Nr, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1)); 
 }
 
 
@@ -127,38 +130,47 @@ std::vector<double> Population::update(){
 		f.updateMaturity();
 	}
 
+	// 2. Growth
+	for (auto& f: fishes){
+		f.grow();
+	}
 	//print_summary();
 
-	// 2. Reproduction 
+	// 3. Reproduction 
 	// implement spawning for remaining fish
 	double ssb = calcSSB();
-	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf) * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
-	//double nrecruits = 0;
-	//for (auto &f: fishes) if (f.isAlive && f.isMature) nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
-	//nrecruits = std::min(nrecruits, rmax);
+	//double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf) * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
+	double nrecruits = 0;
+	for (auto &f: fishes) {
+		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
+		if (f.isAlive && f.isMature){
+			nrecruits += f.produceEggs() * par.s0 * par.n * (1/(1+ssb/par.Bhalf));
+		}
+	}
+	nrecruits = std::min(nrecruits, par.rmax);
 
 
-	// 3. Mortality 
+	// 4. Mortality 
 	summarize();
 	
-	// calculate realized mortality rate
+//	// calculate realized mortality rate
 	double F_req = par.mort_fishing_mature; //, M = proto_fish.par.mam[proto_fish.par.amax];
 	double F_real = F_req; 
 	double E_req, E_real;
 	double D_sea_req, D_sea_real;
-	if (par.h > 0){
-		double Nrel = 0; 
-		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
-		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
-			
-		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
-		D_sea_req  = par.dsea * E_req;
-		D_sea_real = par.dmax * D_sea_req / (par.dmax + D_sea_req);
-		
-		E_real = D_sea_real / par.dsea;
-		// Solve for F_real
-		F_real = pn::zero(0, F_req, [E_real, Nrel, this](double F){ return (E_real - effort(Nrel, F));}, 1e-6).root;
-	}
+//	if (par.h > 0){
+//		double Nrel = 0; 
+//		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
+//		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
+//			
+//		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
+//		D_sea_req  = par.dsea * E_req;
+//		D_sea_real = par.dmax * D_sea_req / (par.dmax + D_sea_req);
+//		
+//		E_real = D_sea_real / par.dsea;
+//		// Solve for F_real
+//		F_real = pn::zero(0, F_req, [E_real, Nrel, this](double F){ return (E_real - effort(Nrel, F));}, 1e-6).root;
+//	}
 
 	// implement mortality over the year and calculate yield
 	double yield = 0;
@@ -176,8 +188,7 @@ std::vector<double> Population::update(){
 	fishes.erase(std::remove_if(fishes.begin(), fishes.end(), [](Fish &f){return !f.isAlive;}), fishes.end());
 
 
-	// 4. Growth 
-	// grow and advance to new year
+	// 5. Increment age and advance to new year
 	for (auto& f: fishes){
 		f.set_age(f.age+1);
 	}
