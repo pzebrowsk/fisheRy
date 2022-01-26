@@ -73,16 +73,20 @@ RCPP_MODULE(population_module){
 	
 	class_ <Population>("Population")
 		.constructor<Fish>()
+		.field("K", &Population::K_fishableBiomass)
+		
 		.method("set_superFishSize", &Population::set_superFishSize) 
 		
 		.method("set_harvestProp", &Population::set_harvestProp) 
 		.method("set_minSizeLimit", &Population::set_minSizeLimit) 
 
-		.method("calcK", &Population::calcK) 
 		.method("selectivity", &Population::selectivity) 
 		.method("init", &Population::init) 
 		.method("update", &Population::update)
 		.method("calcSSB", &Population::calcSSB)
+		.method("fishableBiomass", &Population::fishableBiomass)
+
+		.method("noFishingEquilibriate", &Population::noFishingEquilibriate)
 
 		.method("get_state", &Population::get_state)
 		.method("summarize", &Population::summarize)
@@ -97,8 +101,9 @@ RCPP_EXPOSED_CLASS(Population);
 
 RCPP_MODULE(simulator_module){
 	class_ <Simulator>("Simulator")
-	.constructor()
-    .method("simulate", &Simulator::simulate_r)
+	.constructor<Fish>()
+	.method("setNaturalPopulation", &Simulator::setNaturalPopulation)
+	.method("simulate", &Simulator::simulate_r)
     
 	.method("simulate_multi", &Simulator::simulate_multi)
     .method("max_avg_utils", &Simulator::max_avg_utils)

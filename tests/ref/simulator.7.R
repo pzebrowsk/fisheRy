@@ -51,6 +51,7 @@ simulate<-function(h.prop,LF50,display=FALSE){
 	F.max<- -log(1-h.prop)
 	age.fish<-min((1:ages)[1/(1+exp(-SF*(L-LF50)))>0.5])
 	F2E.factor<-ifelse(b==1,F.max/q,F.max*(exp(-(F.max+M[ages])*(1-b))-1)/(q*(F.max+M[ages])*(b-1))) # Liu & Heino 2014
+	F.ratio=0
 	for(year in 1:years){ # 
 		if(h.prop>0){
 			# determine the effective fishing mortality
@@ -78,7 +79,7 @@ simulate<-function(h.prop,LF50,display=FALSE){
 		}else F.hypo<-0
 		TSB<-sum(N[year,]*W)
 		SSB<-sum(N[year,]*W*mat)
-		N[year+1,1]<-r0*SSB/(1+SSB/Bhalf)*exp(rnorm(n=1,mean=-sf^2/2,sd=sf))  # JAI:: Remove environmental stoch for testing
+		N[year+1,1]<-r0*SSB/(1+SSB/Bhalf)#*exp(rnorm(n=1,mean=-sf^2/2,sd=sf))  # JAI:: Remove environmental stoch for testing
 		N[year+1,2:ages]<-N[year,1:(ages-1)]*s[1:(ages-1)]
 		# economic calculations
 		profit.sea<-Y*price.sea - scale.catch*(D.sea.demand*s.sea + E*varC.sea + fixedC.sea)
