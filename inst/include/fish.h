@@ -21,7 +21,8 @@ struct FishParams {
 	double Lref = 80;
 	double Mref = 0.1421;
 	double b = 1.8131;
-
+	double L0 = 9.1;
+	
 	// growth 
 	double gamma1; // = 0.33333;
 	double gamma2; // = 3.519072971;

@@ -9,7 +9,7 @@ using namespace std;
 
 Population::Population(Fish f){
 	proto_fish = f;
-	calc_athresh();
+//	calc_athresh();
 }
 
 void Population::set_superFishSize(double _n){
@@ -40,7 +40,7 @@ void Population::set_harvestProp(double _h){
 
 void Population::set_minSizeLimit(double _lf50){
 	par.lf50 = _lf50;
-	calc_athresh();
+//	calc_athresh();
 }
 
 

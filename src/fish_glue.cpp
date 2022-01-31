@@ -11,7 +11,7 @@ RCPP_EXPOSED_CLASS(FishParams);
 
 RCPP_MODULE(fish_module) {
 	
-	function("init_length", &fish::init_length);
+//	function("init_length", &fish::init_length);
 	function("length_juvenile", &fish::length_juvenile);
 	function("length_adult", &fish::length_adult);
 	function("maturation_steepness", &fish::maturation_steepness);

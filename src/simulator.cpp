@@ -79,7 +79,7 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 			pop = pop_ref;
 			pop.set_harvestProp(hvec[ih]);
 			
-			noFishingPop.set_harvestProp(h);
+			noFishingPop.set_harvestProp(hvec[ih]);
 			noFishingPop.set_minSizeLimit(pop.par.lf50);
 			double K = noFishingPop.fishableBiomass();
 			pop.K_fishableBiomass = K;

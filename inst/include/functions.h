@@ -9,11 +9,12 @@
 
 namespace fish {
 
-// [[Rcpp::export]]
-inline double init_length(double gamma_1, double gamma_2, double alpha_1, double alpha_2){
-	double s = gamma_1 * alpha_1 / alpha_2;
-	return pow(s, 1 / gamma_2);
-}
+//// [[Rcpp::export]]
+//inline double init_length(double gamma_1, double gamma_2, double alpha_1, double alpha_2){
+////	double s = gamma_1 * alpha_1 / alpha_2;
+////	return pow(s, 1 / gamma_2);
+//	return 19.18;
+//}
 
 
 // [[Rcpp::export]]

@@ -9,8 +9,9 @@ Fish::Fish(double tb){
 	
 	set_age(1);
 	
-	double l0 = fish::init_length(par.gamma1, par.gamma2, par.alpha1, par.alpha2);
-	set_length(l0);
+	// calc length at age 1
+	double l1 = fish::length_juvenile(par.L0, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
+	set_length(l1);
 	
 	//cout << "Creating fish: l0 = " << l0 << ", steepness = " << par.steepness << "\n"; 
 }
