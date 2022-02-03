@@ -55,7 +55,7 @@ vector<double> Population::noFishingEquilibriate(){
 	// backup params
 	auto par_back = par;
 	set_harvestProp(0);
-	//par.sigmaf = 0;	// no env stochasticity while calculating carrying capacity
+	par.sigmaf = 0;	// no env stochasticity while calculating carrying capacity
 
 	init(1000);
 	int nsteps = 200;
@@ -151,7 +151,7 @@ std::vector<double> Population::update(){
 			nrecruits += f.produceEggs() * par.s0 * par.n * (1/(1+ssb/par.Bhalf));
 		}
 	}
-//	nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
+	nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
 	nrecruits = std::min(nrecruits, par.rmax);
 	double r0_avg = nrecruits * (1 + ssb/par.Bhalf) / ssb;
 

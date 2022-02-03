@@ -11,17 +11,24 @@ fish.par = new(FishParams)
 fish = new(Fish)
 fish.par$flag = 1
 fish$par = fish.par
-pop = new(Population, fish)
-K_ibm = pop$calcK()
+pop_K = new(Population, fish)
+pop_K$set_superFishSize(500)
+K_ibm = pop_K$noFishingEquilibriate()
 
-plot(K/1e6, log="y", type="l")
-points(K_ibm[-1])
+plot(table(pop_K$get_state()$age))
+# plot(K/1e6, log="y", type="l")
+# points(K_ibm[-1])
 
 # hvec = seq(0.01,0.45,0.02)
 hvec = seq(0.01,0.8,length.out = 20)
 lfvec = seq(20,160,length.out = 20)
 
-sim = new(Simulator)
+sim = new(Simulator, fish)
+sim$setNaturalPopulation(pop_K)
+
+pop = new(Population, fish)
+pop$set_superFishSize(500)
+
 res_ibm_sq = sim$simulate(pop, 45, 0.41, 200, T)
 res_sq = simulate(0.41, 45, F)
 

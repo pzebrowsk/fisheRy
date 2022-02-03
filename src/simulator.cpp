@@ -77,13 +77,13 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 	for (int iter = 0; iter < niters; ++iter){
 		for (int ih=0; ih<hvec.size(); ++ih){ // loop over control parameter
 			pop = pop_ref;
-			pop.set_harvestProp(hvec[ih]);
-			
+
 			noFishingPop.set_harvestProp(hvec[ih]);
-			noFishingPop.set_minSizeLimit(pop.par.lf50);
 			double K = noFishingPop.fishableBiomass();
+
 			pop.K_fishableBiomass = K;
-	
+			pop.set_harvestProp(hvec[ih]);
+
 			if (re_init) pop.init(1000);
 			pop.print_summary();
 		
@@ -98,6 +98,7 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 		}
 	}
 	res.print();
+	cout.flush();
 	return res.avg_dim(3).vec;	// average over iterations
 
 }
