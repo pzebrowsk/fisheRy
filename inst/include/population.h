@@ -11,7 +11,9 @@ class PopulationParams {
 	// reproduction
 	double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
-	double Bhalf = 365426284;	// Half saturation constant of recruitment
+	double Bhalf = 365426284.0/6100;	// Half saturation constant of recruitment
+
+	double s0 = 0.1126797; //0.11;          // Egg survival propbability
 
 	// management / fishing selectivity
 	double sf = 0.1222;	// steepness of selectivity curve
@@ -40,7 +42,7 @@ class PopulationParams {
 	
 	double h = 0;
 
-	double n = 1e6;	// superfish size
+	double n = 1e5;	// superfish size
 
 	// ***
 	// calculated variables
@@ -66,7 +68,10 @@ class Population{
 	private:
 	std::vector<double> vage, vfreq, vlen, vmat;
 	std::vector<double> carrying_capacity;
-
+	
+	public:
+	double K_fishableBiomass = 0;	
+	
 	public:
 	double current_year = 1;
 
@@ -78,16 +83,18 @@ class Population{
 	public:
 	Population(Fish f);
 	
+	void set_superFishSize(double _n);
 
-	void calc_athresh();
+//	void calc_athresh();
 	void set_harvestProp(double _h);
 	void set_minSizeLimit(double _lf50);
 	void init(int n);	// initialize population with n individuals
 
-	std::vector<double> calcK();	
+	std::vector<double> noFishingEquilibriate();	
 
 	double calcSSB();	
 	double selectivity(double len);
+	double fishableBiomass();
 
 	double calcRealizedFishingMortality();
 	double effort(double Nr, double F);

@@ -3,11 +3,20 @@
 #include <thread> // sleep_for
 using namespace std;
 
-Simulator::Simulator(){
+Simulator::Simulator(Fish f) : noFishingPop(f) {
+}
+
+void Simulator::setNaturalPopulation(Population &pop){
+	noFishingPop = pop;
 }
 
 
 Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int nyears, bool re_init){
+	noFishingPop.set_harvestProp(h);
+	noFishingPop.set_minSizeLimit(lf);
+	double K = noFishingPop.fishableBiomass();
+
+	pop.K_fishableBiomass = K;
 	pop.set_harvestProp(h);
 	pop.set_minSizeLimit(lf);
 	if (re_init) pop.init(1000);
@@ -51,6 +60,15 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	return df;
 }
 
+//double Simulator::calcK(Population &pop, double lmin, double h){
+//	pop.set_harvestProp(h);
+//	pop.set_minSizeLimit(lmin);
+//	double K = 0;
+//	for (auto f : pop.fishes) K += f.weight * pop.par.n * pop.selectivity(f.length);
+//	return K;
+//}
+
+
 vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, int nyears, bool re_init){
 	int niters = 1;
 	Tensor<double> res({niters, 4, hvec.size(), nyears});
@@ -59,7 +77,13 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 	for (int iter = 0; iter < niters; ++iter){
 		for (int ih=0; ih<hvec.size(); ++ih){ // loop over control parameter
 			pop = pop_ref;
+
+			noFishingPop.set_harvestProp(hvec[ih]);
+			double K = noFishingPop.fishableBiomass();
+
+			pop.K_fishableBiomass = K;
 			pop.set_harvestProp(hvec[ih]);
+
 			if (re_init) pop.init(1000);
 			pop.print_summary();
 		
@@ -74,6 +98,7 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 		}
 	}
 	res.print();
+	cout.flush();
 	return res.avg_dim(3).vec;	// average over iterations
 
 }
@@ -135,6 +160,12 @@ vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 				pop = pop_ref;
 				pop.set_harvestProp(hvec[ih]);
 				pop.set_minSizeLimit(lminvec[il]);
+				
+				noFishingPop.set_harvestProp(hvec[ih]);
+				noFishingPop.set_minSizeLimit(lminvec[il]);
+				double K = noFishingPop.fishableBiomass();
+				pop.K_fishableBiomass = K;
+
 				if (re_init) pop.init(1000);
 				pop.print_summary();
 			

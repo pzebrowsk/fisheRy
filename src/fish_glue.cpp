@@ -2,11 +2,26 @@
 using namespace Rcpp;
 
 #include "fish.h"
+#include "functions.h"
 
 RCPP_EXPOSED_CLASS(Fish);
 RCPP_EXPOSED_CLASS(FishParams);
 
+
+
 RCPP_MODULE(fish_module) {
+	
+//	function("init_length", &fish::init_length);
+	function("length_juvenile", &fish::length_juvenile);
+	function("length_adult", &fish::length_adult);
+	function("maturation_steepness", &fish::maturation_steepness);
+	function("maturation_probability", &fish::maturation_probability);
+	function("weight_fish", &fish::weight_fish);
+	function("fecundity", &fish::fecundity);
+	function("gsi", &fish::gsi);
+	function("natural_mortality", &fish::natural_mortality);
+	function("survival_probability", &fish::survival_probability);
+	
 	class_ <FishParams>("FishParams")
 		.constructor()
 		.field("flag", &FishParams::flag)
@@ -23,14 +38,21 @@ RCPP_MODULE(fish_module) {
 		.field("par", &Fish::par)
 
 		.method("print", &Fish::print)
+		.method("print_line", &Fish::print_line)
+		.method("print_header", &Fish::print_header)
+
 		.method("set_age", &Fish::set_age)
 		//.method("set_length", &Fish::set_length)
 
 		.method("matureNow", &Fish::matureNow)
 		.method("updateMaturity", &Fish::updateMaturity)
+		.method("grow", &Fish::grow)
 		
 		.method("naturalMortalityRate", &Fish::naturalMortalityRate)
 		//.method("survivalProbability", &Fish::survivalProbability)
+
+		.method("get_state", &Fish::get_state)
+
 	;
 }	
 	
@@ -51,14 +73,20 @@ RCPP_MODULE(population_module){
 	
 	class_ <Population>("Population")
 		.constructor<Fish>()
+		.field("K", &Population::K_fishableBiomass)
+		
+		.method("set_superFishSize", &Population::set_superFishSize) 
+		
 		.method("set_harvestProp", &Population::set_harvestProp) 
 		.method("set_minSizeLimit", &Population::set_minSizeLimit) 
 
-		.method("calcK", &Population::calcK) 
 		.method("selectivity", &Population::selectivity) 
 		.method("init", &Population::init) 
 		.method("update", &Population::update)
 		.method("calcSSB", &Population::calcSSB)
+		.method("fishableBiomass", &Population::fishableBiomass)
+
+		.method("noFishingEquilibriate", &Population::noFishingEquilibriate)
 
 		.method("get_state", &Population::get_state)
 		.method("summarize", &Population::summarize)
@@ -73,8 +101,9 @@ RCPP_EXPOSED_CLASS(Population);
 
 RCPP_MODULE(simulator_module){
 	class_ <Simulator>("Simulator")
-		.constructor()
-    .method("simulate", &Simulator::simulate_r)
+	.constructor<Fish>()
+	.method("setNaturalPopulation", &Simulator::setNaturalPopulation)
+	.method("simulate", &Simulator::simulate_r)
     
 	.method("simulate_multi", &Simulator::simulate_multi)
     .method("max_avg_utils", &Simulator::max_avg_utils)

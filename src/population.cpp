@@ -9,9 +9,12 @@ using namespace std;
 
 Population::Population(Fish f){
 	proto_fish = f;
-	calc_athresh();
+//	calc_athresh();
 }
 
+void Population::set_superFishSize(double _n){
+	par.n = _n;
+}
 
 void Population::set_harvestProp(double _h){
 	par.h = _h;
@@ -20,24 +23,24 @@ void Population::set_harvestProp(double _h){
 }
 
 
-void Population::calc_athresh(){
-	// set a_thresh
-	Fish f = proto_fish;
-	par.a_thresh = 99999;
-	for (int i=1; i <= f.par.amax; ++i){
-		f.set_age(i);
-		if (selectivity(f.length) > 0.5){
-			par.a_thresh = i;
-			break;
-		}
-	}
-	cout << "a_0.5 = " << par.a_thresh << "\n";
-}
+//void Population::calc_athresh(){
+//	// set a_thresh
+//	Fish f = proto_fish;
+//	par.a_thresh = 99999;
+//	for (int i=1; i <= f.par.amax; ++i){
+//		f.set_age(i);
+//		if (selectivity(f.length) > 0.5){
+//			par.a_thresh = i;
+//			break;
+//		}
+//	}
+//	cout << "a_0.5 = " << par.a_thresh << "\n";
+//}
 
 
 void Population::set_minSizeLimit(double _lf50){
 	par.lf50 = _lf50;
-	calc_athresh();
+//	calc_athresh();
 }
 
 
@@ -48,36 +51,24 @@ void Population::init(int n){
 }
 
 
-vector<double> Population::calcK(){
+vector<double> Population::noFishingEquilibriate(){
 	// backup params
 	auto par_back = par;
 	set_harvestProp(0);
-	//par.sigmaf = 0;	// no env stochasticity while calculating carrying capacity
+	par.sigmaf = 0;	// no env stochasticity while calculating carrying capacity
 
 	init(1000);
-	int nsteps = 500;
-	int ntrans = 200;
+	int nsteps = 200;
 
-	vector<double> K(proto_fish.par.amax+3);
-	double ssb_mean = 0;
+	std::vector<double> state_t;
 	for (int t=0; t<nsteps; ++t){
-		std::vector<double> state_t = this->update();
-		double ssb_t = state_t[0];
-
-		if (t >= ntrans){
-			this->summarize();
-			for (int j=0; j<K.size(); ++j) 	K[j] += vfreq[j];
-			ssb_mean += ssb_t;
-		}
+		state_t = this->update();
 	}
-	for (int j=0; j<K.size(); ++j) 	K[j] /= (nsteps-ntrans);
-	ssb_mean /= (nsteps-ntrans);
 
 	// restore params
 	par = par_back;
-
-	carrying_capacity = K;
-	return K;
+	
+	return state_t;
 }
 
 
@@ -102,8 +93,24 @@ double Population::calcRealizedFishingMortality(){
 }
 
 
+double Population::fishableBiomass(){
+	double B_fishable = 0;
+	for (auto& f : fishes) B_fishable += par.n * f.weight * selectivity(f.length);
+	return B_fishable;
+}
+
+
 double Population::effort(double Nr, double F){
-	double M = proto_fish.par.mam[proto_fish.par.amax];
+//	double M = proto_fish.par.mam[proto_fish.par.amax];
+	double sum_wimi = 0, sum_wi = 0;
+	for (auto& f : fishes){
+		if (f.age <= f.par.amax){
+			sum_wimi += f.weight * selectivity(f.length) * f.naturalMortalityRate();
+			sum_wi   += f.weight * selectivity(f.length);
+		}
+	} 
+	double M = sum_wimi / sum_wi;  // Mass-weighted average mortality of fishable population
+	//cout << ": F/M = " << F << " / " << M << "\n";
 	return pow(Nr, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1)); 
 }
 
@@ -127,29 +134,41 @@ std::vector<double> Population::update(){
 		f.updateMaturity();
 	}
 
+	// 2. Growth
+	for (auto& f: fishes){
+		f.grow();
+	}
 	//print_summary();
 
-	// 2. Reproduction 
+	// 3. Reproduction 
 	// implement spawning for remaining fish
 	double ssb = calcSSB();
-	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf) * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
-	//double nrecruits = 0;
-	//for (auto &f: fishes) if (f.isAlive && f.isMature) nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
-	//nrecruits = std::min(nrecruits, rmax);
+//	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf); // * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
+	double nrecruits = 0;
+	for (auto &f: fishes) {
+		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
+		if (f.isAlive && f.isMature){
+			nrecruits += f.produceEggs() * par.s0 * par.n * (1/(1+ssb/par.Bhalf));
+		}
+	}
+	nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
+	nrecruits = std::min(nrecruits, par.rmax);
+	double r0_avg = nrecruits * (1 + ssb/par.Bhalf) / ssb;
 
-
-	// 3. Mortality 
-	summarize();
+	// 4. Mortality 
+//	summarize();
 	
-	// calculate realized mortality rate
+//	// calculate realized mortality rate
 	double F_req = par.mort_fishing_mature; //, M = proto_fish.par.mam[proto_fish.par.amax];
 	double F_real = F_req; 
 	double E_req, E_real;
 	double D_sea_req, D_sea_real;
+	double Nrel = 0;
 	if (par.h > 0){
-		double Nrel = 0; 
-		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
-		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
+//		double Nrel = 0; 
+//		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
+//		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
+		Nrel = fishableBiomass() / K_fishableBiomass;
 			
 		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
 		D_sea_req  = par.dsea * E_req;
@@ -176,8 +195,7 @@ std::vector<double> Population::update(){
 	fishes.erase(std::remove_if(fishes.begin(), fishes.end(), [](Fish &f){return !f.isAlive;}), fishes.end());
 
 
-	// 4. Growth 
-	// grow and advance to new year
+	// 5. Increment age and advance to new year
 	for (auto& f: fishes){
 		f.set_age(f.age+1);
 	}
@@ -197,7 +215,7 @@ std::vector<double> Population::update(){
 		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
 	}
 
-	cout << "year = " << current_year << " | SSB = " << ssb << ", recruits = " << nrecruits << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%)" << "\n";
+	cout << "year = " << current_year << " | SSB = " << ssb << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
 	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr};	
 }
@@ -231,6 +249,7 @@ void Population::print_summary(){
 	summarize();
 	int n = vage.size();
 	cout << "---------------\n";
+	cout << "K = " << K_fishableBiomass << "\n";
 	cout << "age: "; for (int i=0; i<n; ++i) cout << vage[i] << "\t"; cout << "\n";
 	cout << "len: "; for (int i=0; i<n; ++i) cout << vlen[i] << "\t"; cout << "\n";
 	cout << "mat: "; for (int i=0; i<n; ++i) cout << vmat[i] << "\t"; cout << "\n";
