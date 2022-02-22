@@ -7,21 +7,22 @@
 struct FishParams {
 	// Original parameters (from file) North Arctic cod
 	double amax = 20;
-	double beta = 0.648728;
-	double r = 0.077281;
-	double c = 6.51559;
+	double beta = 0.655793; // 0.648728;
+	double r = 0.090367; // 0.077281;
+	double c = 6.318308; //6.51559;
 	double q = 1;
 	double k = 0.00674;
 	double alpha = 3.056863227;
 	double E1 = 2500;
 	double pmrn_lp50 = 118.122779;
-	double pmrn_width = 47.532614;
+	double pmrn_width = 31; //47.532614;
 	double pmrn_slope = -6.609008;
 	double pmrn_envelope = 0.25;
-	double Lref = 80;
-	double Mref = 0.1421;
-	double b = 1.8131;
+	double Lref = 70.48712; //80;
+	double Mref = 0.20775; //0.062994; // ////0.1421; //<--old value from file
+	double b = 1.58127; //2.455715; // ////1.8131;
 	double L0 = 9.1;
+	double M0 = 0; // 0.162126; // 
 	
 	// growth 
 	double gamma1; // = 0.33333;

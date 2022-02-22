@@ -13,3 +13,4 @@ gmon.out
 **/*.txt
 **/*.o
 **/*.test
+docs

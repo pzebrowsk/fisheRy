@@ -140,6 +140,9 @@ std::vector<double> Population::update(){
 	}
 	//print_summary();
 
+	double tsb = 0;
+	for (auto& f : fishes) if (f.isAlive) tsb += par.n * f.weight;
+
 	// 3. Reproduction 
 	// implement spawning for remaining fish
 	double ssb = calcSSB();
@@ -151,7 +154,7 @@ std::vector<double> Population::update(){
 			nrecruits += f.produceEggs() * par.s0 * par.n * (1/(1+ssb/par.Bhalf));
 		}
 	}
-	nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
+	//nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
 	nrecruits = std::min(nrecruits, par.rmax);
 	double r0_avg = nrecruits * (1 + ssb/par.Bhalf) / ssb;
 
@@ -210,10 +213,10 @@ std::vector<double> Population::update(){
 
 	// calculate profit for the year
 	double profit_sea = 0, profit_shr = 0;
-	if (par.h > 0){
+	//if (par.h > 0){
 		profit_sea = yield*par.price_sea - par.scale_catch*(D_sea_req*par.salary_sea + E_req*par.variable_costs_sea + par.fixed_costs_sea);
 		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
-	}
+	//}
 
 	cout << "year = " << current_year << " | SSB = " << ssb << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;

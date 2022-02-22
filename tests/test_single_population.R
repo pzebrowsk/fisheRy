@@ -16,7 +16,7 @@ pop = new(Population, fish)
 # pop$mort_fishing_mature = -log(1-h)
 # pop$mort_fishing_immature = 0
 pop$set_harvestProp(0)
-pop$set_superFishSize(2e3)
+pop$set_superFishSize(500)
 pop$init(1000)
 pop$get_state()
 
@@ -66,7 +66,7 @@ pop$set_minSizeLimit(45)
 pop_noFish$set_harvestProp(0.3)
 pop_noFish$set_minSizeLimit(45)
 pop$K = pop_noFish$fishableBiomass()
-pop$set_superFishSize(5e2)
+pop$set_superFishSize(500)
 pop$init(1000)
 pop$get_state()
 

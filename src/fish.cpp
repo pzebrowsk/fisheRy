@@ -49,7 +49,7 @@ void Fish::set_length(double s){
 double Fish::naturalMortalityRate(){
 	double rate;
 	if (age > par.amax) return 1e20;
-	else return fish::natural_mortality(length, par.gamma3, par.alpha3, par.Lref);
+	else return fish::natural_mortality(length, par.M0, par.gamma3, par.alpha3, par.Lref);
 	  
 //   	if (isMature) rate = (age > par.amax)? 1e20 : par.mam[age]; // FIXME: use inf
 //	else          rate = (age > par.amax)? 1e20 : par.mai[age]; // FIXME: use inf

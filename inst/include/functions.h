@@ -73,14 +73,14 @@ inline double gsi(double body_length, double init_body_length, double gamma_1, d
 
 
 // [[Rcpp::export]]
-inline double natural_mortality(double body_length, double gamma_3, double alpha_3, double body_length_ref){
-	return alpha_3 * pow(body_length / body_length_ref, gamma_3);
+inline double natural_mortality(double body_length, double M0, double gamma_3, double alpha_3, double body_length_ref){
+	return M0 + alpha_3 * pow(body_length / body_length_ref, gamma_3);
 }
 
 
 // [[Rcpp::export]]
-inline double survival_probability(double body_length, double gamma_3, double alpha_3, double body_length_ref, double fishing_mortality, double dt = 1){
-	double total_mortality = natural_mortality(body_length, gamma_3, alpha_3, body_length_ref) + fishing_mortality;
+inline double survival_probability(double body_length, double M0, double gamma_3, double alpha_3, double body_length_ref, double fishing_mortality, double dt = 1){
+	double total_mortality = natural_mortality(body_length, M0, gamma_3, alpha_3, body_length_ref) + fishing_mortality;
 	return exp(-total_mortality * dt);
 }
 

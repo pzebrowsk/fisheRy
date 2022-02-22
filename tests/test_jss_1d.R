@@ -35,7 +35,7 @@ res_ibm_sq = sim$simulate(pop, 45, 0.41, 200, T)
 pop_ref = pop
 
 # hvec = seq(0.01,0.45,0.02)
-hvec = seq(0.01,0.8,length.out = 20)
+hvec = seq(0.0,0.1,length.out = 20)
 lfvec = seq(20,160,length.out = 20)
 
 niter = 10
