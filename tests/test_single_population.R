@@ -2,9 +2,13 @@ rm(list=ls())
 library(rfish)
 library(tidyverse)
 
+source("tests/ref/parameters.cod.R")
+source("tests/ref/simulator.7.R")
+
 fish.par = new(FishParams)
 fish = new(Fish)
 fish.par$flag = 1
+fish.par$use_old_model = F
 fish$par = fish.par
 #pop = new(Population, fish)
 
@@ -16,7 +20,8 @@ pop = new(Population, fish)
 # pop$mort_fishing_mature = -log(1-h)
 # pop$mort_fishing_immature = 0
 pop$set_harvestProp(0)
-pop$set_superFishSize(500)
+pop$set_minSizeLimit(45)
+pop$set_superFishSize(1e6)
 pop$init(1000)
 pop$get_state()
 
@@ -40,8 +45,12 @@ dist = table(d$age, d$length)
 par(mfrow = c(2,2), mar=c(4,4,1,1))
 plot(nfish~seq(1,nsteps,1), ylab="Number of superfish", xlab="Year")
 image(x=as.numeric(rownames(dist)), y = as.numeric(colnames(dist)), z=log(1+3*log(dist)), col=scales::viridis_pal()(100), xlab="", ylab="")
-plot(dat$ssb/1e9, ylab="SSB (MT)", xlab="Year")
+plot(dat$ssb/1e9, ylab="SSB (MT)", xlab="Year", col="cyan")
 #plot(K_ibm[-1], log="xy", xlab="Age", ylab="Frequency")
+
+res = simulate(0, 45, F)
+points(y=res$summaries$SSB/1e9, x=res$summaries$year, type="l")
+
 
 K = matrix(nrow=10, ncol=10)
 hvec = seq(0,1,length.out=10)

@@ -11,7 +11,7 @@ class PopulationParams {
 	// reproduction
 	double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
-	double Bhalf = 365426284.0/5000;	// Half saturation constant of recruitment
+	double Bhalf = 365426284.0; ///5000;	// Half saturation constant of recruitment
 
 	double s0 = 0.1126797; //0.11;          // Egg survival propbability
 

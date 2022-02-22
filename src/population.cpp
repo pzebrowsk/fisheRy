@@ -151,7 +151,8 @@ std::vector<double> Population::update(){
 	for (auto &f: fishes) {
 		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 		if (f.isAlive && f.isMature){
-			nrecruits += f.produceEggs() * par.s0 * par.n * (1/(1+ssb/par.Bhalf));
+			if (f.par.use_old_model) nrecruits += f.produceEggs() * par.n * (1/(1+ssb/par.Bhalf));
+			else                     nrecruits += f.produceEggs() * par.n * (1/(1+ssb/par.Bhalf));
 		}
 	}
 	//nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));

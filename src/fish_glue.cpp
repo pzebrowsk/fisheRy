@@ -25,6 +25,7 @@ RCPP_MODULE(fish_module) {
 	class_ <FishParams>("FishParams")
 		.constructor()
 		.field("flag", &FishParams::flag)
+		.field("use_old_model", &FishParams::use_old_model)
 	;
 
 	class_<Fish>("Fish")

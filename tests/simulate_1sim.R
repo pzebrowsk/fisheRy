@@ -9,6 +9,7 @@ library(rfish)
 fish.par = new(FishParams)
 fish = new(Fish)
 fish.par$flag = 1
+fish.par$use_old_model = T
 fish$par = fish.par
 pop_K = new(Population, fish)
 pop_K$set_superFishSize(500)
