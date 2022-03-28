@@ -63,7 +63,7 @@ simulate<-function(h.prop,LF50,display=FALSE){
 			E.real<-D.eff/d.sea					# realized effort (~vessel days)
 			F.real<-ifelse(b==1,q*E.real,optimize(f=simul,interval=c(0,F.max),parms=c(N.rel,E.real),tol=0.0001)$minimum)
 			F.ratio = F.real/F.max
-			#F.real=F.max  # JAI: Remove effort dynamics for testing
+			F.real=F.max  # JAI: Remove effort dynamics for testing
 			# population dynamics
 			F<-F.real/(1+exp(-SF*(L-LF50)))		# fishing mortality at age
 		}

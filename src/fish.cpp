@@ -9,7 +9,7 @@ Fish::Fish(double tb){
 	
 	set_age(1);
 	
-	if (!par.use_old_model){
+	if (!par.use_old_model_gro){
 		// calc length at age 1
 		double l1 = fish::length_juvenile(par.L0, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 		set_length(l1);
@@ -28,7 +28,7 @@ Fish::Fish(double tb){
 void Fish::set_age(int _a){
 	age = _a;
 
-	if (par.use_old_model){
+	if (par.use_old_model_gro){
 		// in an explicity age-length model, this will go.
 		length = par.l8*(1-exp(-par.kappa*(age-par.a0)));
 		set_length(length);
@@ -39,8 +39,8 @@ void Fish::set_age(int _a){
 void Fish::set_length(double s){
 	length = s;
 	
-	if (par.use_old_model) weight = par.theta*pow(length, par.zeta);  // Eq. 2
-	else               weight = fish::weight_fish(length, par.alpha2, par.gamma2);  
+	if (par.use_old_model_gro) weight = par.theta*pow(length, par.zeta);  // Eq. 2
+	else                       weight = fish::weight_fish(length, par.alpha2, par.gamma2)/1000;  
 	
 }
 
@@ -56,7 +56,7 @@ double Fish::naturalMortalityRate(){
 	double rate;
 	if (age > par.amax) return 1e20; // FIXME: use inf
 	else {
-		if (par.use_old_model){
+		if (par.use_old_model_mor){
 		   	if (isMature) rate = par.mam[age]; 
 			else          rate = par.mai[age]; 
 			return rate;
@@ -78,8 +78,8 @@ bool Fish::matureNow(){
 	double runif = rand() / double(RAND_MAX);
 	
 	double maturation_prob;
-	if (par.use_old_model) maturation_prob = (age > par.amax)? 1 : par.ma[age];
-	else               maturation_prob = fish::maturation_probability(age, length, par.steepness, par.pmrn_slope, par.pmrn_intercept);
+	if (par.use_old_model_mat) maturation_prob = (age > par.amax)? 1 : par.ma[age];
+	else                       maturation_prob = fish::maturation_probability(age, length, par.steepness, par.pmrn_slope, par.pmrn_intercept);
 	//cout << "matureNow(): " << age << " " << length << " " << runif << " " << maturation_prob << "\n";
 	
 	return runif <= maturation_prob;
@@ -91,9 +91,10 @@ void Fish::updateMaturity(){
 }
 
 
-void Fish::grow(){
-	if (par.use_old_model){
+void Fish::grow(double tsb){
+	if (par.use_old_model_gro){
 		// do nothing. age is incremented by population update
+		gsi_effective = par.gsi; // required if new fecundity model is used in combination with old growth model
 	}
 	else{
 		double lnew;
@@ -103,15 +104,16 @@ void Fish::grow(){
 		else{
 			lnew = fish::length_juvenile(length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 		}
+		lnew *= exp(-tsb/par.Bhalf_growth);
 		gsi_effective = fish::gsi(lnew, length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 		set_length(lnew);
 	}
 }
 
 
-double Fish::produceEggs(){
-	if (par.use_old_model) return par.r0 * weight;
-	else                   return (par.delta * gsi_effective * weight) * par.s0; // fish::fecundity(length, par.gamma2, par.alpha2, par.delta, gsi_effective) * par.s0; //
+double Fish::produceRecruits(){
+	if (par.use_old_model_fec) return par.r0 * weight;
+	else                       return (par.delta * gsi_effective * weight) * par.s0; // fish::fecundity(length, par.gamma2, par.alpha2, par.delta, gsi_effective) * par.s0; //
 }
 
 

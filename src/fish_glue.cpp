@@ -25,7 +25,12 @@ RCPP_MODULE(fish_module) {
 	class_ <FishParams>("FishParams")
 		.constructor()
 		.field("flag", &FishParams::flag)
-		.field("use_old_model", &FishParams::use_old_model)
+		.field("Bhalf_growth", &FishParams::Bhalf_growth)
+		.field("s0", &FishParams::s0)
+		.field("use_old_model_gro", &FishParams::use_old_model_gro)
+		.field("use_old_model_mat", &FishParams::use_old_model_mat)
+		.field("use_old_model_mor", &FishParams::use_old_model_mor)
+		.field("use_old_model_fec", &FishParams::use_old_model_fec)
 	;
 
 	class_<Fish>("Fish")
@@ -67,13 +72,16 @@ RCPP_MODULE(population_module){
 	class_ <PopulationParams>("PopulationParams")
 		.constructor()
 		.field("n", &PopulationParams::n)
-		.field("h", &PopulationParams::h)
-		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
-		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
+		.field("Bhalf", &PopulationParams::Bhalf)
+//		.field("h", &PopulationParams::h)
+//		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
+//		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
 	;
 	
 	class_ <Population>("Population")
 		.constructor<Fish>()
+		.field("par", &Population::par)
+
 		.field("K", &Population::K_fishableBiomass)
 		
 		.method("set_superFishSize", &Population::set_superFishSize) 

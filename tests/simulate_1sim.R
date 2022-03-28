@@ -7,23 +7,30 @@ source("tests/ref/simulator.7.R")
 
 library(rfish)
 fish.par = new(FishParams)
+fish.par$s0 = 0.09637
+fish.par$Bhalf_growth = 100e11
+
 fish = new(Fish)
 fish.par$flag = 1
-fish.par$use_old_model = T
 fish$par = fish.par
 pop_K = new(Population, fish)
-pop_K$set_superFishSize(500)
+pop_K$set_superFishSize(1e6)
 K_ibm = pop_K$noFishingEquilibriate()
 
-h = 0.
+h = 0.3
 lf = 45
 
 nsteps = 200
 sim = new(Simulator, fish)
 sim$setNaturalPopulation(pop_K)
 
+pop.par = new(PopulationParams)
+pop.par$Bhalf = 365426284/4.7
+
+
 pop = new(Population, fish)
-pop$set_superFishSize(500)
+pop$par = pop.par
+pop$set_superFishSize(2e5)
 res_ibm = sim$simulate(pop, lf, h, nsteps, T)
 res = simulate(h, lf, F)
 
@@ -60,10 +67,11 @@ p.shr.min = min(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
 plot(y=res_ibm$profit.shore/1e9, x=seq(1,nsteps,1), ylab="Profit at shore (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.shr.min,p.shr.max))
 points(y=res$summaries$P.shr/1e9, x=res$summaries$year, type="l")
 
+par(mfrow=c(1,1))
 d = pop$get_state()
 d1 = d %>% group_by(age) %>% summarize(mat = length(which(isMature))/length(isMature))
 plot(mat, type="l")
-points(d1$mat~d1$age, type="o", col="cyan")
+points(d1$mat~d1$age, type="o", col="cyan3")
 # d = get_stocks()
 # pnow = maturation_probability(1:30, 10, maturation_steepness(d$pmrn_width, d$pmrn_envelope), d$pmrn_slope, d$pmrn_intercept)
 # pnext = maturation_probability(2:31, 10, maturation_steepness(d$pmrn_width, d$pmrn_envelope), d$pmrn_slope, d$pmrn_intercept)
@@ -82,28 +90,52 @@ points(d1$mat~d1$age, type="o", col="cyan")
 # 
 
 #### Simulate vs hvec #####
-# 
-# pop = new(Population, fish)
-# pop$set_superFishSize(500)
-# hvec = seq(0, 0.99, length.out = 20)
-# dat_ibm = data.frame(matrix(ncol=6, nrow=0))
-# colnames(dat_ibm) =c("ssb", "yield", "employment.sea", "employment.shore", "profit.sea", "profit.shore")
-# dat = data.frame(matrix(ncol=6, nrow=0))
-# colnames(dat) =c("ssb", "yield", "employment.sea", "employment.shore", "profit.sea", "profit.shore")
-# for (ih in 1:length(hvec)){
-#   res_ibm = sim$simulate(pop, lf, hvec[ih], nsteps, T)
-#   res = simulate(hvec[ih], lf, F)
-#   v_ibm = colMeans(res_ibm[151:200,])/c(1e9, 1e9, 1, 1, 1e9, 1e9)
-#   v = colMeans((res$summaries %>% select(SSB, Y, D.sea, D.shr, P.sea, P.shr))[151:200,])/c(1e9, 1e9, 1, 1, 1e9, 1e9)
-#   dat_ibm[nrow(dat_ibm)+1,] = v_ibm  
-#   dat[nrow(dat)+1,] = v  
-# }
-# 
-# par(mfrow = c(2,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5)
-# matplot(ylab="ssb (MT)",y=cbind(dat_ibm$ssb, dat$ssb), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
-# matplot(ylab="yield (MT)",y=cbind(dat_ibm$yield, dat$yield), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
-# matplot(ylab="emp at sea (PY)",y=cbind(dat_ibm$employment.sea, dat$employment.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
-# matplot(ylab="emp on shore (PY)",y=cbind(dat_ibm$employment.shore, dat$employment.shore), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
-# matplot(ylab="profit at sea (Bn NOK)",y=cbind(dat_ibm$profit.sea, dat$profit.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
-# matplot(ylab="profit on shore (Bn NOK)",y=cbind(dat_ibm$profit.shore, dat$profit.shore), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
+library(rfish)
+
+fish.par = new(FishParams)
+fish.par$s0 = 0.09637
+fish.par$Bhalf_growth = 100e11
+
+fish = new(Fish)
+fish.par$flag = 1
+fish.par$use_old_model_mat = T
+fish$par = fish.par
+pop_K = new(Population, fish)
+pop_K$set_superFishSize(1e6)
+K_ibm = pop_K$noFishingEquilibriate()
+
+h = 0.3
+lf = 45
+
+nsteps = 200
+sim = new(Simulator, fish)
+sim$setNaturalPopulation(pop_K)
+
+pop.par = new(PopulationParams)
+pop.par$Bhalf = 365426284/4.7
+
+pop = new(Population, fish)
+pop$par = pop.par
+pop$set_superFishSize(2e5)
+hvec = seq(0, 0.99, length.out = 20)
+dat_ibm = data.frame(matrix(ncol=7, nrow=0))
+colnames(dat_ibm) =c("ssb", "yield", "employment.sea", "employment.shore", "profit.sea", "profit.shore", "tsb")
+dat = data.frame(matrix(ncol=7, nrow=0))
+colnames(dat) =c("ssb", "yield", "employment.sea", "employment.shore", "profit.sea", "profit.shore", "tsb")
+for (ih in 1:length(hvec)){
+  res_ibm = sim$simulate(pop, lf, hvec[ih], nsteps, T)
+  res = simulate(hvec[ih], lf, F)
+  v_ibm = colMeans(res_ibm[151:200,])/c(1e9, 1e9, 1, 1, 1e9, 1e9)
+  v = colMeans((res$summaries %>% select(SSB, Y, D.sea, D.shr, P.sea, P.shr, TSB))[151:200,])/c(1e9, 1e9, 1, 1, 1e9, 1e9)
+  dat_ibm[nrow(dat_ibm)+1,] = v_ibm
+  dat[nrow(dat)+1,] = v
+}
+
+par(mfrow = c(2,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5)
+matplot(ylab="ssb (MT)",y=cbind(dat_ibm$ssb, dat$ssb, dat_ibm$tsb, dat$tsb), x=hvec, type="l", col=c("cyan2", "black", "orange", "magenta"), lwd=2, lty=1, xlab="Harvest prop")
+matplot(ylab="yield (MT)",y=cbind(dat_ibm$yield, dat$yield), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
+matplot(ylab="emp at sea (PY)",y=cbind(dat_ibm$employment.sea, dat$employment.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
+matplot(ylab="emp on shore (PY)",y=cbind(dat_ibm$employment.shore, dat$employment.shore), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
+matplot(ylab="profit at sea (Bn NOK)",y=cbind(dat_ibm$profit.sea, dat$profit.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
+matplot(ylab="profit on shore (Bn NOK)",y=cbind(dat_ibm$profit.shore, dat$profit.shore), x=hvec, type="l", col=c("cyan2", "black"), lwd=2, lty=1, xlab="Harvest prop")
 

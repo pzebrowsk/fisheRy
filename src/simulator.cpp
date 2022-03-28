@@ -37,6 +37,9 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	psea.reserve(nyears);
 	std::vector<double> pshr;
 	pshr.reserve(nyears);
+
+	std::vector<double> tsb;
+	tsb.reserve(nyears);
 	
 	Rcpp::DataFrame df = Rcpp::DataFrame::create();
 
@@ -48,6 +51,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 		emp_shore.push_back(state_now[3]);
 		psea.push_back(state_now[4]);
 		pshr.push_back(state_now[5]);
+		tsb.push_back(state_now[6]);
 	}
 	
 	df.push_back(ssb, "ssb");
@@ -56,6 +60,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	df.push_back(emp_shore, "employment.shore");
 	df.push_back(psea, "profit.sea");
 	df.push_back(pshr, "profit.shore");
+	df.push_back(tsb, "tsb");
 
 	return df;
 }

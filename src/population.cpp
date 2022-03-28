@@ -134,14 +134,13 @@ std::vector<double> Population::update(){
 		f.updateMaturity();
 	}
 
-	// 2. Growth
-	for (auto& f: fishes){
-		f.grow();
-	}
-	//print_summary();
-
 	double tsb = 0;
 	for (auto& f : fishes) if (f.isAlive) tsb += par.n * f.weight;
+	// 2. Growth
+	for (auto& f: fishes){
+		f.grow(tsb);
+	}
+	//print_summary();
 
 	// 3. Reproduction 
 	// implement spawning for remaining fish
@@ -151,8 +150,7 @@ std::vector<double> Population::update(){
 	for (auto &f: fishes) {
 		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 		if (f.isAlive && f.isMature){
-			if (f.par.use_old_model) nrecruits += f.produceEggs() * par.n * (1/(1+ssb/par.Bhalf));
-			else                     nrecruits += f.produceEggs() * par.n * (1/(1+ssb/par.Bhalf));
+			nrecruits += f.produceRecruits() * par.n * (1/(1+ssb/par.Bhalf));
 		}
 	}
 	//nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
@@ -176,7 +174,7 @@ std::vector<double> Population::update(){
 			
 		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
 		D_sea_req  = par.dsea * E_req;
-		D_sea_real = par.dmax * D_sea_req / (par.dmax + D_sea_req);
+		D_sea_real = D_sea_req / (1 + D_sea_req/par.dmax);
 		
 		E_real = D_sea_real / par.dsea;
 		// Solve for F_real
@@ -219,9 +217,9 @@ std::vector<double> Population::update(){
 		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
 	//}
 
-	cout << "year = " << current_year << " | SSB = " << ssb << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
+	cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1e9 << ", recruits = " << nrecruits/1e9 << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
-	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr};	
+	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb};	
 }
 
 

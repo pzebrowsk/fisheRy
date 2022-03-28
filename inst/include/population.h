@@ -13,7 +13,7 @@ class PopulationParams {
 	double rmax = 1e20;
 	double Bhalf = 365426284.0; ///5000;	// Half saturation constant of recruitment
 
-	double s0 = 0.1126797; //0.11;          // Egg survival propbability
+//	double s0 = 0.1126797; //0.11;          // Egg survival propbability
 
 	// management / fishing selectivity
 	double sf = 0.1222;	// steepness of selectivity curve
@@ -25,7 +25,7 @@ class PopulationParams {
 	// effort dynamics and employment
 	double q = 2.83e-6;		// scaling parameter relating to catchability and density
 	double dsea = 0.054;	// Required Person-years per vessel day
-	double dmax = 30000;	// max available person-years
+	double dmax = 30000e20;	// max available person-years
 	double dshr = 0.000004;	// FTE/kg
 	double b = 0.75;		// density dependence
 

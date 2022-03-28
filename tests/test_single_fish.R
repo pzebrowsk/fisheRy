@@ -12,9 +12,12 @@ N = 100
 for (f in 1:N){
   #cat("f = ", f, "\n")
   fish.par = new(FishParams)
+  fish.par$s0 = 0.09637
+  fish.par$Bhalf_growth = 1e11
+  
   fish = new(Fish)
   fish.par$flag = 1
-  fish.par$use_old_model= F
+  fish.par$use_old_model_gro = F
   fish$par = fish.par
     
   dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
@@ -26,7 +29,7 @@ for (f in 1:N){
     dat = rbind(dat, fish$get_state())
     mort = rbind(mort, c(a=fish$age,  fish$naturalMortalityRate(), fish$length))
     fish$updateMaturity()
-    fish$grow()
+    fish$grow(0)
     fish$set_age(fish$age+1)
   }
   mat_ages = c(mat_ages, which(dat$isMature>0)[1])
@@ -39,9 +42,12 @@ N=1
 for (f in 1:N){
   #cat("f = ", f, "\n")
   fish.par = new(FishParams)
-  fish = new(Fish)
+  fish.par$s0 = 0.09637
+  fish.par$Bhalf_growth = 1e11
+
+    fish = new(Fish)
   fish.par$flag = 1
-  fish.par$use_old_model= T
+  fish.par$use_old_model_gro = T
   fish$par = fish.par
   
   dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
@@ -53,7 +59,7 @@ for (f in 1:N){
     dat = rbind(dat, fish$get_state())
     mort = rbind(mort, c(a=fish$age,  fish$naturalMortalityRate(), fish$length))
     fish$updateMaturity()
-    fish$grow()
+    fish$grow(0)
     fish$set_age(fish$age+1)
   }
   mat_ages = c(mat_ages, which(dat$isMature>0)[1])

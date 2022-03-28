@@ -15,15 +15,23 @@ struct FishParams {
 	double alpha = 3.056863227;
 	double E1 = 2500;
 	double pmrn_lp50 = 118.122779;
-	double pmrn_width = 31; //47.532614;
+	double pmrn_width = 47.532614;
 	double pmrn_slope = -6.609008;
 	double pmrn_envelope = 0.25;
 	double Lref = 70.48712; //80;
+//	// Pure power law
+//	double Mref = 0.20775; // ////0.1421; //<--old value from file
+//	double b    =  1.58127; //////1.8131;
+//	double M0   = 0; //
+	// Power law + offset
 	double Mref = 0.062994; // 0.20775; // ////0.1421; //<--old value from file
-	double b =  2.455715; // 1.58127; //////1.8131;
+	double b    = 2.455715; // 1.58127; //////1.8131;
+	double M0   = 0.162126; //  0; //
+
 	double L0 = 9.1;
-	double M0 = 0.162126; //  0; //
-	double s0 = 0.1126797;
+	double s0 = 0.09637;
+
+	double Bhalf_growth = 1e11;
 	
 	// growth 
 	double gamma1; // = 0.33333;
@@ -68,7 +76,11 @@ struct FishParams {
 
 	// debug
 	int flag = 0;
-	bool use_old_model = true;
+	
+	bool use_old_model_gro = false;
+	bool use_old_model_mat = false;
+	bool use_old_model_fec = false;
+	bool use_old_model_mor = false;
 	
 	FishParams(){
 		
@@ -116,7 +128,7 @@ class Fish{
 	void set_age(int _a);
 	void set_length(double s);
 	
-	void grow();
+	void grow(double tsb);
 
 	//double maturationProbability();   // return the probability of maturation
 	bool matureNow();		// check if fish should mature now, based on maturation probability
@@ -125,7 +137,7 @@ class Fish{
 	double naturalMortalityRate();
 	//double survivalProbability(double external_mortality_rate, double interval);     // return the probability that this individual survives during the given time interval
 
-	double produceEggs();
+	double produceRecruits();
 
 	void print();
 	void print_line();
