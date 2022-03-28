@@ -1,0 +1,13 @@
+pandoc: 2.17.1.1
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  fished_population: fished_population.html
+  fish_population: fish_population.html
+  multi_populations: multi_populations.html
+  single_fish: single_fish.html
+last_built: 2022-03-28T21:36Z
+urls:
+  reference: https://jaideep777.github.io/rfish/reference
+  article: https://jaideep777.github.io/rfish/articles
+

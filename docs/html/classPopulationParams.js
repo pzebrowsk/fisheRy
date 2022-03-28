@@ -1,0 +1,27 @@
+var classPopulationParams =
+[
+    [ "a_thresh", "classPopulationParams.html#a46be5a275459f9dfbf66fbe179dc8cc0", null ],
+    [ "b", "classPopulationParams.html#af94b14d65917d94171ccdfe63d4c59bd", null ],
+    [ "Bhalf", "classPopulationParams.html#ace36bdbd7a2e67d5ff56ae8eec89ce3b", null ],
+    [ "dmax", "classPopulationParams.html#a00bf9f4b14ef775713d677bd42196f48", null ],
+    [ "dsea", "classPopulationParams.html#a4abc2271dbd6feba514041603afa3f74", null ],
+    [ "dshr", "classPopulationParams.html#a8b25fb3e9d34b4444e4497c8fc50e067", null ],
+    [ "fixed_costs_sea", "classPopulationParams.html#af2f8a6129b953195214d7246afec9439", null ],
+    [ "fixed_costs_shore", "classPopulationParams.html#a5a7729850cb0fddac19ee98e5d7dd1b7", null ],
+    [ "h", "classPopulationParams.html#ab76e7183a819c22986799b4e1ba4c4cb", null ],
+    [ "lf50", "classPopulationParams.html#a87b34c8d70a6c17511a8e8921873cd25", null ],
+    [ "mort_fishing_immature", "classPopulationParams.html#ade1734ba5c96635b287153a30add78d7", null ],
+    [ "mort_fishing_mature", "classPopulationParams.html#a437562c3163033969aeeb8ea562cc4fc", null ],
+    [ "n", "classPopulationParams.html#ab5b9c6a5b69512f129cc98001ae4c9d1", null ],
+    [ "price_sea", "classPopulationParams.html#a2ec90782b2d8f0c9f52eb512f7f9d925", null ],
+    [ "price_shore", "classPopulationParams.html#a40ee2c94a895bd44ba5c12114dded0a2", null ],
+    [ "q", "classPopulationParams.html#a99f1332fc2792f807dc8c46277277258", null ],
+    [ "r0", "classPopulationParams.html#a55835baa283a5a5eca336f251ae1f64e", null ],
+    [ "rmax", "classPopulationParams.html#ad5272a86bb52cc66f250a5ec53bdd276", null ],
+    [ "salary_sea", "classPopulationParams.html#aec582aace03245ebf0b2c0927efddb97", null ],
+    [ "salary_shore", "classPopulationParams.html#a67bda91cd832ffd7cd3a44f8fe1e88e9", null ],
+    [ "scale_catch", "classPopulationParams.html#ab77e0a1ad3d0d36744a43ba78c9e7c33", null ],
+    [ "sf", "classPopulationParams.html#a47b39d0811de8e5368d1a733a66ab5b1", null ],
+    [ "sigmaf", "classPopulationParams.html#a213bd6922078ab92d8d852abac1ad075", null ],
+    [ "variable_costs_sea", "classPopulationParams.html#acf6578102b6200989bf2ae557cd0b0dc", null ]
+];
