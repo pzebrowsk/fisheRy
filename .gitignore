@@ -14,3 +14,4 @@ gmon.out
 **/*.o
 **/*.test
 docs
+*.html
