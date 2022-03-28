@@ -97,12 +97,13 @@ vector<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 				
 				res({iter, 0, ih, t}) = state_now[0];				// ssb
 				res({iter, 1, ih, t}) = state_now[1];				// yield
-				res({iter, 2, ih, t}) = state_now[2]+state_now[3];				// employment
+				res({iter, 2, ih, t}) = state_now[2]+state_now[3];	// employment
 				res({iter, 3, ih, t}) = state_now[4]+state_now[5];	// total profit
 			}
 		}
 	}
 	res.print();
+	cout << "------------------------\n";
 	cout.flush();
 	return res.avg_dim(3).vec;	// average over iterations
 

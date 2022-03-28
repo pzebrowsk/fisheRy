@@ -29,13 +29,18 @@ navbar:
       text: Tutorials
       icon: fa-book fa-lg
       menu:
-        - text: Creating a tensor
-          icon: fa-battery-quarter
-          href: articles/create.html
-        - text: Tensor operators
-          icon: fa-terminal
-          href: articles/operators.html
-        - text: "---------"
+        - text: Simulating a single fish
+          icon: fa-fish
+          href: articles/single_fish.html
+        - text: Simulating an unfished population
+          icon: fa-fish
+          href: articles/fish_population.html
+        - text: Simulating a fished population
+          icon: fa-fish
+          href: articles/fished_population.html
+        - text: Simulating multiple populations at once
+          icon: fa-fish
+          href: articles/multi_populations.html
     api:
       text: API
       icon: fa-code fa-lg

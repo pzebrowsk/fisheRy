@@ -8,8 +8,11 @@ fish.par = new(FishParams)
 fish = new(Fish)
 fish.par$flag = 1
 fish$par = fish.par
+fish$par$s0 = 0.09637
+fish$par$Bhalf_growth = 100e11
+
 pop_K = new(Population, fish)
-pop_K$set_superFishSize(500)
+pop_K$set_superFishSize(2e6)
 K_ibm = pop_K$noFishingEquilibriate()
 
 hist(pop_K$get_state()$age, ylab="Frequency", xlab="Age", breaks=21)
@@ -22,7 +25,7 @@ sim = new(Simulator, fish)
 sim$setNaturalPopulation(pop_K)
 
 pop = new(Population, fish)
-pop$set_superFishSize(500)
+pop$set_superFishSize(2e6)
 
 res_ibm_sq = sim$simulate(pop, 45, 0.41, 200, T)
 #res_sq = simulate(0.41, 45, F)
@@ -35,10 +38,12 @@ res_ibm_sq = sim$simulate(pop, 45, 0.41, 200, T)
 pop_ref = pop
 
 # hvec = seq(0.01,0.45,0.02)
-hvec = seq(0.0,0.1,length.out = 20)
+hvec = seq(0.0,0.99,length.out = 3)
 lfvec = seq(20,160,length.out = 20)
 
-niter = 10
+res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
+
+niter = 1
 jss_arr = array(dim=c(3, length(hvec), niter))
 full_arr = array(dim=c(c(50, length(hvec), 4, niter)))
 for (iter in 1:niter){

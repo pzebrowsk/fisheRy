@@ -1,0 +1,166 @@
+---
+title: "Creating and simulating a single fish"
+author: "Jaideep Joshi"
+date: "28 March 2022"
+output: html_document
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = F, echo = F}
+library(rfish)
+```
+
+### Create a fish with default parameters
+
+A fish can be created by instancing an object of the Rcpp class `Fish`:
+
+
+```{r }
+fish = new(Fish)
+
+fish$length
+```
+
+### Change fish parameters
+
+Suppose we want to create a Fish with custom parameters. 
+
+We can access and set parameters using the `par` object in the fish:
+
+```{r}
+fish$par$s0 = 0.1
+
+fish$par$s0
+```
+
+Alternativelt, create a parameters object, change the parameters as desired, and assign it to the fish. 
+
+```{r}
+# Create parameters object
+fish.par = new(FishParams) 
+
+# Change specific parameter values
+fish.par$s0 = 0.09637
+fish.par$Bhalf_growth = 1e11
+
+# Assign it to the fish
+fish$par = fish.par
+
+fish$par$s0
+```
+
+
+### Get the state of the fish
+
+To get the state of the fish, i.e., its length, age, maturation status, whether it is alive, etc, use the `get_state()` function. The function returns a vector in the following order
+
++ Year of birth	
++ Age
++ is it mature (T/F)
++ is it alive (T/F)
++ length
++ weight
+
+```{r}
+fish$get_state()
+```
+
+### Simulate the fish
+
+We can now update the status of the fish by calling its demographic functions. 
+
+To update the maturity of the fish, grow it in length over one year, and increment its age by 1 year, we can do
+```{r}
+fish$updateMaturity()
+fish$grow(0)  # The argument is the total stock biomass of the population
+fish$set_age(fish$age+1) # The argument is the new age
+
+fish$length
+```
+
+
+### Simulating a fish over multiple years
+
+Let us now simulate a fish starting at age 1 upto age 30, performing maturation, growth, and age increment every year in that order. We will record the fish length at each timestep so that we can plot the growth trajectory.
+
+```{r}
+fish = new(Fish)
+years = 1:31
+length = numeric(31)
+for (i in years){
+  length[i] = fish$length
+  fish$updateMaturity()
+  fish$grow(0)
+  fish$set_age(fish$age+1)
+}
+
+plot(length~years, xlab="Age", ylab="Length", type="l", lwd=2)
+```
+
+Now, since the growth trajectory of a fish depends on the age at which it matures, and since maturation is arandom process, let us simulate lots of fish and look at the possible growth trajectories. 
+
+```{r}
+# NEW MODEL
+N = 100
+plot(x=1, y=NA, xlim=c(0,31), ylim=c(0,200), xlab="age", ylab = "length")
+for (f in 1:N){
+  fish = new(Fish)
+  fish$par$s0 = 0.09637
+  fish$par$Bhalf_growth = 1e11
+
+  dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
+  dat = rbind(dat, fish$get_state())
+  dat = dat[-1,]
+  for (i in 1:30){
+    dat = rbind(dat, fish$get_state())
+    fish$updateMaturity()
+    fish$grow(0)
+    fish$set_age(fish$age+1)
+  }
+  points(dat$length~dat$age, type="l", col=rainbow(N)[f])
+}
+```
+
+
+### Using different models for life processes
+
+Each fish has four life processes:
+
++ Growth (gro)
++ Maturation (mat)
++ Mortality (mor)
++ Fecundity (fec)
+
+Each of these processes can be simulated either with the model of Dankel et al XXX (old model) or XXX et al XXX (new model). 
+
+To set which model to use, you can set the following four flags to true or false.
+
+```{r}
+fish.par$use_old_model_gro = T
+fish.par$use_old_model_mat = T
+fish.par$use_old_model_mor = T
+fish.par$use_old_model_fec = T
+```
+
+Here is the growth trajectory of the fish using the model in Dankel et al XXX.
+
+```{r}
+fish = new(Fish)
+fish$par$use_old_model_gro = T
+
+dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
+dat = rbind(dat, fish$get_state())
+dat = dat[-1,]
+for (i in 1:30){
+  dat = rbind(dat, fish$get_state())
+  fish$updateMaturity()
+  fish$grow(0)
+  fish$set_age(fish$age+1)
+}
+plot(dat$length~dat$age, type="l", xlab="Age", ylab="Length", col="black")
+```

@@ -2,35 +2,33 @@ rm(list=ls())
 library(rfish)
 library(tidyverse)
 
+setwd("~/codes/rfish")
+
 source("tests/ref/parameters.cod.R")
 source("tests/ref/simulator.7.R")
 
 library(rfish)
-fish.par = new(FishParams)
-fish.par$s0 = 0.09637
-fish.par$Bhalf_growth = 100e11
 
 fish = new(Fish)
-fish.par$flag = 1
-fish$par = fish.par
+fish$par$s0 = 0.09637
+fish$par$Bhalf_growth = 100e11
+
 pop_K = new(Population, fish)
 pop_K$set_superFishSize(1e6)
 K_ibm = pop_K$noFishingEquilibriate()
 
-h = 0.3
-lf = 45
 
-nsteps = 200
 sim = new(Simulator, fish)
 sim$setNaturalPopulation(pop_K)
 
-pop.par = new(PopulationParams)
-pop.par$Bhalf = 365426284/4.7
-
-
 pop = new(Population, fish)
-pop$par = pop.par
+pop$par$Bhalf = 365426284/4.7
 pop$set_superFishSize(2e5)
+
+nsteps = 200
+h = 0.3
+lf = 45
+
 res_ibm = sim$simulate(pop, lf, h, nsteps, T)
 res = simulate(h, lf, F)
 
