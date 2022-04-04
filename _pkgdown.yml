@@ -15,6 +15,7 @@ navbar:
   structure:
     left:
     - home
+    - theory
     - tutorials
     - api
     right:
@@ -25,6 +26,16 @@ navbar:
       text: Home
       icon: fa-home fa-lg
       href: index.html
+    theory:
+      text: Theory
+      icon: fa-pencil fa-lg
+      menu:
+        - text: Biological model
+          icon: fa-fish
+          href: articles/theory_bio.html
+        - text: Socioeconomic model
+          icon: fa-fish
+          href: articles/theory_eco.html
     tutorials:
       text: Tutorials
       icon: fa-book fa-lg
