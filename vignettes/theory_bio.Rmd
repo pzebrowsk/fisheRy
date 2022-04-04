@@ -44,13 +44,13 @@ Then, the new length of a fish after growth over one year is given by the follow
 recurrence equation:
 
 $$
-l_{a,a_{m}} = \left\{ 
+l_{a} = \left\{ 
 \begin{matrix}          
   l'_{a}, & \mathrm{\text{if juvenile}}, \\   
   \text{max}\{l'_{a} / (1 + \gamma_{1}g)^{\frac{1}{{\gamma_{1}\gamma_{2}}}},\ l_{a-1}\} &  \mathrm{\text{if adult}} \\
 \end{matrix} 
 \right.\ 
-$$                                                                                                                                      
+$$                                                                                                      
 where symbols have the following meanings,
 
 Parameter          Description
@@ -72,11 +72,10 @@ $$
 
 ### Decision to mature
 
-The *juvenile* probability to become mature depends on both age $a$ and length $l_a$, and is given by the following
-equation:
+The *juvenile* probability to become mature depends on both age $a$ and length $l_a$, and is given by the following equation:
 
 $$
-m_{a} = \frac{1}{1 + e^{- \frac{l_{a} - (s_{m}a + i_{m})}{d_{m}}}},
+m(a,l_a) = \frac{1}{1 + e^{- \frac{l_{a} - (s_{m}a + i_{m})}{d_{m}}}},
 $$
 
 with the steepness of the curve $d_m$ calculated as
@@ -123,7 +122,7 @@ The *juvenile* and *adult* instantaneous length dependent natural
 mortality rate is given by the following equation:
 
 $$
-M(a,l) = \mu_0 + \alpha_{3}\left( \frac{l_{a}}{l_{\text{ref}}} \right)^{\gamma_{3}},
+M(a,l_a) = \mu_0 + \alpha_{3}\left( \frac{l_{a}}{l_{\text{ref}}} \right)^{\gamma_{3}},
 $$
 
 where symbols have the following meanings
@@ -139,7 +138,7 @@ The *juvenile* and *adult* length dependent survival probability is
 thus given by the following equation:
 
 $$
-s(a,l) = e^{- (M(a,l) + F)},
+s(a,l_a) = e^{- (M(a,l_a) + F)},
 $$
 where $F$ is the fishing mortality rate.
 
@@ -148,7 +147,7 @@ where $F$ is the fishing mortality rate.
 Recruitment happens when offspring become juveniles which are old enough to be counted in fisheries surveys. During the offspring stage, individuals experience mortality. The survival of offspring until recruitment is density dependent, such that the number of recruits is the number of eggs times the survival probability of offspring:
 
 $$
-n_{recruits} = n_{eggs}\cdot s_0 \cdot \frac{1}{1+\frac{S}{B_{1/2}}},
+n_\text{recruits} = n_\text{eggs}\cdot s_0 \cdot \frac{1}{1+\frac{S}{B_{1/2}}},
 $$  
 
 where $S$ is the total spawning stock biomass of the population
