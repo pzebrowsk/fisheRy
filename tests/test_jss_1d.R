@@ -38,10 +38,10 @@ res_ibm_sq = sim$simulate(pop, 45, 0.41, 200, T)
 pop_ref = pop
 
 # hvec = seq(0.01,0.45,0.02)
-hvec = seq(0.0,0.99,length.out = 3)
+hvec = seq(0.0,0.99,length.out = 20)
 lfvec = seq(20,160,length.out = 20)
 
-res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
+# res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
 
 niter = 1
 jss_arr = array(dim=c(3, length(hvec), niter))
@@ -51,10 +51,10 @@ for (iter in 1:niter){
   pop = pop_ref
 
   res_ibm_full = sim$simulate_multi(pop, hvec, 50, F)
-  arr = array(data=res_ibm_full, dim=c(50, length(hvec), 4))
+  arr = res_ibm_full #array(data=res_ibm_full, dim=c(50, length(hvec), 4))
   full_arr[,,,iter] = arr
 
-  #sim = new(Simulator)
+  #sim = new(Simulator) 
   d = sim$max_avg_utils(c(4,length(hvec),50), res_ibm_full)
 
   par(mfrow=c(1,2), mar=c(4,4,1,1))

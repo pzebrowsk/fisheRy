@@ -17,7 +17,7 @@ class Simulator{
 
 	void setNaturalPopulation(Population & pop); 
 
-	std::vector<double> simulate_multi(Population &pop, std::vector<double> hvec, int nyears, bool re_init);
+	Tensor<double> simulate_multi(Population &pop, std::vector<double> hvec, int nyears, bool re_init);
 	std::vector<double> max_avg_utils(std::vector<int> dims, std::vector<double> data);
 	std::vector<double> stakeholder_satisfaction(std::vector<int> dims, std::vector<double> data);
 	
@@ -29,6 +29,9 @@ class Simulator{
 	std::vector<double> stakeholder_satisfaction_2d(std::vector<int> dims, std::vector<double> data);
 	
 	Rcpp::DataFrame simulate_r(Population &pop, double lf, double h, int nyears, bool re_init);
+
+	Rcpp::NumericVector simulate_multi_r(Population &pop, std::vector<double> hvec, int nyears, bool re_init);
+
 };
 
 #endif

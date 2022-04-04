@@ -59,19 +59,20 @@ This population will be reused by the simulator.
 
 ### Simulate
 
+We can now simulate populations with different harvesting rates. Here, we simulate 20 populations with harvesting rates specified by the `hvec` vector. The `simulate_multi` function returns an array if dimensions `{nsteps, length(hvec), 4}`. The last dimension is four because four utilities are returned: {ssb, yield, employment, profit}.
+
 ```{r}
 nsteps = 200
 hvec = seq(0, 0.99, length.out = 20)
 
 res_ibm_full = sim$simulate_multi(pop, hvec, nsteps, T)
-arr = array(data=res_ibm_full, dim=c(nsteps, length(hvec), 4))
-
 ```
 
 ### Plot
 
 ```{r}
 lf = 45
+arr = res_ibm_full 
 dat_ibm = data.frame(matrix(ncol=4, nrow=0))
 colnames(dat_ibm) =c("ssb", "yield", "employment", "profit")
 dat = data.frame(matrix(ncol=6, nrow=0))

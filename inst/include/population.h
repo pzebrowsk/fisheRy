@@ -70,6 +70,9 @@ class Population{
 	std::vector<double> carrying_capacity;
 	
 	public:
+	bool verbose = false;
+	
+	public:
 	double K_fishableBiomass = 0;	
 	
 	public:

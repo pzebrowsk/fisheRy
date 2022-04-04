@@ -81,7 +81,7 @@ RCPP_MODULE(population_module){
 	class_ <Population>("Population")
 		.constructor<Fish>()
 		.field("par", &Population::par)
-
+		.field("verbose", &Population::verbose)
 		.field("K", &Population::K_fishableBiomass)
 		
 		.method("set_superFishSize", &Population::set_superFishSize) 
@@ -114,7 +114,7 @@ RCPP_MODULE(simulator_module){
 	.method("setNaturalPopulation", &Simulator::setNaturalPopulation)
 	.method("simulate", &Simulator::simulate_r)
     
-	.method("simulate_multi", &Simulator::simulate_multi)
+	.method("simulate_multi", &Simulator::simulate_multi_r)
     .method("max_avg_utils", &Simulator::max_avg_utils)
     .method("stakeholder_satisfaction", &Simulator::stakeholder_satisfaction)
 	

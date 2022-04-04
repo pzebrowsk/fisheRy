@@ -170,7 +170,7 @@ std::vector<double> Population::update(){
 //		double Nrel = 0; 
 //		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
 //		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
-		Nrel = fishableBiomass() / K_fishableBiomass;
+		Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-10;
 			
 		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
 		D_sea_req  = par.dsea * E_req;
@@ -203,7 +203,8 @@ std::vector<double> Population::update(){
 	}
 	
 	// add recruits at age 1
-	int nr = ceil(nrecruits/par.n);
+	int nr = nrecruits/par.n;
+	if (nr == 0) nr = 1;
 	fishes.resize(fishes.size()+nr, proto_fish);
 
 	// calculate employment
@@ -217,7 +218,7 @@ std::vector<double> Population::update(){
 		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
 	//}
 
-	cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1e9 << ", recruits = " << nrecruits/1e9 << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
+	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1e9 << ", recruits = " << nrecruits/1e9 << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
 	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb};	
 }
