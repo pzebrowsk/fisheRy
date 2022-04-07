@@ -1,8 +1,9 @@
 <map id="pn::zero" name="pn::zero">
-<area shape="rect" id="node2" href="$classPopulation.html#aa404f725dcde475806cdb26704b9fbcf" title="Population::update" alt="" coords="123,85,253,112"/>
-<area shape="rect" id="node3" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="312,5,436,32"/>
-<area shape="rect" id="node4" href="$classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" title="Simulator::simulate_r" alt="" coords="301,56,447,83"/>
-<area shape="rect" id="node6" href="$classSimulator.html#a3e61a52f336d592216770c0c43cfd388" title="Simulator::simulate\l_multi" alt="" coords="307,107,441,149"/>
-<area shape="rect" id="node7" href="$classSimulator.html#a636e7a83b462c3e48769a85ae350e742" title="Simulator::simulate\l_multi_2d" alt="" coords="307,173,441,214"/>
-<area shape="rect" id="node5" href="$fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" title="RCPP_MODULE" alt="" coords="495,115,619,141"/>
+<area shape="rect" id="node2" href="$classPopulation.html#aa404f725dcde475806cdb26704b9fbcf" title="Population::update" alt="" coords="123,93,253,120"/>
+<area shape="rect" id="node3" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="307,5,431,32"/>
+<area shape="rect" id="node4" href="$classSimulator.html#a4734ed6f01bdac62f74ebd20dd761f2b" title="Simulator::simulate\l_multi" alt="" coords="301,57,436,98"/>
+<area shape="rect" id="node7" href="$classSimulator.html#a636e7a83b462c3e48769a85ae350e742" title="Simulator::simulate\l_multi_2d" alt="" coords="489,115,624,157"/>
+<area shape="rect" id="node8" href="$classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" title="Simulator::simulate_r" alt="" coords="484,181,629,208"/>
+<area shape="rect" id="node5" href="$classSimulator.html#adb6faf4ee69f21998ce7dc79c065a3e9" title="Simulator::simulate\l_multi_r" alt="" coords="489,50,624,91"/>
+<area shape="rect" id="node6" href="$fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" title="RCPP_MODULE" alt="" coords="677,123,801,149"/>
 </map>

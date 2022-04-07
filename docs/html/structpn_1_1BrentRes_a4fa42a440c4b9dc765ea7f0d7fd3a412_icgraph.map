@@ -1,9 +1,10 @@
 <map id="pn::BrentRes::BrentRes" name="pn::BrentRes::BrentRes">
-<area shape="rect" id="node2" href="$namespacepn.html#ad42003887dcc42a4758c69775f83a8d9" title="pn::zero" alt="" coords="216,85,285,112"/>
-<area shape="rect" id="node3" href="$classPopulation.html#aa404f725dcde475806cdb26704b9fbcf" title="Population::update" alt="" coords="333,85,464,112"/>
-<area shape="rect" id="node4" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="523,5,647,32"/>
-<area shape="rect" id="node5" href="$classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" title="Simulator::simulate_r" alt="" coords="512,56,657,83"/>
-<area shape="rect" id="node7" href="$classSimulator.html#a3e61a52f336d592216770c0c43cfd388" title="Simulator::simulate\l_multi" alt="" coords="517,107,652,149"/>
-<area shape="rect" id="node8" href="$classSimulator.html#a636e7a83b462c3e48769a85ae350e742" title="Simulator::simulate\l_multi_2d" alt="" coords="517,173,652,214"/>
-<area shape="rect" id="node6" href="$fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" title="RCPP_MODULE" alt="" coords="705,115,829,141"/>
+<area shape="rect" id="node2" href="$namespacepn.html#ad42003887dcc42a4758c69775f83a8d9" title="pn::zero" alt="" coords="216,93,285,120"/>
+<area shape="rect" id="node3" href="$classPopulation.html#aa404f725dcde475806cdb26704b9fbcf" title="Population::update" alt="" coords="333,93,464,120"/>
+<area shape="rect" id="node4" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="517,5,641,32"/>
+<area shape="rect" id="node5" href="$classSimulator.html#a4734ed6f01bdac62f74ebd20dd761f2b" title="Simulator::simulate\l_multi" alt="" coords="512,57,647,98"/>
+<area shape="rect" id="node8" href="$classSimulator.html#a636e7a83b462c3e48769a85ae350e742" title="Simulator::simulate\l_multi_2d" alt="" coords="700,115,835,157"/>
+<area shape="rect" id="node9" href="$classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" title="Simulator::simulate_r" alt="" coords="695,181,840,208"/>
+<area shape="rect" id="node6" href="$classSimulator.html#adb6faf4ee69f21998ce7dc79c065a3e9" title="Simulator::simulate\l_multi_r" alt="" coords="700,50,835,91"/>
+<area shape="rect" id="node7" href="$fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" title="RCPP_MODULE" alt="" coords="888,123,1012,149"/>
 </map>

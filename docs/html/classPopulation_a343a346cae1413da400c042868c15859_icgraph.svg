@@ -5,81 +5,81 @@
  -->
 <!-- Title: Population::set_minSizeLimit Pages: 1 -->
 <svg width="425pt" height="116pt"
- viewBox="0.00 0.00 425.00 115.50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 111.5)">
+ viewBox="0.00 0.00 425.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>Population::set_minSizeLimit</title>
-<!-- Node50 -->
-<g id="node1" class="node">
-<title>Node50</title>
-<polygon fill="#bfbfbf" stroke="#000000" points="0,-50 0,-69 143,-69 143,-50 0,-50"/>
-<text text-anchor="middle" x="71.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Population::set_minSizeLimit</text>
-</g>
-<!-- Node51 -->
-<g id="node2" class="node">
-<title>Node51</title>
-<g id="a_node2"><a xlink:href="fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" target="_top" xlink:title="RCPP_MODULE">
-<polygon fill="none" stroke="#000000" points="187,-88 187,-107 280,-107 280,-88 187,-88"/>
-<text text-anchor="middle" x="233.5" y="-95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">RCPP_MODULE</text>
-</a>
-</g>
-</g>
-<!-- Node50&#45;&gt;Node51 -->
-<g id="edge1" class="edge">
-<title>Node50&#45;&gt;Node51</title>
-<path fill="none" stroke="#191970" d="M122.2148,-71.3961C144.9856,-76.7374 171.4867,-82.9537 192.9145,-87.9799"/>
-<polygon fill="#191970" stroke="#191970" points="122.9145,-67.9653 112.3794,-69.089 121.3159,-74.7803 122.9145,-67.9653"/>
-</g>
-<!-- Node52 -->
-<g id="node3" class="node">
-<title>Node52</title>
-<g id="a_node3"><a xlink:href="classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" target="_top" xlink:title="Simulator::simulate_r">
-<polygon fill="none" stroke="#000000" points="179,-50 179,-69 288,-69 288,-50 179,-50"/>
-<text text-anchor="middle" x="233.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Simulator::simulate_r</text>
-</a>
-</g>
-</g>
-<!-- Node50&#45;&gt;Node52 -->
-<g id="edge2" class="edge">
-<title>Node50&#45;&gt;Node52</title>
-<path fill="none" stroke="#191970" d="M153.2256,-59.5C161.9293,-59.5 170.6218,-59.5 178.9012,-59.5"/>
-<polygon fill="#191970" stroke="#191970" points="153.0272,-56.0001 143.0271,-59.5 153.0271,-63.0001 153.0272,-56.0001"/>
-</g>
 <!-- Node54 -->
-<g id="node5" class="node">
+<g id="node1" class="node">
 <title>Node54</title>
-<g id="a_node5"><a xlink:href="classSimulator.html#a636e7a83b462c3e48769a85ae350e742" target="_top" xlink:title="Simulator::simulate\l_multi_2d">
-<polygon fill="none" stroke="#000000" points="183,-.5 183,-30.5 284,-30.5 284,-.5 183,-.5"/>
-<text text-anchor="start" x="191" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Simulator::simulate</text>
-<text text-anchor="middle" x="233.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_multi_2d</text>
+<polygon fill="#bfbfbf" stroke="#000000" points="0,-44.5 0,-63.5 143,-63.5 143,-44.5 0,-44.5"/>
+<text text-anchor="middle" x="71.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Population::set_minSizeLimit</text>
+</g>
+<!-- Node55 -->
+<g id="node2" class="node">
+<title>Node55</title>
+<g id="a_node2"><a xlink:href="fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" target="_top" xlink:title="RCPP_MODULE">
+<polygon fill="none" stroke="#000000" points="187,-88.5 187,-107.5 280,-107.5 280,-88.5 187,-88.5"/>
+<text text-anchor="middle" x="233.5" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">RCPP_MODULE</text>
 </a>
 </g>
 </g>
-<!-- Node50&#45;&gt;Node54 -->
+<!-- Node54&#45;&gt;Node55 -->
+<g id="edge1" class="edge">
+<title>Node54&#45;&gt;Node55</title>
+<path fill="none" stroke="#191970" d="M116.5943,-66.2478C142.4575,-73.2724 174.4438,-81.96 198.417,-88.4713"/>
+<polygon fill="#191970" stroke="#191970" points="117.2194,-62.7909 106.6516,-63.5473 115.3846,-69.5461 117.2194,-62.7909"/>
+</g>
+<!-- Node56 -->
+<g id="node3" class="node">
+<title>Node56</title>
+<g id="a_node3"><a xlink:href="classSimulator.html#a636e7a83b462c3e48769a85ae350e742" target="_top" xlink:title="Simulator::simulate\l_multi_2d">
+<polygon fill="none" stroke="#000000" points="183,-39 183,-69 284,-69 284,-39 183,-39"/>
+<text text-anchor="start" x="191" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Simulator::simulate</text>
+<text text-anchor="middle" x="233.5" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_multi_2d</text>
+</a>
+</g>
+</g>
+<!-- Node54&#45;&gt;Node56 -->
+<g id="edge2" class="edge">
+<title>Node54&#45;&gt;Node56</title>
+<path fill="none" stroke="#191970" d="M153.1136,-54C163.2192,-54 173.3121,-54 182.763,-54"/>
+<polygon fill="#191970" stroke="#191970" points="153.0272,-50.5001 143.0271,-54 153.0271,-57.5001 153.0272,-50.5001"/>
+</g>
+<!-- Node58 -->
+<g id="node5" class="node">
+<title>Node58</title>
+<g id="a_node5"><a xlink:href="classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" target="_top" xlink:title="Simulator::simulate_r">
+<polygon fill="none" stroke="#000000" points="179,-.5 179,-19.5 288,-19.5 288,-.5 179,-.5"/>
+<text text-anchor="middle" x="233.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Simulator::simulate_r</text>
+</a>
+</g>
+</g>
+<!-- Node54&#45;&gt;Node58 -->
 <g id="edge4" class="edge">
-<title>Node50&#45;&gt;Node54</title>
-<path fill="none" stroke="#191970" d="M116.411,-47.3019C136.9947,-41.7113 161.4868,-35.0591 182.737,-29.2875"/>
-<polygon fill="#191970" stroke="#191970" points="115.3846,-43.9539 106.6516,-49.9527 117.2194,-50.7091 115.3846,-43.9539"/>
+<title>Node54&#45;&gt;Node58</title>
+<path fill="none" stroke="#191970" d="M116.5943,-41.7522C142.4575,-34.7276 174.4438,-26.04 198.417,-19.5287"/>
+<polygon fill="#191970" stroke="#191970" points="115.3846,-38.4539 106.6516,-44.4527 117.2194,-45.2091 115.3846,-38.4539"/>
 </g>
-<!-- Node53 -->
+<!-- Node57 -->
 <g id="node4" class="node">
-<title>Node53</title>
+<title>Node57</title>
 <g id="a_node4"><a xlink:href="fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" target="_top" xlink:title="RCPP_MODULE">
-<polygon fill="none" stroke="#000000" points="324,-28 324,-47 417,-47 417,-28 324,-28"/>
-<text text-anchor="middle" x="370.5" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">RCPP_MODULE</text>
+<polygon fill="none" stroke="#000000" points="324,-22.5 324,-41.5 417,-41.5 417,-22.5 324,-22.5"/>
+<text text-anchor="middle" x="370.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">RCPP_MODULE</text>
 </a>
 </g>
 </g>
-<!-- Node52&#45;&gt;Node53 -->
+<!-- Node56&#45;&gt;Node57 -->
 <g id="edge3" class="edge">
-<title>Node52&#45;&gt;Node53</title>
-<path fill="none" stroke="#191970" d="M298.0912,-49.1277C306.714,-47.743 315.4196,-46.345 323.6593,-45.0219"/>
-<polygon fill="#191970" stroke="#191970" points="297.3582,-45.7005 288.0397,-50.7418 298.4681,-52.6119 297.3582,-45.7005"/>
+<title>Node56&#45;&gt;Node57</title>
+<path fill="none" stroke="#191970" d="M294.2947,-44.2373C304.1625,-42.6527 314.2464,-41.0334 323.7131,-39.5132"/>
+<polygon fill="#191970" stroke="#191970" points="293.443,-40.8292 284.1245,-45.8705 294.553,-47.7406 293.443,-40.8292"/>
 </g>
-<!-- Node54&#45;&gt;Node53 -->
+<!-- Node58&#45;&gt;Node57 -->
 <g id="edge5" class="edge">
-<title>Node54&#45;&gt;Node53</title>
-<path fill="none" stroke="#191970" d="M294.2947,-25.2627C304.1625,-26.8473 314.2464,-28.4666 323.7131,-29.9868"/>
-<polygon fill="#191970" stroke="#191970" points="294.553,-21.7594 284.1245,-23.6295 293.443,-28.6708 294.553,-21.7594"/>
+<title>Node58&#45;&gt;Node57</title>
+<path fill="none" stroke="#191970" d="M298.0912,-20.3723C306.714,-21.757 315.4196,-23.155 323.6593,-24.4781"/>
+<polygon fill="#191970" stroke="#191970" points="298.4681,-16.8881 288.0397,-18.7582 297.3582,-23.7995 298.4681,-16.8881"/>
 </g>
 </g>
 </svg>

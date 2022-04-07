@@ -8,178 +8,178 @@
  viewBox="0.00 0.00 688.00 218.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 214)">
 <title>Simulator::stakeholder_satisfaction_2d</title>
-<!-- Node70 -->
+<!-- Node83 -->
 <g id="node1" class="node">
-<title>Node70</title>
+<title>Node83</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-90 0,-120 114,-120 114,-90 0,-90"/>
 <text text-anchor="start" x="8" y="-108" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Simulator::stakeholder</text>
 <text text-anchor="middle" x="57" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_satisfaction_2d</text>
 </g>
-<!-- Node71 -->
+<!-- Node84 -->
 <g id="node2" class="node">
-<title>Node71</title>
+<title>Node84</title>
 <g id="a_node2"><a xlink:href="classTensor.html#a6c8465a488ce260e6e05f1a3ceb8ab26" target="_top" xlink:title="Tensor::avg_dim">
 <polygon fill="none" stroke="#000000" points="159,-190.5 159,-209.5 248,-209.5 248,-190.5 159,-190.5"/>
 <text text-anchor="middle" x="203.5" y="-197.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::avg_dim</text>
 </a>
 </g>
 </g>
-<!-- Node70&#45;&gt;Node71 -->
+<!-- Node83&#45;&gt;Node84 -->
 <g id="edge1" class="edge">
-<title>Node70&#45;&gt;Node71</title>
+<title>Node83&#45;&gt;Node84</title>
 <path fill="none" stroke="#191970" d="M74.3056,-120.1654C92.3584,-135.5036 121.8967,-159.2735 150,-176 156.1125,-179.638 162.874,-183.0781 169.4749,-186.1573"/>
 <polygon fill="#191970" stroke="#191970" points="168.3792,-189.5014 178.9366,-190.3913 171.2385,-183.1119 168.3792,-189.5014"/>
 </g>
-<!-- Node72 -->
+<!-- Node85 -->
 <g id="node3" class="node">
-<title>Node72</title>
+<title>Node85</title>
 <g id="a_node3"><a xlink:href="classTensor.html#a447f65c9ada7c9357091fba66ad73d10" target="_top" xlink:title="Tensor::accumulate">
 <polygon fill="none" stroke="#000000" points="299,-133.5 299,-152.5 402,-152.5 402,-133.5 299,-133.5"/>
 <text text-anchor="middle" x="350.5" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::accumulate</text>
 </a>
 </g>
 </g>
-<!-- Node70&#45;&gt;Node72 -->
+<!-- Node83&#45;&gt;Node85 -->
 <g id="edge11" class="edge">
-<title>Node70&#45;&gt;Node72</title>
+<title>Node83&#45;&gt;Node85</title>
 <path fill="none" stroke="#191970" d="M85.8294,-120.1823C103.7527,-128.7489 127.5798,-138.5963 150,-143 195.875,-152.0107 248.8016,-151.5666 288.7537,-149.1083"/>
 <polygon fill="#191970" stroke="#191970" points="289.1371,-152.5905 298.8789,-148.4254 288.666,-145.6064 289.1371,-152.5905"/>
 </g>
-<!-- Node76 -->
+<!-- Node89 -->
 <g id="node7" class="node">
-<title>Node76</title>
+<title>Node89</title>
 <g id="a_node7"><a xlink:href="classTensor.html#a3986d7a50faef0249a8d2da5b1f67a89" target="_top" xlink:title="Tensor::transform">
 <polygon fill="none" stroke="#000000" points="156.5,-.5 156.5,-19.5 250.5,-19.5 250.5,-.5 156.5,-.5"/>
 <text text-anchor="middle" x="203.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::transform</text>
 </a>
 </g>
 </g>
-<!-- Node70&#45;&gt;Node76 -->
+<!-- Node83&#45;&gt;Node89 -->
 <g id="edge6" class="edge">
-<title>Node70&#45;&gt;Node76</title>
+<title>Node83&#45;&gt;Node89</title>
 <path fill="none" stroke="#191970" d="M72.2204,-89.7259C89.6938,-72.9046 119.8455,-45.9939 150,-29 153.6709,-26.9312 157.6076,-25.0236 161.6192,-23.2809"/>
 <polygon fill="#191970" stroke="#191970" points="163.0418,-26.4815 171.025,-19.5159 160.4405,-19.9828 163.0418,-26.4815"/>
 </g>
-<!-- Node78 -->
+<!-- Node91 -->
 <g id="node9" class="node">
-<title>Node78</title>
+<title>Node91</title>
 <g id="a_node9"><a xlink:href="classTensor.html#ae4622cf6280102eb5103cfe4c88c1ad8" target="_top" xlink:title="Tensor::repeat_inner">
 <polygon fill="none" stroke="#000000" points="150.5,-76.5 150.5,-95.5 256.5,-95.5 256.5,-76.5 150.5,-76.5"/>
 <text text-anchor="middle" x="203.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::repeat_inner</text>
 </a>
 </g>
 </g>
-<!-- Node70&#45;&gt;Node78 -->
+<!-- Node83&#45;&gt;Node91 -->
 <g id="edge9" class="edge">
-<title>Node70&#45;&gt;Node78</title>
+<title>Node83&#45;&gt;Node91</title>
 <path fill="none" stroke="#191970" d="M114.0602,-97.5997C122.6065,-96.4913 131.4623,-95.3428 140.1302,-94.2186"/>
 <polygon fill="#191970" stroke="#191970" points="140.7225,-97.6712 150.1892,-92.914 139.8221,-90.7293 140.7225,-97.6712"/>
 </g>
-<!-- Node79 -->
+<!-- Node92 -->
 <g id="node10" class="node">
-<title>Node79</title>
+<title>Node92</title>
 <g id="a_node10"><a xlink:href="classTensor.html#aedee003837348391c5f8d0bc788bf20f" target="_top" xlink:title="Tensor::repeat_outer">
 <polygon fill="none" stroke="#000000" points="150,-38.5 150,-57.5 257,-57.5 257,-38.5 150,-38.5"/>
 <text text-anchor="middle" x="203.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::repeat_outer</text>
 </a>
 </g>
 </g>
-<!-- Node70&#45;&gt;Node79 -->
+<!-- Node83&#45;&gt;Node92 -->
 <g id="edge10" class="edge">
-<title>Node70&#45;&gt;Node79</title>
+<title>Node83&#45;&gt;Node92</title>
 <path fill="none" stroke="#191970" d="M92.617,-89.9921C109.8704,-82.8387 130.9345,-74.276 150,-67 155.2375,-65.0012 160.7884,-62.9527 166.2551,-60.9753"/>
 <polygon fill="#191970" stroke="#191970" points="167.6811,-64.1825 175.918,-57.5188 165.3234,-57.5914 167.6811,-64.1825"/>
 </g>
-<!-- Node80 -->
+<!-- Node93 -->
 <g id="node11" class="node">
-<title>Node80</title>
+<title>Node93</title>
 <g id="a_node11"><a xlink:href="classTensor.html#abf7346c2dbd5e6b195cfe9b66e5049e8" target="_top" xlink:title="Tensor::max_dim">
 <polygon fill="none" stroke="#000000" points="157.5,-114.5 157.5,-133.5 249.5,-133.5 249.5,-114.5 157.5,-114.5"/>
 <text text-anchor="middle" x="203.5" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::max_dim</text>
 </a>
 </g>
 </g>
-<!-- Node70&#45;&gt;Node80 -->
+<!-- Node83&#45;&gt;Node93 -->
 <g id="edge12" class="edge">
-<title>Node70&#45;&gt;Node80</title>
+<title>Node83&#45;&gt;Node93</title>
 <path fill="none" stroke="#191970" d="M114.0602,-112.4003C124.8975,-113.8058 136.2325,-115.2759 147.0507,-116.6789"/>
 <polygon fill="#191970" stroke="#191970" points="146.8642,-120.184 157.2313,-117.9993 147.7646,-113.2421 146.8642,-120.184"/>
 </g>
-<!-- Node71&#45;&gt;Node72 -->
+<!-- Node84&#45;&gt;Node85 -->
 <g id="edge2" class="edge">
-<title>Node71&#45;&gt;Node72</title>
+<title>Node84&#45;&gt;Node85</title>
 <path fill="none" stroke="#191970" d="M228.1045,-190.4595C252.2719,-181.0884 289.347,-166.7124 316.3606,-156.2377"/>
 <polygon fill="#191970" stroke="#191970" points="317.757,-159.4503 325.8152,-152.5716 315.2262,-152.9237 317.757,-159.4503"/>
 </g>
-<!-- Node73 -->
+<!-- Node86 -->
 <g id="node4" class="node">
-<title>Node73</title>
+<title>Node86</title>
 <g id="a_node4"><a xlink:href="classTensor.html#a862952dc137707abdccd06cf9cd5855b" target="_top" xlink:title="Tensor::plane">
 <polygon fill="none" stroke="#000000" points="468,-48.5 468,-67.5 544,-67.5 544,-48.5 468,-48.5"/>
 <text text-anchor="middle" x="506" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::plane</text>
 </a>
 </g>
 </g>
-<!-- Node72&#45;&gt;Node73 -->
+<!-- Node85&#45;&gt;Node86 -->
 <g id="edge3" class="edge">
-<title>Node72&#45;&gt;Node73</title>
+<title>Node85&#45;&gt;Node86</title>
 <path fill="none" stroke="#191970" d="M368.0356,-133.4146C395.1007,-118.6202 447.2488,-90.1148 479.1052,-72.7014"/>
 <polygon fill="#191970" stroke="#191970" points="481.1941,-75.5483 488.2899,-67.6807 477.8365,-69.4061 481.1941,-75.5483"/>
 </g>
-<!-- Node75 -->
+<!-- Node88 -->
 <g id="node6" class="node">
-<title>Node75</title>
+<title>Node88</title>
 <g id="a_node6"><a xlink:href="classTensor.html#abbfd4d8d3390394254f1d42fcb845bd2" target="_top" xlink:title="Tensor::accumulate_dim">
 <polygon fill="none" stroke="#000000" points="444,-133.5 444,-152.5 568,-152.5 568,-133.5 444,-133.5"/>
 <text text-anchor="middle" x="506" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::accumulate_dim</text>
 </a>
 </g>
 </g>
-<!-- Node72&#45;&gt;Node75 -->
+<!-- Node85&#45;&gt;Node88 -->
 <g id="edge5" class="edge">
-<title>Node72&#45;&gt;Node75</title>
+<title>Node85&#45;&gt;Node88</title>
 <path fill="none" stroke="#191970" d="M402.2792,-143C412.3891,-143 423.1608,-143 433.7935,-143"/>
 <polygon fill="#191970" stroke="#191970" points="433.9191,-146.5001 443.9191,-143 433.919,-139.5001 433.9191,-146.5001"/>
 </g>
-<!-- Node74 -->
+<!-- Node87 -->
 <g id="node5" class="node">
-<title>Node74</title>
+<title>Node87</title>
 <g id="a_node5"><a xlink:href="classTensor.html#a90a6b28226bcd1be7090fd2f8782d0b1" target="_top" xlink:title="Tensor::index">
 <polygon fill="none" stroke="#000000" points="604,-48.5 604,-67.5 680,-67.5 680,-48.5 604,-48.5"/>
 <text text-anchor="middle" x="642" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::index</text>
 </a>
 </g>
 </g>
-<!-- Node73&#45;&gt;Node74 -->
+<!-- Node86&#45;&gt;Node87 -->
 <g id="edge4" class="edge">
-<title>Node73&#45;&gt;Node74</title>
+<title>Node86&#45;&gt;Node87</title>
 <path fill="none" stroke="#191970" d="M544.2455,-58C559.4552,-58 577.1389,-58 593.2511,-58"/>
 <polygon fill="#191970" stroke="#191970" points="593.5704,-61.5001 603.5703,-58 593.5703,-54.5001 593.5704,-61.5001"/>
 </g>
-<!-- Node76&#45;&gt;Node73 -->
+<!-- Node89&#45;&gt;Node86 -->
 <g id="edge7" class="edge">
-<title>Node76&#45;&gt;Node73</title>
+<title>Node89&#45;&gt;Node86</title>
 <path fill="none" stroke="#191970" d="M250.5681,-11.7654C292.2553,-13.9463 354.6044,-18.7212 408,-29 428.5813,-32.9619 451.0346,-39.4421 469.2504,-45.273"/>
 <polygon fill="#191970" stroke="#191970" points="468.3029,-48.6455 478.8955,-48.4254 470.4777,-41.9918 468.3029,-48.6455"/>
 </g>
-<!-- Node77 -->
+<!-- Node90 -->
 <g id="node8" class="node">
-<title>Node77</title>
+<title>Node90</title>
 <g id="a_node8"><a xlink:href="classTensor.html#a1a9aea97717d687b7d501842efb546d4" target="_top" xlink:title="Tensor::transform_dim">
 <polygon fill="none" stroke="#000000" points="293,-38.5 293,-57.5 408,-57.5 408,-38.5 293,-38.5"/>
 <text text-anchor="middle" x="350.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Tensor::transform_dim</text>
 </a>
 </g>
 </g>
-<!-- Node76&#45;&gt;Node77 -->
+<!-- Node89&#45;&gt;Node90 -->
 <g id="edge8" class="edge">
-<title>Node76&#45;&gt;Node77</title>
+<title>Node89&#45;&gt;Node90</title>
 <path fill="none" stroke="#191970" d="M240.5943,-19.589C259.8178,-24.5583 283.4863,-30.6767 303.9294,-35.9613"/>
 <polygon fill="#191970" stroke="#191970" points="303.1147,-39.3657 313.6724,-38.4799 304.8667,-32.5885 303.1147,-39.3657"/>
 </g>
-<!-- Node80&#45;&gt;Node72 -->
+<!-- Node93&#45;&gt;Node85 -->
 <g id="edge13" class="edge">
-<title>Node80&#45;&gt;Node72</title>
+<title>Node93&#45;&gt;Node85</title>
 <path fill="none" stroke="#191970" d="M249.6084,-129.9596C262.0884,-131.5726 275.7979,-133.3446 288.9791,-135.0483"/>
 <polygon fill="#191970" stroke="#191970" points="288.5606,-138.5233 298.9268,-136.3341 289.458,-131.581 288.5606,-138.5233"/>
 </g>

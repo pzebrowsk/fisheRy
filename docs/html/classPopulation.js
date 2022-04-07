@@ -23,6 +23,7 @@ var classPopulation =
     [ "par", "classPopulation.html#aba306f6ae65a93a817a30c361770c355", null ],
     [ "proto_fish", "classPopulation.html#a333df8b07191c7d08a58b343be283ab5", null ],
     [ "vage", "classPopulation.html#a7281d683d0c589ceba4dff4a859a8ffc", null ],
+    [ "verbose", "classPopulation.html#a132bc549c8c79fe0f49ec6072e72d3b2", null ],
     [ "vfreq", "classPopulation.html#a686b8e1ee406b30e39f8a9461225c1e0", null ],
     [ "vlen", "classPopulation.html#a6571acd8469a21d6c6b2d0028327e904", null ],
     [ "vmat", "classPopulation.html#a1956dc3aca75745e80796adf16d2d5a1", null ]
