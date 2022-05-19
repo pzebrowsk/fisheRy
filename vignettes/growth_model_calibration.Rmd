@@ -60,19 +60,19 @@ length_juvenile = function(init_length, tsb, temp, alpha1){
 
 
 ```{r}
-fishLen = function(alpha1, ny=5){
+fishLen = function(alpha1, ny=6){
   years = (1:ny)+1
   len = numeric(ny+1)
   len[1] = 9.1
   for (i in years){
     len[i] = length_juvenile(len[i-1], tsbmean, Tmean, alpha1)
   }
-  len
+  len[-1]
 }
 
-ny=5
+ny=6
 
-plot(fishLen(c)~seq(0,ny), xlab="Age", ylab="Length", type="l", lwd=2)
+plot(fishLen(c)~seq(1,ny), xlab="Age", ylab="Length", type="l", lwd=2)
 ```
 
 
@@ -98,7 +98,7 @@ for (f in 1:N){
   }
   points(dat$length~dat$age, type="l", col=rainbow(N)[f])
 }
-points(fishLen(c)~seq(0,ny), xlab="Age", ylab="Length", type="l", lwd=2)
+points(fishLen(c)~seq(1,ny), xlab="Age", ylab="Length", type="l", lwd=2)
 ```
 
 ### First comparison of predicted and observed dl, with default value of alpha1
@@ -110,7 +110,7 @@ tsb_ano = 0
 temp_ano = 0
 dl_obs = exp(beta1+beta2*tsbmean + beta2*tsb_ano + beta3*temp_ano)
 
-plot(diff(fishLen(c))~seq(1,ny), xlab="Age", ylab="dL", type="l", lwd=2)
+plot(diff(fishLen(c))~seq(1,ny-1), xlab="Age", ylab="dL", type="l", lwd=2)
 abline(h = dl_obs, col="blue")
 
 ```
