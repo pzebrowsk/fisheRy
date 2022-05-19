@@ -33,6 +33,12 @@ struct FishParams {
 
 	double Bhalf_growth = 1e11;
 	
+	// temperature and density dependence
+	double beta1 = -7.07e-5;
+	double beta2 = 0.178;
+	double Tmean = 5.61;
+	double tsbmean = 1.93e9;
+	
 	// growth 
 	double gamma1; // = 0.33333;
 	double gamma2; // = 3.519072971;

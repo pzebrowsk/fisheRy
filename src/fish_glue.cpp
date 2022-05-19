@@ -31,6 +31,7 @@ RCPP_MODULE(fish_module) {
 		.field("use_old_model_mat", &FishParams::use_old_model_mat)
 		.field("use_old_model_mor", &FishParams::use_old_model_mor)
 		.field("use_old_model_fec", &FishParams::use_old_model_fec)
+		.field("c", &FishParams::c)
 	;
 
 	class_<Fish>("Fish")
