@@ -12,17 +12,19 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, include = F, echo = F}
+library(tidyverse)
 library(rfish)
 ```
 
 ### Create a fish with default parameters
 
-A fish can be created by instancing an object of the Rcpp class `Fish`:
+A fish can be created by instancing an object of the Rcpp class `Fish`. Once created, the fish **must** be initialized using the `init()` function, which computes parameter values and sets the initial length of the fish. The function `init()` needs 2 arguments, the current total stock biomass (in kilotons) and current temperature (in deg C).
 
 
 ```{r }
 fish = new(Fish)
-
+fish$init(tsb = 1.93e3, temp = 5.61)
+fish$t_birth
 fish$length
 ```
 
@@ -33,20 +35,24 @@ Suppose we want to create a Fish with custom parameters.
 We can access and set parameters using the `par` object in the fish:
 
 ```{r}
-fish$par$s0 = 0.1
+fish = new(Fish)
+fish$par$c = 6.5
 
-fish$par$s0
+fish$par$c
+
+fish$init(1.93e3, 5.61)
+fish$t_birth
+fish$length # Notice the change in initial length due to a change in the parameter 'c'
 ```
 
 Alternativelt, create a parameters object, change the parameters as desired, and assign it to the fish. 
 
 ```{r}
 # Create parameters object
-fish.par = new(FishParams) 
+fish.par = new(FishParams)
 
 # Change specific parameter values
 fish.par$s0 = 0.09637
-fish.par$Bhalf_growth = 1e11
 
 # Assign it to the fish
 fish$par = fish.par
@@ -67,6 +73,9 @@ To get the state of the fish, i.e., its length, age, maturation status, whether 
 + weight
 
 ```{r}
+fish = new(Fish)
+fish$init(tsb = 1.93e3, temp = 5.61)
+
 fish$get_state()
 ```
 
@@ -77,7 +86,7 @@ We can now update the status of the fish by calling its demographic functions.
 To update the maturity of the fish, grow it in length over one year, and increment its age by 1 year, we can do
 ```{r}
 fish$updateMaturity()
-fish$grow(0)  # The argument is the total stock biomass of the population
+fish$grow(0, 5.61)  # The arguments are: total stock biomass and temperature
 fish$set_age(fish$age+1) # The argument is the new age
 
 fish$length
@@ -90,12 +99,13 @@ Let us now simulate a fish starting at age 1 upto age 30, performing maturation,
 
 ```{r}
 fish = new(Fish)
+fish$init(0, 5.61)
 years = 1:31
 length = numeric(31)
 for (i in years){
   length[i] = fish$length
   fish$updateMaturity()
-  fish$grow(0)
+  fish$grow(0, 5.61)
   fish$set_age(fish$age+1)
 }
 
@@ -111,15 +121,15 @@ plot(x=1, y=NA, xlim=c(0,31), ylim=c(0,200), xlab="age", ylab = "length")
 for (f in 1:N){
   fish = new(Fish)
   fish$par$s0 = 0.09637
-  fish$par$Bhalf_growth = 1e11
-
+  fish$init(1.93e3, 5.61)
+  
   dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
   dat = rbind(dat, fish$get_state())
   dat = dat[-1,]
   for (i in 1:30){
     dat = rbind(dat, fish$get_state())
     fish$updateMaturity()
-    fish$grow(0)
+    fish$grow(1.93e3, 5.61)
     fish$set_age(fish$age+1)
   }
   points(dat$length~dat$age, type="l", col=rainbow(N)[f])
@@ -141,7 +151,7 @@ Each of these processes can be simulated either with the model of Dankel et al X
 To set which model to use, you can set the following four flags to true or false.
 
 ```{r}
-fish.par$use_old_model_gro = T
+fish.par$growth_model = 0
 fish.par$use_old_model_mat = T
 fish.par$use_old_model_mor = T
 fish.par$use_old_model_fec = T
@@ -151,7 +161,9 @@ Here is the growth trajectory of the fish using the model in Dankel et al XXX.
 
 ```{r}
 fish = new(Fish)
-fish$par$use_old_model_gro = T
+fish$par$growth_model = 0
+fish$init(1.93e3, 5.61)
+
 
 dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
 dat = rbind(dat, fish$get_state())
@@ -159,8 +171,90 @@ dat = dat[-1,]
 for (i in 1:30){
   dat = rbind(dat, fish$get_state())
   fish$updateMaturity()
-  fish$grow(0)
+  fish$grow(1.93e3, 5.61)
   fish$set_age(fish$age+1)
 }
 plot(dat$length~dat$age, type="l", xlab="Age", ylab="Length", col="black")
 ```
+
+
+### Compare growth and mortality based on old and new models
+
+```{r}
+
+plot(x=1, y=NA, xlim=c(0,31), ylim=c(0,200), xlab="age", ylab = "length")
+
+# NEW MODEL
+mat_ages = numeric(0)
+mort = data.frame(a=0, m=0, l=0)
+N = 100
+for (f in 1:N){
+  #cat("f = ", f, "\n")
+  fish.par = new(FishParams)
+  fish.par$s0 = 0.09637
+  # fish.par$Bhalf_growth = 1e11
+  
+  fish = new(Fish)
+  fish.par$flag = 1
+  fish.par$growth_model = 1
+  fish$par = fish.par
+  fish$init(1.93e3, 5.61)
+    
+  dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
+  dat = rbind(dat, fish$get_state())
+  dat = dat[-1,]
+  for (i in 1:30){
+    #cat("rmat prob: age = ", fish$age, ", p = ", 1 / (1 + exp( -(fish$length - (1.604122 * fish$age + 18.399575)) / 1.93031)), "\n")
+    #cat("f = ", f, "\n")
+    dat = rbind(dat, fish$get_state())
+    mort = rbind(mort, c(a=fish$age,  fish$naturalMortalityRate(), fish$length))
+    fish$updateMaturity()
+    fish$grow(1.93e3, 5.61)
+    fish$set_age(fish$age+1)
+  }
+  mat_ages = c(mat_ages, which(dat$isMature>0)[1])
+  points(dat$length~dat$age, type="l", col=rainbow(N)[f])
+}
+table(mat_ages)
+
+# OLD MODEL
+N=1
+for (f in 1:N){
+  #cat("f = ", f, "\n")
+  fish.par = new(FishParams)
+  fish.par$s0 = 0.09637
+  # fish.par$Bhalf_growth = 1e11
+
+  fish = new(Fish)
+  fish.par$flag = 1
+  fish.par$growth_model = 0
+  fish$par = fish.par
+  fish$init(1.93e3, 5.61)
+  
+  dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
+  dat = rbind(dat, fish$get_state())
+  dat = dat[-1,]
+  for (i in 1:30){
+    #cat("rmat prob: age = ", fish$age, ", p = ", 1 / (1 + exp( -(fish$length - (1.604122 * fish$age + 18.399575)) / 1.93031)), "\n")
+    #cat("f = ", f, "\n")
+    dat = rbind(dat, fish$get_state())
+    mort = rbind(mort, c(a=fish$age,  fish$naturalMortalityRate(), fish$length))
+    fish$updateMaturity()
+    fish$grow(1.93e3, 5.61)
+    fish$set_age(fish$age+1)
+  }
+  mat_ages = c(mat_ages, which(dat$isMature>0)[1])
+  points(dat$length~dat$age, type="l", lwd=2, col="black")
+}
+```
+
+```{r}
+source("../tests/ref/parameters.cod.R")
+M<-c(M,rep(M[length(M)],times=ages-length(M))); names(M)<-1:ages
+with(mort %>% filter(a<=20 & a>1), plot(m~a, ylim=c(0,1)))
+points(M, type="l", col="blue")
+
+length_age = mort %>% group_by(a) %>% summarize(l = mean(l))
+
+```
+

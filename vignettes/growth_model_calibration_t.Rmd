@@ -38,7 +38,7 @@ beta2 = -7.07e-5;
 beta3 = 0.178;
 Tmean = 5.61;
 tsbmean = 1.93e9/1e6;
-
+  
 ```
 
 
@@ -72,13 +72,28 @@ fishLen = function(alpha1, tsb = tsbmean, temp = Tmean, ny=6){
   len[-1]
 }
 
+fishLen_cpp = function(alpha1, tsb = tsbmean, temp = Tmean, ny=6){
+  years = (1:ny)+1
+  len = numeric(ny+1)
+  len[1] = l0
+  fish = new(Fish)
+  fish$par$c = alpha1
+  fish$init(tsb, temp)
+  for (i in years){
+    len[i] = fish$length
+    fish$grow(tsb, temp)
+  }
+  len[-1]
+}
+
 fishGrowth = function(alpha1, tsb = tsbmean, temp = Tmean, ny=6){
-  diff(fishLen(alpha1, tsb, temp, ny))
+  diff(fishLen_cpp(alpha1, tsb, temp, ny))
 }
 
 ny=6
 
-plot(fishLen(c)~seq(1,ny), xlab="Age", ylab="Length", type="l", lwd=2)
+plot(fishLen(c,tsb=1e4, temp=6)~seq(1,ny), xlab="Age", ylab="Length", type="l", lwd=3)
+points(fishLen_cpp(c,tsb=1e4, temp=6)~seq(1,ny), type = "o", col="red")
 ```
 
 
@@ -91,15 +106,14 @@ plot(x=1, y=NA, xlim=c(0,31), ylim=c(0,200), xlab="age", ylab = "length")
 for (f in 1:N){
   fish = new(Fish)
   fish$par$s0 = 0.09637
-  fish$par$Bhalf_growth = 1e11
-
+  fish$init(tsbmean, Tmean)
   dat = data.frame(t_birth=0,	age=0,	isMature=0,	isAlive=0,	length=0,	weight=0)
   dat = rbind(dat, fish$get_state())
   dat = dat[-1,]
   for (i in 1:30){
     dat = rbind(dat, fish$get_state())
     fish$updateMaturity()
-    fish$grow(0)
+    fish$grow(1.93e3, 5.61)
     fish$set_age(fish$age+1)
   }
   points(dat$length~dat$age, type="l", col=rainbow(N)[f])

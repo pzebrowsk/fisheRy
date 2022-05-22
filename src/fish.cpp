@@ -1,21 +1,14 @@
 #include "fish.h"
 #include <iostream>
 #include <cmath>
+#include <stdexcept>
 using namespace std;
 
-Fish::Fish(double tb){
 
+Fish::Fish(double tb){
 	t_birth = tb;
-	
-	set_age(1);
-	
-	if (!par.use_old_model_gro){
-		// calc length at age 1
-		double l1 = fish::length_juvenile(par.L0, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
-		set_length(l1);
-	}
-	//cout << "Creating fish: l0 = " << l0 << ", steepness = " << par.steepness << "\n"; 
 }
+
 
 //Fish::Fish(double xb, double tb){
 	//set_age(
@@ -25,11 +18,27 @@ Fish::Fish(double tb){
 //}
 
 
+void Fish::init(double tsb, double temp){
+	par.init();
+	
+	set_age(1);
+	
+	if (par.growth_model == Model::Joshi23){
+		// calc length at age 1
+		double tsb_ano = tsb - par.tsbmean;
+		double temp_ano = temp - par.Tmean;
+		double dl = fish::dl_power(tsb_ano, temp_ano, par.gamma1, par.gamma2, par.alpha1, par.alpha2, par.beta1, par.beta2);
+		double l1 = fish::length_juvenile(par.L0, dl, par.gamma1, par.gamma2);
+
+		set_length(l1);
+	}
+}
+
 void Fish::set_age(int _a){
 	age = _a;
 
-	if (par.use_old_model_gro){
-		// in an explicity age-length model, this will go.
+	// In Dankel model, length is a direct function of age
+	if (par.growth_model == Model::Dankel22){
 		length = par.l8*(1-exp(-par.kappa*(age-par.a0)));
 		set_length(length);
 	}
@@ -39,8 +48,12 @@ void Fish::set_age(int _a){
 void Fish::set_length(double s){
 	length = s;
 	
-	if (par.use_old_model_gro) weight = par.theta*pow(length, par.zeta);  // Eq. 2
-	else                       weight = fish::weight_fish(length, par.alpha2, par.gamma2)/1000;  
+	if (par.growth_model == Model::Dankel22){ 
+		weight = par.theta*pow(length, par.zeta);  // Eq. 2
+	}
+	else{
+		weight = fish::weight_fish(length, par.alpha2, par.gamma2)/1000;  
+	}
 	
 }
 
@@ -91,22 +104,27 @@ void Fish::updateMaturity(){
 }
 
 
-void Fish::grow(double tsb){
-	if (par.use_old_model_gro){
+void Fish::grow(double tsb, double temp){
+	if (par.growth_model == Model::Dankel22){
 		// do nothing. age is incremented by population update
 		gsi_effective = par.gsi; // required if new fecundity model is used in combination with old growth model
 	}
-	else{
+	else if (par.growth_model == Model::Joshi23){
+		double tsb_ano = tsb - par.tsbmean;
+		double temp_ano = temp - par.Tmean;
+		double dl = fish::dl_power(tsb_ano, temp_ano, par.gamma1, par.gamma2, par.alpha1, par.alpha2, par.beta1, par.beta2);
 		double lnew;
 		if (isMature){
-			lnew = fish::length_adult(length, par.gamma1, par.gamma2, par.alpha1, par.alpha2, par.gsi);
+			lnew = fish::length_adult(length, dl, par.gamma1, par.gamma2, par.gsi);
 		}
 		else{
-			lnew = fish::length_juvenile(length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
+			lnew = fish::length_juvenile(length, dl, par.gamma1, par.gamma2);
 		}
-		lnew *= exp(-tsb/par.Bhalf_growth);
 		gsi_effective = fish::gsi(lnew, length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 		set_length(lnew);
+	}
+	else{
+		throw std::runtime_error("Invalid growth model specified");
 	}
 }
 

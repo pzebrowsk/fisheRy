@@ -17,20 +17,30 @@ namespace fish {
 //}
 
 
+
 // [[Rcpp::export]]
-inline double length_juvenile(double init_length, double gamma_1, double gamma_2, double alpha_1, double alpha_2, double tsb_ano = 0, double T_ano = 0, double beta_2 = 0, double beta_3 = 0){
-	double t1 = pow(init_length, gamma_1 * gamma_2);
-	double t2 = gamma_1 * alpha_1 * pow(alpha_2, -gamma_1);
-	t2 *= exp(beta_2*(tsb_ano) + beta_3*(T_ano));
-	return pow(t1 + t2, 1 / (gamma_1 * gamma_2));
+/// Computes the nonlinear growth increment dl = l2^(g1g2) - l1^(g1g2)
+/// @param tsb_ano Total stock biomass anomaly (kilo Tons, i.e. 1e6 kg)
+/// @ param temp_ano Temperature anomaly (deg C)
+inline double dl_power(double tsb_ano, double temp_ano, double gamma_1, double gamma_2, double alpha_1, double alpha_2, double beta_1, double beta_2){
+	double dl0 = gamma_1 * alpha_1 * pow(alpha_2, -gamma_1);
+	double dl1 = dl0 * exp(beta_1*(tsb_ano) + beta_2*(temp_ano));
+	return dl1;
 }
 
 
 // [[Rcpp::export]]
-inline double length_adult(double init_length, double gamma_1, double gamma_2, double alpha_1, double alpha_2, double gsi, double tsb_ano = 0, double T_ano = 0, double beta_2 = 0, double beta_3 = 0){
-	double l = length_juvenile(init_length, gamma_1, gamma_2, alpha_1, alpha_2, tsb_ano, T_ano, beta_2, beta_3) / pow(1 + gamma_1 * gsi, 1 / (gamma_1 * gamma_2));
-	return std::max(l, init_length); 
+inline double length_juvenile(double init_length, double pow_dl, double gamma_1, double gamma_2){
+	double t1 = pow(init_length, gamma_1 * gamma_2);
+	double t2 = t1 + pow_dl;
+	return pow(t2, 1 / (gamma_1 * gamma_2));
+}
 
+
+// [[Rcpp::export]]
+inline double length_adult(double init_length, double pow_dl, double gamma_1, double gamma_2, double gsi){
+	double l = length_juvenile(init_length, pow_dl, gamma_1, gamma_2) / pow(1 + gamma_1 * gsi, 1 / (gamma_1 * gamma_2));
+	return std::max(l, init_length); 
 }
 
 

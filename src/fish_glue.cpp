@@ -7,7 +7,7 @@ using namespace Rcpp;
 RCPP_EXPOSED_CLASS(Fish);
 RCPP_EXPOSED_CLASS(FishParams);
 
-
+RCPP_EXPOSED_ENUM_NODECL(Model)
 
 RCPP_MODULE(fish_module) {
 	
@@ -25,18 +25,20 @@ RCPP_MODULE(fish_module) {
 	class_ <FishParams>("FishParams")
 		.constructor()
 		.field("flag", &FishParams::flag)
-		.field("Bhalf_growth", &FishParams::Bhalf_growth)
+//		.field("Bhalf_growth", &FishParams::Bhalf_growth)
+		.field("c", &FishParams::c)
+		.field("beta1", &FishParams::beta1)
+		.field("beta2", &FishParams::beta2)
 		.field("s0", &FishParams::s0)
-		.field("use_old_model_gro", &FishParams::use_old_model_gro)
+		.field("growth_model", &FishParams::growth_model)
 		.field("use_old_model_mat", &FishParams::use_old_model_mat)
 		.field("use_old_model_mor", &FishParams::use_old_model_mor)
 		.field("use_old_model_fec", &FishParams::use_old_model_fec)
-		.field("c", &FishParams::c)
 	;
 
-	class_<Fish>("Fish")
+	class_ <Fish>("Fish")
 		.constructor()
-		//.constructor<double,double>()
+//		.constructor<double>()
 		
 		.field("age", &Fish::age)
 		.field("length", &Fish::length)
@@ -51,6 +53,7 @@ RCPP_MODULE(fish_module) {
 		.method("set_age", &Fish::set_age)
 		//.method("set_length", &Fish::set_length)
 
+		.method("init", &Fish::init)
 		.method("matureNow", &Fish::matureNow)
 		.method("updateMaturity", &Fish::updateMaturity)
 		.method("grow", &Fish::grow)

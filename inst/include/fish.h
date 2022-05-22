@@ -4,7 +4,10 @@
 #include <vector>
 #include "functions.h"
 
-struct FishParams {
+enum class Model {Dankel22, Joshi23};
+
+class FishParams {
+	public:
 	// Original parameters (from file) North Arctic cod
 	//double amax = 20;
 	double beta = 0.655793; // 0.648728;
@@ -19,10 +22,12 @@ struct FishParams {
 	double pmrn_slope = -6.609008;
 	double pmrn_envelope = 0.25;
 	double Lref = 70.48712; //80;
+	
 //	// Pure power law
 //	double Mref = 0.20775; // ////0.1421; //<--old value from file
 //	double b    =  1.58127; //////1.8131;
 //	double M0   = 0; //
+	
 	// Power law + offset
 	double Mref = 0.062994; // 0.20775; // ////0.1421; //<--old value from file
 	double b    = 2.455715; // 1.58127; //////1.8131;
@@ -31,13 +36,11 @@ struct FishParams {
 	double L0 = 9.1;
 	double s0 = 0.09637;
 
-	double Bhalf_growth = 1e11;
-	
 	// temperature and density dependence
 	double beta1 = -7.07e-5;
 	double beta2 = 0.178;
 	double Tmean = 5.61;
-	double tsbmean = 1.93e9;
+	double tsbmean = 1.93e9/1e6; // convert kg to kT
 	
 	// growth 
 	double gamma1; // = 0.33333;
@@ -83,13 +86,12 @@ struct FishParams {
 	// debug
 	int flag = 0;
 	
-	bool use_old_model_gro = false;
+	Model growth_model = Model::Joshi23;
 	bool use_old_model_mat = false;
 	bool use_old_model_fec = false;
 	bool use_old_model_mor = false;
 	
-	FishParams(){
-		
+	void init(){
 		gamma1 = 1-beta;
 		gamma2 = alpha;
 		alpha1 = c;
@@ -104,6 +106,10 @@ struct FishParams {
 		
 		alpha3 = Mref;
 		gamma3 = -b;
+	}
+	
+	FishParams(){
+		init();
 	}
 };
 
@@ -129,12 +135,12 @@ class Fish{
 	double t_birth;
 
 	Fish(double tb = 0);
-	//Fish(double xb, double tb);
 
 	void set_age(int _a);
 	void set_length(double s);
 	
-	void grow(double tsb);
+	void init(double tsb, double temp);
+	void grow(double tsb, double temp);
 
 	//double maturationProbability();   // return the probability of maturation
 	bool matureNow();		// check if fish should mature now, based on maturation probability

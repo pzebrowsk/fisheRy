@@ -26,10 +26,15 @@ Here, we create a fish and set some parameters:
 ```{r }
 fish = new(Fish)
 fish$par$flag = 1
-fish$par$s0 = 0.09637
-fish$par$Bhalf_growth = 1e100
-fish$par$use_old_model_mat = T
+fish$par$s0 = 0.0445
+fish$par$growth_model = 1
+fish$par$use_old_model_mat = F
+fish$par$use_old_model_mor = F
+fish$par$use_old_model_fec = F
+# fish$par$beta1 = -7.07e-5
+# fish$par$beta2 = 0
 
+# fish$init(1.93e3, 5.61)
 fish$get_state()
 ```
 
@@ -51,8 +56,8 @@ Two parameters are important:
 
 
 ```{r}
-pop$par$n = 5e5  # Each superfish contains 500,000 fish
-pop$par$Bhalf = 365426284/4.7
+pop$par$n = 1e6  # Each superfish contains 500,000 fish
+pop$par$Bhalf = 3.65426284e8 #/4.7
 ```
 
 We can also set the management parameters for a population:
@@ -70,7 +75,7 @@ pop$set_minSizeLimit(45) # Only fish above 45 cm length can be harvested
 By default, a population contains no fish. We must initialize the population with specified number of superfish.
 
 ```{r}
-pop$init(1000)  # initialize the population with 1000 agents (superfish)
+pop$init(1000, 0, 5.61)  # initialize the population with 1000 agents (superfish)
 ```
 
 We can also peek at the state of the population. The state of the population is simply a dataframe consisting of the state of each superfish in the population.
@@ -87,12 +92,13 @@ We can simulate a population by continuously `update`ing it. Each update perform
 For example, let is simulate a population for 200 years.
 
 ```{r fig.height=9}
+pop$verbose = T
 nsteps = 200             # Let's simulate for 200 years
 nfish = numeric(nsteps)  # Let's keep track of the number of superfish
 nfish[1]=1000            # Since we initialized the population with 1000 superfish
 dat = data.frame(ssb=0, yield=0, emp_sea=0, emp_shore=0, profit_sea=0, profit_shr=0, tsb=0)
 for (i in 2:nsteps){
-  v = pop$update()       # Update all fish over 1 year 
+  v = pop$update(5.61)       # Update all fish over 1 year 
   dat = rbind(dat, v)    # some book-keeping
   nfish[i] = pop$nfish()
 }

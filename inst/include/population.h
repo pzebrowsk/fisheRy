@@ -11,7 +11,7 @@ class PopulationParams {
 	// reproduction
 	double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
-	double Bhalf = 365426284.0; ///5000;	// Half saturation constant of recruitment
+	double Bhalf = 3.65426284e8; ///5000;	// Half saturation constant of recruitment
 
 //	double s0 = 0.1126797; //0.11;          // Egg survival propbability
 
@@ -91,9 +91,9 @@ class Population{
 //	void calc_athresh();
 	void set_harvestProp(double _h);
 	void set_minSizeLimit(double _lf50);
-	void init(int n);	// initialize population with n individuals
+	void init(int n, double tsb, double temp);	// initialize population with n individuals
 
-	std::vector<double> noFishingEquilibriate();	
+	std::vector<double> noFishingEquilibriate(double tsb0, double temp);	
 
 	double calcSSB();	
 	double selectivity(double len);
@@ -102,7 +102,7 @@ class Population{
 	double calcRealizedFishingMortality();
 	double effort(double Nr, double F);
 
-	std::vector<double> update();
+	std::vector<double> update(double temp = 5.6);
 
 	int nfish();
 	void summarize();

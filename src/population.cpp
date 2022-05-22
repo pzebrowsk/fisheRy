@@ -7,8 +7,8 @@
 
 using namespace std;
 
-Population::Population(Fish f){
-	proto_fish = f;
+Population::Population(Fish f) : proto_fish(f){
+//	proto_fish = f;
 //	calc_athresh();
 }
 
@@ -44,20 +44,21 @@ void Population::set_minSizeLimit(double _lf50){
 }
 
 
-void Population::init(int n){
+void Population::init(int n, double tsb, double temp){
 	current_year = 1;
 	fishes.clear();
+	proto_fish.init(tsb, temp);
 	fishes.resize(n, proto_fish);
 }
 
 
-vector<double> Population::noFishingEquilibriate(){
+vector<double> Population::noFishingEquilibriate(double tsb0, double temp){
 	// backup params
 	auto par_back = par;
 	set_harvestProp(0);
 	par.sigmaf = 0;	// no env stochasticity while calculating carrying capacity
 
-	init(1000);
+	init(1000, tsb0, temp);
 	int nsteps = 200;
 
 	std::vector<double> state_t;
@@ -127,18 +128,19 @@ inline double rnorm(double mu=0, double sd=1){
 }
 
 
-std::vector<double> Population::update(){
+std::vector<double> Population::update(double temp){
 	// 1. Maturation
 	// update maturity 
 	for (auto& f: fishes){
 		f.updateMaturity();
 	}
 
-	double tsb = 0;
-	for (auto& f : fishes) if (f.isAlive) tsb += par.n * f.weight;
 	// 2. Growth
+	double tsb = 0;
+	for (auto& f : fishes) if (f.isAlive && f.age >= 3) tsb += par.n * f.weight;
+	
 	for (auto& f: fishes){
-		f.grow(tsb);
+		f.grow(tsb/1e6, temp); // convert tsb to kT
 	}
 	//print_summary();
 
@@ -205,6 +207,7 @@ std::vector<double> Population::update(){
 	// add recruits at age 1
 	int nr = nrecruits/par.n;
 	if (nr == 0) nr = 1;
+	proto_fish.init(tsb/1e6, temp);
 	fishes.resize(fishes.size()+nr, proto_fish);
 
 	// calculate employment

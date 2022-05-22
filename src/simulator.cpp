@@ -21,7 +21,7 @@ void Simulator::setNaturalPopulation(Population &pop){
 //}
 
 
-Tensor<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, int nyears, bool re_init){
+Tensor<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
 	int niters = 1;
 	Tensor<double> res({niters, 4, hvec.size(), nyears});
 	Population pop_ref = pop;
@@ -36,7 +36,7 @@ Tensor<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 			pop.K_fishableBiomass = K;
 			pop.set_harvestProp(hvec[ih]);
 
-			if (re_init) pop.init(1000);
+			if (re_init) pop.init(1000, tsb0, temp);
 			pop.print_summary();
 		
 			for (int t=0; t<nyears; ++t){
@@ -102,7 +102,7 @@ vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<doub
 
 
 
-vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, bool re_init){
+vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
 	int niters = 1;
 	Tensor<double> res({niters, 4, lminvec.size(), hvec.size(), nyears});
 	Population pop_ref = pop;
@@ -119,7 +119,7 @@ vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 				double K = noFishingPop.fishableBiomass();
 				pop.K_fishableBiomass = K;
 
-				if (re_init) pop.init(1000);
+				if (re_init) pop.init(1000, tsb0, temp);
 				pop.print_summary();
 			
 				for (int t=0; t<nyears; ++t){
@@ -185,7 +185,7 @@ vector<double> Simulator::stakeholder_satisfaction_2d(vector<int> dims, vector<d
 }
 
 
-Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int nyears, bool re_init){
+Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int nyears, double tsb0, double temp, bool re_init){
 	noFishingPop.set_harvestProp(h);
 	noFishingPop.set_minSizeLimit(lf);
 	double K = noFishingPop.fishableBiomass();
@@ -193,7 +193,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	pop.K_fishableBiomass = K;
 	pop.set_harvestProp(h);
 	pop.set_minSizeLimit(lf);
-	if (re_init) pop.init(1000);
+	if (re_init) pop.init(1000, tsb0, temp);
 	pop.print_summary();
 
 	std::vector<double> ssb;
@@ -248,8 +248,8 @@ Rcpp::NumericVector tensor2array(Tensor<double>& v){
 	return out;
 }
 
-Rcpp::NumericVector Simulator::simulate_multi_r(Population &pop, vector<double> hvec, int nyears, bool re_init){
-	Tensor<double> res = simulate_multi(pop, hvec, nyears, re_init);
+Rcpp::NumericVector Simulator::simulate_multi_r(Population &pop, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
+	Tensor<double> res = simulate_multi(pop, hvec, nyears, tsb0, temp, re_init);
 	return tensor2array(res);
 }
 
