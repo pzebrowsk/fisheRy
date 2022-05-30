@@ -206,7 +206,7 @@ std::vector<double> Population::update(double temp){
 	
 	// add recruits at age 1
 	int nr = nrecruits/par.n;
-	if (nr == 0) nr = 1;
+	if (nr <= 0) nr = 1;
 	proto_fish.init(tsb/1e6, temp);
 	fishes.resize(fishes.size()+nr, proto_fish);
 
@@ -221,9 +221,9 @@ std::vector<double> Population::update(double temp){
 		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
 	//}
 
-	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1e9 << ", recruits = " << nrecruits/1e9 << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
+	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
-	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb};	
+	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg};	
 }
 
 
@@ -321,5 +321,4 @@ Rcpp::DataFrame Population::get_state(){
 	df.push_back(x, "flag");
 	return df;	
 }
-
 

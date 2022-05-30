@@ -26,12 +26,12 @@ Here, we create a fish and set some parameters:
 ```{r }
 fish = new(Fish)
 fish$par$flag = 1
-fish$par$s0 = 0.0445
+# fish$par$s0 = 0.0445
 fish$par$growth_model = 1
 fish$par$use_old_model_mat = F
 fish$par$use_old_model_mor = F
 fish$par$use_old_model_fec = F
-# fish$par$beta1 = -7.07e-5
+# fish$par$beta1 = 0
 # fish$par$beta2 = 0
 
 # fish$init(1.93e3, 5.61)
@@ -56,8 +56,8 @@ Two parameters are important:
 
 
 ```{r}
-pop$par$n = 1e6  # Each superfish contains 500,000 fish
-pop$par$Bhalf = 3.65426284e8 #/4.7
+pop$par$n = 20e6  # Each superfish contains 500,000 fish
+pop$par$Bhalf = 3.65e9
 ```
 
 We can also set the management parameters for a population:
@@ -75,7 +75,7 @@ pop$set_minSizeLimit(45) # Only fish above 45 cm length can be harvested
 By default, a population contains no fish. We must initialize the population with specified number of superfish.
 
 ```{r}
-pop$init(1000, 0, 5.61)  # initialize the population with 1000 agents (superfish)
+pop$init(1000, 1.93e3, 5.61)  # initialize the population with 1000 agents (superfish)
 ```
 
 We can also peek at the state of the population. The state of the population is simply a dataframe consisting of the state of each superfish in the population.
@@ -116,6 +116,23 @@ matplot(cbind(dat$ssb/1e9, res$summaries$SSB[1:199]/1e9), ylab="SSB (MT)", xlab=
 
 ```
 
+
+### Quickly simulating an unfished population to equilibrium
+
+It is possible to manually simulate a non-fished population to equilibrium as demonstrated in the previous tutorial. But there's an easier way: to quickly simulate an unfished population, we can use the function `noFishingEquilibriate()`.
+
+```{r}
+# Create a prototype fish as usual
+fish = new(Fish)
+# fish$par$s0 = 0.09637
+
+# Create a population
+pop_K = new(Population, fish)
+pop_K$set_superFishSize(20e6)
+
+# Equilibriate under no-fishing conditions
+K_ibm = pop_K$noFishingEquilibriate(1.93e3, 5.61)
+```
 
 
 

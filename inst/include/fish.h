@@ -23,18 +23,19 @@ class FishParams {
 	double pmrn_envelope = 0.25;
 	double Lref = 70.48712; //80;
 	
-//	// Pure power law
-//	double Mref = 0.20775; // ////0.1421; //<--old value from file
-//	double b    =  1.58127; //////1.8131;
-//	double M0   = 0; //
+	// Pure power law
+	double Mref = 0.20775; // ////0.1421; //<--old value from file
+	double b    =  1.58127; //////1.8131;
+	double M0   = 0; //
 	
-	// Power law + offset
-	double Mref = 0.062994; // 0.20775; // ////0.1421; //<--old value from file
-	double b    = 2.455715; // 1.58127; //////1.8131;
-	double M0   = 0.162126; //  0; //
+//	// Power law + offset
+//	double Mref = 0.062994; // 0.20775; // ////0.1421; //<--old value from file
+//	double b    = 2.455715; // 1.58127; //////1.8131;
+//	double M0   = 0.162126; //  0; //
 
+	// Juvenile length and survival probability 
 	double L0 = 9.1;
-	double s0 = 0.09637;
+	double s0 = 0.017;
 
 	// temperature and density dependence
 	double beta1 = -7.07e-5;
@@ -89,7 +90,7 @@ class FishParams {
 	Model growth_model = Model::Joshi23;
 	bool use_old_model_mat = false;
 	bool use_old_model_fec = false;
-	bool use_old_model_mor = false;
+	bool use_old_model_mor = true;
 	
 	void init(){
 		gamma1 = 1-beta;
@@ -100,12 +101,14 @@ class FishParams {
 		
 		pmrn_intercept = pmrn_lp50;
 		steepness = fish::maturation_steepness(pmrn_width, pmrn_envelope);
-		assert(par.steepness > 0);
+		assert(steepness > 0);
 
 		delta = E1;
 		
 		alpha3 = Mref;
 		gamma3 = -b;
+		
+//		s0 = (growth_model == Joshi23)? 0.02 : 0.09637;
 	}
 	
 	FishParams(){

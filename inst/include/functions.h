@@ -79,7 +79,7 @@ inline double gsi(double body_length, double init_body_length, double gamma_1, d
 	double t3 = gamma_1 * alpha_1 * pow(alpha_2, -gamma_1);
 	double d  = gamma_1 * pow(body_length, gamma_1 * gamma_2);
 	
-	return (t1 - t2 + t3)/d;
+	return fmax(0, (t1 - t2 + t3)/d); // ensure that effective GSI is not negative due to numerical errors
 }
 
 

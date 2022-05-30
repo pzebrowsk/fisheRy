@@ -11,6 +11,9 @@ void Simulator::setNaturalPopulation(Population &pop){
 	noFishingPop = pop;
 }
 
+vector<double> Simulator::equilibriateNaturalPopulation(double tsb0, double temp){
+	return noFishingPop.noFishingEquilibriate(tsb0, temp);
+}
 
 //double Simulator::calcK(Population &pop, double lmin, double h){
 //	pop.set_harvestProp(h);
@@ -32,12 +35,13 @@ Tensor<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 
 			noFishingPop.set_harvestProp(hvec[ih]);
 			double K = noFishingPop.fishableBiomass();
-
+			cout << "h = " << hvec[ih] << ", K = " << K << endl;
 			pop.K_fishableBiomass = K;
 			pop.set_harvestProp(hvec[ih]);
+			if (hvec[ih] > 0.5) pop.set_superFishSize(1e5);
 
 			if (re_init) pop.init(1000, tsb0, temp);
-			pop.print_summary();
+			//pop.print_summary();
 		
 			for (int t=0; t<nyears; ++t){
 				std::vector<double> state_now = pop.update();
@@ -102,7 +106,7 @@ vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<doub
 
 
 
-vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
+Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
 	int niters = 1;
 	Tensor<double> res({niters, 4, lminvec.size(), hvec.size(), nyears});
 	Population pop_ref = pop;
@@ -113,14 +117,16 @@ vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 				pop = pop_ref;
 				pop.set_harvestProp(hvec[ih]);
 				pop.set_minSizeLimit(lminvec[il]);
+//				pop.set_superFishSize(1e6*(exp(-6*hvec[ih])));
 				
 				noFishingPop.set_harvestProp(hvec[ih]);
 				noFishingPop.set_minSizeLimit(lminvec[il]);
 				double K = noFishingPop.fishableBiomass();
 				pop.K_fishableBiomass = K;
+				cout << "h = " << noFishingPop.par.h << ", L50 = " << noFishingPop.par.lf50 << ", n = " << pop.par.n << " | K = " << K << endl;
 
 				if (re_init) pop.init(1000, tsb0, temp);
-				pop.print_summary();
+//				pop.print_summary();
 			
 				for (int t=0; t<nyears; ++t){
 					std::vector<double> state_now = pop.update();
@@ -136,7 +142,7 @@ vector<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 	}
 	//res.print();
 	
-	return res.avg_dim(4).vec;	// average over iterations
+	return res.avg_dim(4);	// average over iterations
 
 }
 
@@ -184,6 +190,7 @@ vector<double> Simulator::stakeholder_satisfaction_2d(vector<int> dims, vector<d
 
 }
 
+// ************ R stuff *****************
 
 Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int nyears, double tsb0, double temp, bool re_init){
 	noFishingPop.set_harvestProp(h);
@@ -194,7 +201,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	pop.set_harvestProp(h);
 	pop.set_minSizeLimit(lf);
 	if (re_init) pop.init(1000, tsb0, temp);
-	pop.print_summary();
+//	pop.print_summary();
 
 	std::vector<double> ssb;
 	ssb.reserve(nyears);
@@ -214,6 +221,12 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 
 	std::vector<double> tsb;
 	tsb.reserve(nyears);
+
+	std::vector<double> r0;
+	r0.reserve(nyears);
+
+	std::vector<double> nsfish;
+	nsfish.reserve(nyears);
 	
 	Rcpp::DataFrame df = Rcpp::DataFrame::create();
 
@@ -226,6 +239,8 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 		psea.push_back(state_now[4]);
 		pshr.push_back(state_now[5]);
 		tsb.push_back(state_now[6]);
+		r0.push_back(state_now[7]);
+		nsfish.push_back(pop.nfish());
 	}
 	
 	df.push_back(ssb, "ssb");
@@ -235,6 +250,8 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	df.push_back(psea, "profit.sea");
 	df.push_back(pshr, "profit.shore");
 	df.push_back(tsb, "tsb");
+	df.push_back(r0, "r0");
+	df.push_back(nsfish, "nsuperfish");
 
 	return df;
 }
@@ -253,5 +270,8 @@ Rcpp::NumericVector Simulator::simulate_multi_r(Population &pop, vector<double> 
 	return tensor2array(res);
 }
 
-
+Rcpp::NumericVector Simulator::simulate_multi_2d_r(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
+	Tensor<double> res = simulate_multi_2d(pop, lminvec, hvec, nyears, tsb0, temp, re_init);
+	return tensor2array(res);
+}
 

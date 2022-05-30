@@ -22,37 +22,26 @@ We can use the fishery simulator to simulate multiple populations (i.e., populat
 
 ### Preparation
 
-As usual, we start with creating a prototype fish
+As usual, we begin with creating a prototype fish 
 
 ```{r}
+# Create a prototype fish as usual
 fish = new(Fish)
-fish$par$s0 = 0.09637
-fish$par$Bhalf_growth = 100e11
-fish$par$use_old_model_mat = T
-```
+# fish$par$s0 = 0.09637
 
-Then, we create an unfished population (we need to do this only once). 
-
-
-```{r}
-pop_K = new(Population, fish)
-pop_K$set_superFishSize(2e6)
-K_ibm = pop_K$noFishingEquilibriate()
-```
-
-Create a simulator and assign the non-fished population to it.
-
-```{r}
 sim = new(Simulator, fish)
-sim$setNaturalPopulation(pop_K)
+
+sim$equilibriateNaturalPopulation(1.93e3, 5.61)
 ```
+
 
 ### Create a population to simulate
 
 ```{r}
 pop = new(Population, fish)
-pop$par$Bhalf = 365426284/4.7
-pop$set_superFishSize(2e5)
+# pop$par$Bhalf = 365426284/4.7
+pop$set_superFishSize(5e6)
+pop$verbose = F
 ```
 
 This population will be reused by the simulator.
@@ -64,8 +53,9 @@ We can now simulate populations with different harvesting rates. Here, we simula
 ```{r}
 nsteps = 200
 hvec = seq(0, 0.99, length.out = 20)
+lminvec = seq(45, 200, length.out = 3)
 
-res_ibm_full = sim$simulate_multi(pop, hvec, nsteps, T)
+res_ibm_full = sim$simulate_multi_2d(pop, c(45), hvec, nsteps, 1.93e3, 5.61, T)
 ```
 
 ### Plot
@@ -81,7 +71,7 @@ for (ih in 1:length(hvec)){
   res = simulate(hvec[ih], lf, F)
   v = colMeans((res$summaries %>% select(SSB, Y, D.sea, D.shr, P.sea, P.shr))[151:200,])
   dat[nrow(dat)+1,] = v/c(1e9, 1e9, 1, 1, 1e9, 1e9)
-  v_ibm = colMeans(arr[151:200, ih, ])
+  v_ibm = colMeans(arr[151:200, ih, 1,])
   dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1, 1e9)
 }
 dat$employment = dat$emp.sea+dat$emp.shr

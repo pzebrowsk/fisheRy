@@ -11,7 +11,7 @@ class PopulationParams {
 	// reproduction
 	double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
-	double Bhalf = 3.65426284e8; ///5000;	// Half saturation constant of recruitment
+	double Bhalf = 3.65e8*20; ///5000;	// Half saturation constant of recruitment
 
 //	double s0 = 0.1126797; //0.11;          // Egg survival propbability
 
@@ -42,7 +42,7 @@ class PopulationParams {
 	
 	double h = 0;
 
-	double n = 1e5;	// superfish size
+	double n = 60e6;	// superfish size
 
 	// ***
 	// calculated variables
@@ -63,6 +63,7 @@ class PopulationParams {
 class PopulationSummary{
 	std::vector<double> vage, vfreq, vlen, vmat;
 };
+
 
 class Population{
 	private:

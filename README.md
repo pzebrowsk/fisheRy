@@ -14,7 +14,7 @@ FisheRy is an R package to assess the impact of management choices on the sustai
 
 You can install `fisheRy` directly from github. Currently, you should install from the `new_model_restart` branch, like so: 
 
-```r
+```r  
 devtools::install_github(repo = "jaideep777/rfish", ref = "new_model_restart")
 ```
 

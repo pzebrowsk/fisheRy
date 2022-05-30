@@ -77,7 +77,8 @@ RCPP_MODULE(population_module){
 		.constructor()
 		.field("n", &PopulationParams::n)
 		.field("Bhalf", &PopulationParams::Bhalf)
-//		.field("h", &PopulationParams::h)
+		.field_readonly("h", &PopulationParams::h)
+		.field_readonly("lf50", &PopulationParams::lf50)
 //		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
 //		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
 	;
@@ -115,14 +116,19 @@ RCPP_EXPOSED_CLASS(Population);
 RCPP_MODULE(simulator_module){
 	class_ <Simulator>("Simulator")
 	.constructor<Fish>()
+
+	//.field("noFishingPop", &Simulator::noFishingPop)
+
 	.method("setNaturalPopulation", &Simulator::setNaturalPopulation)
+	.method("equilibriateNaturalPopulation", &Simulator::equilibriateNaturalPopulation)
+	
 	.method("simulate", &Simulator::simulate_r)
     
 	.method("simulate_multi", &Simulator::simulate_multi_r)
     .method("max_avg_utils", &Simulator::max_avg_utils)
     .method("stakeholder_satisfaction", &Simulator::stakeholder_satisfaction)
 	
-	.method("simulate_multi_2d", &Simulator::simulate_multi_2d)
+	.method("simulate_multi_2d", &Simulator::simulate_multi_2d_r)
     .method("max_avg_utils_2d", &Simulator::max_avg_utils_2d)
     .method("stakeholder_satisfaction_2d", &Simulator::stakeholder_satisfaction_2d)
 	;
