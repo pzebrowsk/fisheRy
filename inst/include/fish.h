@@ -12,30 +12,30 @@ class FishParams {
 	//double amax = 20;
 	double beta = 0.655793; // 0.648728;
 	double r = 0.090367; // 0.077281;
-	double c = 6.318308; //6.51559;
+	double c = 6.519584; // 6.318308; //6.51559;
 	double q = 1;
 	double k = 0.00674;
 	double alpha = 3.056863227;
 	double E1 = 2500;
-	double pmrn_lp50 = 118.122779;
-	double pmrn_width = 47.532614;
+	double pmrn_lp50 = 118.122779*0.75;
+	double pmrn_width = 47.532614*0.5;
 	double pmrn_slope = -6.609008;
 	double pmrn_envelope = 0.25;
 	double Lref = 70.48712; //80;
 	
-	// Pure power law
-	double Mref = 0.20775; // ////0.1421; //<--old value from file
-	double b    =  1.58127; //////1.8131;
-	double M0   = 0; //
+//	// Pure power law
+//	double Mref = 0.20775; // ////0.1421; //<--old value from file
+//	double b    =  1.58127; //////1.8131;
+//	double M0   = 0; //
 	
-//	// Power law + offset
-//	double Mref = 0.062994; // 0.20775; // ////0.1421; //<--old value from file
-//	double b    = 2.455715; // 1.58127; //////1.8131;
-//	double M0   = 0.162126; //  0; //
+	// Power law + offset
+	double Mref = 0.062994; // 0.20775; // ////0.1421; //<--old value from file
+	double b    = 2.455715; // 1.58127; //////1.8131;
+	double M0   = 0.162126; //  0; //
 
 	// Juvenile length and survival probability 
 	double L0 = 9.1;
-	double s0 = 0.017;
+	double s0 = 0.02; // 0.09637
 
 	// temperature and density dependence
 	double beta1 = -7.07e-5;
@@ -90,7 +90,7 @@ class FishParams {
 	Model growth_model = Model::Joshi23;
 	bool use_old_model_mat = false;
 	bool use_old_model_fec = false;
-	bool use_old_model_mor = true;
+	bool use_old_model_mor = false;
 	
 	void init(){
 		gamma1 = 1-beta;

@@ -1,0 +1,134 @@
+---
+title: "Simulating a fished population"
+author: "Jaideep Joshi"
+date: "28 March 2022"
+output: html_document
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = F, echo = F}
+library(rfish)
+library(tidyverse)
+source("../tests/ref/parameters.cod.R")
+source("../tests/ref/simulator.7.R")
+```
+
+```{r}
+plot_timeseries = function(res_ibm, pop, h){
+  res = simulate(h, lf, F)
+  
+  dat = read.csv("~/Documents/fish_project/growth_model_calib_data/environmental.csv")
+  
+  d = pop$get_state()
+  table(d$age)
+  par(mfrow = c(2,3), mar=c(4,4,1,1))
+  
+  ssb.max = max(c(res_ibm$ssb/1e9, res$summaries$SSB/1e9, dat$ssb*1e3/1e9), na.rm = T)
+  plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,ssb.max))
+  points(y=res$summaries$SSB/1e9, x=res$summaries$year, type="l")
+  points(dat$ssb*1e3/1e9, col="green")
+
+  tsb.max = max(c(res_ibm$tsb/1e9, res$summaries$TSB/1e9))
+  plot(y=res_ibm$tsb/1e9, x=seq(1,nsteps,1), ylab="TSB (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,tsb.max))
+  points(y=res$summaries$TSB/1e9, x=res$summaries$year, type="l")
+  
+  yield.max = max(c(res_ibm$yield/1e9, res$summaries$Y/1e9))
+  plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,yield.max))
+  points(y=res$summaries$Y/1e9, x=res$summaries$year, type="l")
+
+  nr.max = max(c(res_ibm$nrecruits/1e6), dat$recr/1e6, na.rm=T)
+  plot(y=res_ibm$nrecruits/1e6, x=seq(1,nsteps,1), ylab="Recruits (Mn)", xlab="Year", col="cyan3", type="l", ylim=c(0,nr.max))
+  points(dat$recr/1e6, col="green")
+  #points(y=res$summaries$Y/1e9, x=res$summaries$year, type="l")
+
+      
+  # emp.max = max(c(res_ibm$employment.sea, res$summaries$D.sea))
+  # plot(y=res_ibm$employment.sea, x=seq(1,nsteps,1), ylab="Employment at sea (person-years)", xlab="Year", col="cyan3", type="l", ylim=c(0,emp.max))
+  # points(y=res$summaries$D.sea, x=res$summaries$year, type="l")
+  # 
+  # emp.max = max(c(res_ibm$employment.shore, res$summaries$D.shr))
+  # plot(y=res_ibm$employment.shore, x=seq(1,nsteps,1), ylab="Employment on shore (person-years)", xlab="Year", col="cyan3", type="l", ylim=c(0,emp.max))
+  # points(y=res$summaries$D.shr, x=res$summaries$year, type="l")
+  # 
+  # p.sea.max = max(c(res_ibm$profit.sea/1e9, res$summaries$P.sea/1e9))
+  # p.sea.min = min(c(res_ibm$profit.sea/1e9, res$summaries$P.sea/1e9))
+  # plot(y=res_ibm$profit.sea/1e9, x=seq(1,nsteps,1), ylab="Profit at sea (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.sea.min,p.sea.max))
+  # points(y=res$summaries$P.sea/1e9, x=res$summaries$year, type="l")
+  # 
+  # p.shr.max = max(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
+  # p.shr.min = min(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
+  # plot(y=res_ibm$profit.shore/1e9, x=seq(1,nsteps,1), ylab="Profit at shore (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.shr.min,p.shr.max))
+  # points(y=res$summaries$P.shr/1e9, x=res$summaries$year, type="l")
+  
+  #par(mfrow=c(1,1))
+  d = pop$get_state()
+  d1 = d %>% group_by(age) %>% summarize(mat = length(which(isMature))/length(isMature))
+  plot(mat, type="l")
+  points(d1$mat~I(d1$age-1), type="o", col="cyan3", xlab = "age") # Decrement age to get the right maturation prob (see note above)
+}
+
+```
+
+```{r}
+# Create a prototype fish as usual
+fish = new(Fish)
+fish$par$use_old_model_mor = T
+
+sim = new(Simulator, fish)
+
+sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+
+pop = new(Population, fish)
+
+nsteps = 200
+h = 0.4476934
+lf = 45
+
+pop$verbose = F
+pop$set_superFishSize(2e6)
+res_ibm = sim$simulate(pop, lf, h, nsteps, 1.93e3, 5.61, T)
+
+plot_timeseries(res_ibm, pop, h)
+```
+
+###  Try various values of h
+
+```{r}
+try_h = function(h, n){
+  # Create a prototype fish as usual
+  fish = new(Fish)
+  fish$par$use_old_model_mor = T
+  fish$par$use_old_model_mat = T
+  
+  sim = new(Simulator, fish)
+  sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+  
+  pop = new(Population, fish)
+  
+  nsteps = 200
+  # h = 0.99
+  lf = 45
+  
+  pop$set_superFishSize(n)
+  res_ibm = sim$simulate(pop, lf, h, nsteps, 1.93e3, 5.61, T)
+  
+  plot_timeseries(res_ibm, pop, h)
+}
+```
+
+ 
+
+```{r}
+try_h(0, 2e6)
+```
+
+```{r}
+try_h(0.3, 2e6)
+
+try_h(0.99, 2e3)
+```

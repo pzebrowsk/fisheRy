@@ -108,7 +108,7 @@ vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<doub
 
 Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
 	int niters = 1;
-	Tensor<double> res({niters, 4, lminvec.size(), hvec.size(), nyears});
+	Tensor<double> res({niters, 6, lminvec.size(), hvec.size(), nyears});
 	Population pop_ref = pop;
 
 	for (int iter = 0; iter < niters; ++iter){
@@ -133,8 +133,10 @@ Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 					
 					res({iter, 0, il, ih, t}) = state_now[0];               // ssb
 					res({iter, 1, il, ih, t}) = state_now[1];               // yield
-					res({iter, 2, il, ih, t}) = state_now[2]+state_now[3];  // employment
-					res({iter, 3, il, ih, t}) = state_now[4]+state_now[5];  // total profit
+					res({iter, 2, il, ih, t}) = state_now[2];  // employment sea
+					res({iter, 3, il, ih, t}) = state_now[3];  // employment shore
+					res({iter, 4, il, ih, t}) = state_now[4];  // profit sea
+					res({iter, 5, il, ih, t}) = state_now[5];  // profit shore
 				}
 			}
 			std::this_thread::sleep_for(std::chrono::microseconds(100));
@@ -227,6 +229,9 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 
 	std::vector<double> nsfish;
 	nsfish.reserve(nyears);
+
+	std::vector<double> nrecruits;
+	nrecruits.reserve(nyears);
 	
 	Rcpp::DataFrame df = Rcpp::DataFrame::create();
 
@@ -240,6 +245,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 		pshr.push_back(state_now[5]);
 		tsb.push_back(state_now[6]);
 		r0.push_back(state_now[7]);
+		nrecruits.push_back(state_now[8]);
 		nsfish.push_back(pop.nfish());
 	}
 	
@@ -252,6 +258,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	df.push_back(tsb, "tsb");
 	df.push_back(r0, "r0");
 	df.push_back(nsfish, "nsuperfish");
+	df.push_back(nrecruits, "nrecruits");
 
 	return df;
 }

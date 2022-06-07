@@ -11,7 +11,7 @@ class PopulationParams {
 	// reproduction
 	double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
-	double Bhalf = 3.65e8*20; ///5000;	// Half saturation constant of recruitment
+	double Bhalf = 3.65e8*10; ///5000;	// Half saturation constant of recruitment
 
 //	double s0 = 0.1126797; //0.11;          // Egg survival propbability
 
@@ -42,12 +42,15 @@ class PopulationParams {
 	
 	double h = 0;
 
-	double n = 60e6;	// superfish size
+	double n = 5e6;	// superfish size
 
 	// ***
 	// calculated variables
 	double mort_fishing_mature = 0; 
 	double mort_fishing_immature = 0; 
+
+	// OLD EFFORT DYNAMICS
+//	bool use_old_model_effort = false;
 	int a_thresh;	// threshold age over which fishing selectivity is > 0.5
 
 	//// function to init
@@ -89,7 +92,9 @@ class Population{
 	
 	void set_superFishSize(double _n);
 
-//	void calc_athresh();
+	// OLD MODEL EFFORT DYNAMICS
+	void calc_athresh(double tsb0, double temp);
+
 	void set_harvestProp(double _h);
 	void set_minSizeLimit(double _lf50);
 	void init(int n, double tsb, double temp);	// initialize population with n individuals

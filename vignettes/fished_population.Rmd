@@ -30,6 +30,7 @@ As usual, we begin with creating a prototype fish
 ```{r}
 # Create a prototype fish as usual
 fish = new(Fish)
+fish$par$use_old_model_mor = T
 ```
 
 We then create a simulator, specifying the prototype fish:
@@ -57,15 +58,15 @@ Then, suppose we want to simulate this population for 200 years with a harvest p
 
 ```{r}
 nsteps = 200
-h = 0.3
+h = 0.1
 lf = 45
 ```
 
 we simply do
 ```{r}
-pop$verbose = T
+pop$verbose = F
 # pop$set_superFishSize(1e6*(exp(-6*h)))
-pop$set_superFishSize(20e6)
+pop$set_superFishSize(2e6)
 res_ibm = sim$simulate(pop, lf, h, nsteps, 1.93e3, 5.61, T)
 ```
 
@@ -73,42 +74,87 @@ The last argument is a flag to re-initialize the population before simulating. I
 
 Let's plot the output from the simulation (compared with the model of Dankel et al.XXX)
 
+#### Note on comparing maturation probabilities
+
+Notice how, when old maturation model is used, the maturation~age curve lags. Is this just a matter of plotting? Here, the maturation probability is calculated at the end of an update, i.e., fish ages have been incremented, and fish have not yet had the opportunity to mature in the new age (which will happen in the next update cycle).
+
 ```{r}
-res = simulate(h, lf, F)
+plot_timeseries = function(res_ibm, pop, h){
+  res = simulate(h, lf, F)
+  
+  d = pop$get_state()
+  table(d$age)
+  par(mfrow = c(2,3), mar=c(4,4,1,1))
+  
+  ssb.max = max(c(res_ibm$ssb/1e9, res$summaries$SSB/1e9))
+  plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,ssb.max))
+  points(y=res$summaries$SSB/1e9, x=res$summaries$year, type="l")
+  
+  yield.max = max(c(res_ibm$yield/1e9, res$summaries$Y/1e9))
+  plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,yield.max))
+  points(y=res$summaries$Y/1e9, x=res$summaries$year, type="l")
+  
+  emp.max = max(c(res_ibm$employment.sea, res$summaries$D.sea))
+  plot(y=res_ibm$employment.sea, x=seq(1,nsteps,1), ylab="Employment at sea (person-years)", xlab="Year", col="cyan3", type="l", ylim=c(0,emp.max))
+  points(y=res$summaries$D.sea, x=res$summaries$year, type="l")
+  
+  emp.max = max(c(res_ibm$employment.shore, res$summaries$D.shr))
+  plot(y=res_ibm$employment.shore, x=seq(1,nsteps,1), ylab="Employment on shore (person-years)", xlab="Year", col="cyan3", type="l", ylim=c(0,emp.max))
+  points(y=res$summaries$D.shr, x=res$summaries$year, type="l")
+  
+  p.sea.max = max(c(res_ibm$profit.sea/1e9, res$summaries$P.sea/1e9))
+  p.sea.min = min(c(res_ibm$profit.sea/1e9, res$summaries$P.sea/1e9))
+  plot(y=res_ibm$profit.sea/1e9, x=seq(1,nsteps,1), ylab="Profit at sea (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.sea.min,p.sea.max))
+  points(y=res$summaries$P.sea/1e9, x=res$summaries$year, type="l")
+  
+  p.shr.max = max(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
+  p.shr.min = min(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
+  plot(y=res_ibm$profit.shore/1e9, x=seq(1,nsteps,1), ylab="Profit at shore (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.shr.min,p.shr.max))
+  points(y=res$summaries$P.shr/1e9, x=res$summaries$year, type="l")
+  
+  par(mfrow=c(1,1))
+  d = pop$get_state()
+  d1 = d %>% group_by(age) %>% summarize(mat = length(which(isMature))/length(isMature))
+  plot(mat, type="l")
+  points(d1$mat~I(d1$age-1), type="o", col="cyan3") # Decrement age to get the right maturation prob (see note above)
+}
 
-d = pop$get_state()
-table(d$age)
-par(mfrow = c(2,3), mar=c(4,4,1,1))
+plot_timeseries(res_ibm, pop, h)
+```
 
-ssb.max = max(c(res_ibm$ssb/1e9, res$summaries$SSB/1e9))
-plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,ssb.max))
-points(y=res$summaries$SSB/1e9, x=res$summaries$year, type="l")
+###  Try various values of h
 
-yield.max = max(c(res_ibm$yield/1e9, res$summaries$Y/1e9))
-plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (MT)", xlab="Year", col="cyan3", type="l", ylim=c(0,yield.max))
-points(y=res$summaries$Y/1e9, x=res$summaries$year, type="l")
+```{r}
+try_h = function(h, n){
+  # Create a prototype fish as usual
+  fish = new(Fish)
+  fish$par$use_old_model_mor = T
+  fish$par$use_old_model_mat = T
+  
+  sim = new(Simulator, fish)
+  sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+  
+  pop = new(Population, fish)
+  
+  nsteps = 200
+  # h = 0.99
+  lf = 45
+  
+  pop$set_superFishSize(n)
+  res_ibm = sim$simulate(pop, lf, h, nsteps, 1.93e3, 5.61, T)
+  
+  plot_timeseries(res_ibm, pop, h)
+}
+```
 
-emp.max = max(c(res_ibm$employment.sea, res$summaries$D.sea))
-plot(y=res_ibm$employment.sea, x=seq(1,nsteps,1), ylab="Employment at sea (person-years)", xlab="Year", col="cyan3", type="l", ylim=c(0,emp.max))
-points(y=res$summaries$D.sea, x=res$summaries$year, type="l")
+ 
 
-emp.max = max(c(res_ibm$employment.shore, res$summaries$D.shr))
-plot(y=res_ibm$employment.shore, x=seq(1,nsteps,1), ylab="Employment on shore (person-years)", xlab="Year", col="cyan3", type="l", ylim=c(0,emp.max))
-points(y=res$summaries$D.shr, x=res$summaries$year, type="l")
+```{r}
+try_h(0, 2e6)
+```
 
-p.sea.max = max(c(res_ibm$profit.sea/1e9, res$summaries$P.sea/1e9))
-p.sea.min = min(c(res_ibm$profit.sea/1e9, res$summaries$P.sea/1e9))
-plot(y=res_ibm$profit.sea/1e9, x=seq(1,nsteps,1), ylab="Profit at sea (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.sea.min,p.sea.max))
-points(y=res$summaries$P.sea/1e9, x=res$summaries$year, type="l")
+```{r}
+try_h(0.3, 2e6)
 
-p.shr.max = max(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
-p.shr.min = min(c(res_ibm$profit.shore/1e9, res$summaries$P.shr/1e9))
-plot(y=res_ibm$profit.shore/1e9, x=seq(1,nsteps,1), ylab="Profit at shore (Billions NOK)", xlab="Year", col="cyan3", type="l", ylim=c(p.shr.min,p.shr.max))
-points(y=res$summaries$P.shr/1e9, x=res$summaries$year, type="l")
-
-par(mfrow=c(1,1))
-d = pop$get_state()
-d1 = d %>% group_by(age) %>% summarize(mat = length(which(isMature))/length(isMature))
-plot(mat, type="l")
-points(d1$mat~d1$age, type="o", col="cyan3")
+try_h(0.99, 2e3)
 ```

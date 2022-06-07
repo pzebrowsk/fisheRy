@@ -23,9 +23,11 @@ void Population::set_harvestProp(double _h){
 }
 
 
-//void Population::calc_athresh(){
+//// USED IN OLD FORMULATION ONLY
+//void Population::calc_athresh(double tsb0, double temp){
 //	// set a_thresh
 //	Fish f = proto_fish;
+//	assert(f.par.growth_model == Model::Dankel22); // this calculation is only valid for old growth model
 //	par.a_thresh = 99999;
 //	for (int i=1; i <= f.par.amax; ++i){
 //		f.set_age(i);
@@ -49,6 +51,7 @@ void Population::init(int n, double tsb, double temp){
 	fishes.clear();
 	proto_fish.init(tsb, temp);
 	fishes.resize(n, proto_fish);
+//	if (par.use_old_model_effort) calc_athresh(tsb, temp);
 }
 
 
@@ -96,7 +99,7 @@ double Population::calcRealizedFishingMortality(){
 
 double Population::fishableBiomass(){
 	double B_fishable = 0;
-	for (auto& f : fishes) B_fishable += par.n * f.weight * selectivity(f.length);
+	for (auto& f : fishes) if (f.age > 1) B_fishable += par.n * f.weight * selectivity(f.length);
 	return B_fishable;
 }
 
@@ -111,7 +114,7 @@ double Population::effort(double Nr, double F){
 		}
 	} 
 	double M = sum_wimi / sum_wi;  // Mass-weighted average mortality of fishable population
-	//cout << ": F/M = " << F << " / " << M << "\n";
+	//cout << ": Nrel/F/M = " << Nr << " / " << F << " / " << M << "\n";
 	return pow(Nr, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1)); 
 }
 
@@ -160,7 +163,7 @@ std::vector<double> Population::update(double temp){
 	double r0_avg = nrecruits * (1 + ssb/par.Bhalf) / ssb;
 
 	// 4. Mortality 
-//	summarize();
+//	if (par.use_old_model_effort) summarize(); // population summary for calculation of Nrel
 	
 //	// calculate realized mortality rate
 	double F_req = par.mort_fishing_mature; //, M = proto_fish.par.mam[proto_fish.par.amax];
@@ -169,11 +172,14 @@ std::vector<double> Population::update(double temp){
 	double D_sea_req, D_sea_real;
 	double Nrel = 0;
 	if (par.h > 0){
-//		double Nrel = 0; 
-//		for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
-//		Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
-		Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-10;
-			
+//		if (par.use_old_model_effort){
+//			for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
+//			Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
+//		}
+//		else {
+			Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-10;
+//		}
+		
 		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
 		D_sea_req  = par.dsea * E_req;
 		D_sea_real = D_sea_req / (1 + D_sea_req/par.dmax);
@@ -223,7 +229,7 @@ std::vector<double> Population::update(double temp){
 
 	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
-	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg};	
+	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits};	
 }
 
 

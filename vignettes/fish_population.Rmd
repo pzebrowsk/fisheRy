@@ -27,10 +27,10 @@ Here, we create a fish and set some parameters:
 fish = new(Fish)
 fish$par$flag = 1
 # fish$par$s0 = 0.0445
-fish$par$growth_model = 1
-fish$par$use_old_model_mat = F
-fish$par$use_old_model_mor = F
-fish$par$use_old_model_fec = F
+fish$par$growth_model = 0
+fish$par$use_old_model_mat = T
+fish$par$use_old_model_mor = T
+fish$par$use_old_model_fec = T
 # fish$par$beta1 = 0
 # fish$par$beta2 = 0
 
@@ -56,8 +56,8 @@ Two parameters are important:
 
 
 ```{r}
-pop$par$n = 20e6  # Each superfish contains 500,000 fish
-pop$par$Bhalf = 3.65e9
+pop$par$n = 1e6  # Each superfish contains 500,000 fish
+pop$par$Bhalf = 3.65e8
 ```
 
 We can also set the management parameters for a population:

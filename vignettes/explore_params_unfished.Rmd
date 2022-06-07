@@ -98,7 +98,7 @@ explore(beta1 = 0, beta2=0, s0 = 0.09637, Bhalf = 3.65e8 / 4.7, gm = 1, oldmat =
 explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.09637, Bhalf = 3.65e8, gm = 1, oldmat = T, oldmor = T, oldfec = F, superfish = 5e6)
 ```
 
-### Add density dependence in growth model (tuned parameters, old mort, fec)
+### Add density dependence in growth model (tuned parameters, old mort, old mat)
 
 ```{r}
 explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.02, Bhalf = 3.65e9, gm = 1, oldmat = T, oldmor = T, oldfec = F, superfish = 20e6)
@@ -107,7 +107,7 @@ explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.02, Bhalf = 3.65e9, gm = 1, oldm
 ### Add density dependence in growth model (tuned parameters, old mort)
 
 ```{r}
-explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.017, Bhalf = 7e9, gm = 1, oldmat = F, oldmor = T, oldfec = F, superfish = 60e6)
+explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.02, Bhalf = 3.65e9, gm = 1, oldmat = F, oldmor = T, oldfec = F, superfish = 20e6)
 ```
 
 
@@ -117,5 +117,5 @@ Irrespective of tuning parameters, it seems to be impossible to get the correct 
 
 
 ```{r}
-explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.09, Bhalf = 7e12, gm = 1, oldmat = F, oldmor = F, oldfec = F, superfish = 60e6)
+explore(beta1 = -7.07e-5, beta2 = 0.178, s0 = 0.025, Bhalf = 7e12, gm = 1, oldmat = F, oldmor = F, oldfec = F, superfish = 50e6)
 ```

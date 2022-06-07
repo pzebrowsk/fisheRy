@@ -81,6 +81,7 @@ RCPP_MODULE(population_module){
 		.field_readonly("lf50", &PopulationParams::lf50)
 //		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
 //		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
+		.field("dsea", &PopulationParams::dsea)
 	;
 	
 	class_ <Population>("Population")
