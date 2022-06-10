@@ -107,69 +107,71 @@ vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<doub
 
 
 
-Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
+Tensor<double> Simulator::simulate_multi_2d(Population pop, vector<double> Tvec, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, bool re_init){
 	int niters = 1;
-	Tensor<double> res({niters, 17, lminvec.size(), hvec.size(), nyears});
+	Tensor<double> res({niters, 19, Tvec.size(), lminvec.size(), hvec.size(), nyears});
 	Population pop_ref = pop;
 
 	for (int iter = 0; iter < niters; ++iter){
-		for (int il=0; il<lminvec.size(); ++il){ // loop over control parameter 2
-			for (int ih=0; ih<hvec.size(); ++ih){ // loop over control parameter 1
-				pop = pop_ref;
-				pop.set_harvestProp(hvec[ih]);
-				pop.set_minSizeLimit(lminvec[il]);
-//				if (hvec[ih] > 0.5) pop.set_superFishSize(1e0);
-				
-				noFishingPop.set_harvestProp(hvec[ih]);
-				noFishingPop.set_minSizeLimit(lminvec[il]);
-				double K = noFishingPop.fishableBiomass();
-				pop.K_fishableBiomass = K;
-				cout << "h = " << noFishingPop.par.h << ", L50 = " << noFishingPop.par.lf50 << ", n = " << pop.par.n << " | K = " << K << endl;
-
-				if (re_init) pop.init(1000, tsb0, temp);
-//				pop.print_summary();
-			
-				for (int t=0; t<nyears; ++t){
-					std::vector<double> state_now = pop.update();
+		for (int it=0; it<Tvec.size(); ++it){ // loop over temperature
+			for (int il=0; il<lminvec.size(); ++il){ // loop over control parameter 2
+				for (int ih=0; ih<hvec.size(); ++ih){ // loop over control parameter 1
+					pop = pop_ref;
+					pop.set_harvestProp(hvec[ih]);
+					pop.set_minSizeLimit(lminvec[il]);
+	//				if (hvec[ih] > 0.5) pop.set_superFishSize(1e0);
 					
-					for (int col=0; col<state_now.size(); ++col){
-						res({iter, col, il, ih, t}) = state_now[col];
+					noFishingPop.set_harvestProp(hvec[ih]);
+					noFishingPop.set_minSizeLimit(lminvec[il]);
+					double K = noFishingPop.fishableBiomass();
+					pop.K_fishableBiomass = K;
+					cout << "h = " << noFishingPop.par.h << ", L50 = " << noFishingPop.par.lf50 << ", T = " << Tvec[it] << ", n = " << pop.par.n << " | K = " << K << endl;
+
+					if (re_init) pop.init(1000, tsb0, Tvec[it]);
+	//				pop.print_summary();
+				
+					for (int t=0; t<nyears; ++t){
+						std::vector<double> state_now = pop.update(Tvec[it]);
+						
+						for (int col=0; col<state_now.size(); ++col){
+							res({iter, col, it, il, ih, t}) = state_now[col];
+						}
+	//					res({iter, 0, il, ih, t}) = state_now[0];               // ssb
+	//					res({iter, 1, il, ih, t}) = state_now[1];               // yield
+	//					res({iter, 2, il, ih, t}) = state_now[2];  // employment sea
+	//					res({iter, 3, il, ih, t}) = state_now[3];  // employment shore
+	//					res({iter, 4, il, ih, t}) = state_now[4];  // profit sea
+	//					res({iter, 5, il, ih, t}) = state_now[5];  // profit shore
 					}
-//					res({iter, 0, il, ih, t}) = state_now[0];               // ssb
-//					res({iter, 1, il, ih, t}) = state_now[1];               // yield
-//					res({iter, 2, il, ih, t}) = state_now[2];  // employment sea
-//					res({iter, 3, il, ih, t}) = state_now[3];  // employment shore
-//					res({iter, 4, il, ih, t}) = state_now[4];  // profit sea
-//					res({iter, 5, il, ih, t}) = state_now[5];  // profit shore
 				}
+				std::this_thread::sleep_for(std::chrono::microseconds(100));
 			}
-			std::this_thread::sleep_for(std::chrono::microseconds(100));
 		}
 	}
 	//res.print();
 	
-	return res.avg_dim(4);	// average over iterations
+	return res.avg_dim(5);	// average over iterations
 
 }
 
 
 vector<double> Simulator::max_avg_utils_2d(vector<int> dims, vector<double> data){
 	Tensor<double> res(dims);
-	res.vec = data;		// res is {u, c2, c1, t}
+	res.vec = data;		// res is {u, T, c2, c1, t}
 
-	Tensor<double> res2 = res.avg_dim(0).max_dim(0).max_dim(0);	// avg over t, then max over c1, then max over c2
-	res.transform(3, std::divides<double>(), res2.vec); // divide u dimension by res2
+	Tensor<double> res2 = res.avg_dim(0).max_dim(0).max_dim(0).max_dim(0);	// avg over t, then max over c1, then max over c2, then max over T
+	res.transform(4, std::divides<double>(), res2.vec); // divide u dimension by res2
 
-	return res.avg_dim(0).vec;
+	return res.avg_dim(0).vec; // average over t
 }
 
 
 vector<double> Simulator::stakeholder_satisfaction_2d(vector<int> dims, vector<double> data){
 	Tensor<double> res(dims);
-	res.vec = data;		// res is {u, c2, c1, t}
+	res.vec = data;		// res is {u, T, c2, c1, t}
 
-	Tensor<double> res2 = res.avg_dim(0).max_dim(0).max_dim(0);  // avg over t, then max over c1, then max over c2
-	res.transform(3, std::divides<double>(), res2.vec); // divide u dimension by res2
+	Tensor<double> res2 = res.avg_dim(0).max_dim(0).max_dim(0).max_dim(0);	// avg over t, then max over c1, then max over c2, then max over T
+	res.transform(4, std::divides<double>(), res2.vec); // divide u dimension by res2
 
 	Tensor<double> sp({5,4});	// spvec is {s, u}
 	//        ssb yield emp  profit  
@@ -182,15 +184,15 @@ vector<double> Simulator::stakeholder_satisfaction_2d(vector<int> dims, vector<d
 
 	sp.print();
 
-	Tensor<double> Ssucy = sp.repeat_inner(res.dim[1]).repeat_inner(res.dim[2]).repeat_inner(res.dim[3]) * res.repeat_outer(sp.dim[0]);
-	//                        ^ {s, u, c2}             ^ {s, u, c2, c1}         ^ {s, u, c2, c1, y}            ^ {s, u, c2, c1, y}
+	Tensor<double> Ssucy = sp.repeat_inner(res.dim[1]).repeat_inner(res.dim[2]).repeat_inner(res.dim[3]).repeat_inner(res.dim[4]) * res.repeat_outer(sp.dim[0]);
+	//                        ^ {s, u, T}             ^ {s, u, T, c2}           ^ {s, u, T, c2, c1}      ^ {s, u, T, c2, c1, y}         ^ {s, u, T, c2, c1, y}
 
-	Tensor<double> Sscy = Ssucy.accumulate(0.0, 3, std::plus<double>());	// aggregate along u dim to get {s, c2, c1, y}
+	Tensor<double> Sscy = Ssucy.accumulate(0.0, 4, std::plus<double>());	// aggregate along u dim to get {s, T, c2, c1, y}
 
 	Tensor<double> Ssc = Sscy.avg_dim(0);
-	//                        ^ {s, c2, c1}
-	Ssc.transform(2, std::divides<double>(), Ssc.max_dim(0).max_dim(0).vec);
-	//			  ^ s                            ^ {s, c2}  ^ {s}
+	//                        ^ {s, T, c2, c1}
+	Ssc.transform(3, std::divides<double>(), Ssc.max_dim(0).max_dim(0).max_dim(0).vec);
+	//			  ^ s                            ^ {s,T,c2} ^ {s,T}    ^ {s}
 	
 	return Ssc.vec;
 
@@ -209,7 +211,8 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	if (re_init) pop.init(1000, tsb0, temp);
 //	pop.print_summary();
 
-	vector<string> colnames = {"ssb", "yield", "employment.sea", "employment.shore", 
+	vector<string> colnames = {"ssb", "yield", "employment", "profit",
+	                           "employment.sea", "employment.shore", 
 	                           "profit.sea", "profit.shore", "tsb", 
 	                           "r0", "nrecruits", "nsuperfish",
 	                           "factor_dg", "factor_dr", "max_length", "length90", 
@@ -250,8 +253,8 @@ Rcpp::NumericVector Simulator::simulate_multi_r(Population &pop, vector<double> 
 	return tensor2array(res);
 }
 
-Rcpp::NumericVector Simulator::simulate_multi_2d_r(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
-	Tensor<double> res = simulate_multi_2d(pop, lminvec, hvec, nyears, tsb0, temp, re_init);
+Rcpp::NumericVector Simulator::simulate_multi_2d_r(Population pop, vector<double> Tvec, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, bool re_init){
+	Tensor<double> res = simulate_multi_2d(pop, Tvec, lminvec, hvec, nyears, tsb0, re_init);
 	return tensor2array(res);
 }
 

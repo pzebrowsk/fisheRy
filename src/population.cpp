@@ -261,7 +261,7 @@ std::vector<double> Population::update(double temp){
 
 	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
-	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits, nfish(), factor_dg, factor_dr, lmax, length90, survival_mean, maturity, Nrel};	
+	return {ssb, yield, emp_sea+emp_shore, profit_sea+profit_shr, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits, nfish(), factor_dg, factor_dr, lmax, length90, survival_mean, maturity, Nrel};	
 }
 
 

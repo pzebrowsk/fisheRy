@@ -129,7 +129,7 @@ plot_hscan = function(res_ibm_full){
     res = simulate(hvec[ih], lf, F)
     v = colMeans((res$summaries %>% select(SSB, Y, D.sea, D.shr, P.sea, P.shr, TSB))[151:200,])
     dat[nrow(dat)+1,] = v/c(1e9, 1e9, 1, 1, 1e9, 1e9, 1e9)
-    v_ibm = colMeans(arr[151:200, ih, 1,])
+    v_ibm = colMeans(arr[151:200, ih, 1, 1,])
     dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1, 1, 1e9, 1e9, 1e9, 1, 1, 1, 1, 1,1,1,1,1,1)
   }
   # dat$employment = dat$emp.sea+dat$emp.shr
@@ -156,7 +156,58 @@ plot_hscan = function(res_ibm_full){
 ```{r fig.height=9}
 # pop$par$dsea = 0.054
 hvec = seq(0., 0.7, length.out=100)
-res_ibm_full = sim$simulate_multi_2d(pop, lf, hvec, nsteps, 1.93e3, 5.61, T)
+res_ibm_full = sim$simulate_multi_2d(pop, c(5.6), lf, hvec, nsteps, 1.93e3, T)
 
 plot_hscan(res_ibm_full)
+```
+
+### Temperature scan
+```{r}
+plot_Tscan = function(res_ibm_full, h){
+  lf = 45
+  arr = res_ibm_full 
+  names = c("ssb", "yield", "emp.sea", "emp.shr", 
+	                           "profit.sea", "profit.shr", "tsb", 
+	                           "r0", "nrecruits", "nsuperfish",
+	                           "factor_dg", "factor_dr", "max_length",
+                             "length90", "p_survival", "maturity", "Nrel")
+  dat_ibm = data.frame(matrix(ncol=length(names), nrow=0))
+  colnames(dat_ibm) = names
+  dat = data.frame(matrix(ncol=7, nrow=0))
+  colnames(dat) = c("ssb", "yield", "emp.sea", "emp.shr", "profit.sea", "profit.shr", "tsb")
+  res = simulate(h, lf, F)
+  for (it in 1:length(tvec)){
+    v = colMeans((res$summaries %>% select(SSB, Y, D.sea, D.shr, P.sea, P.shr, TSB))[151:200,])
+    dat[nrow(dat)+1,] = v/c(1e9, 1e9, 1, 1, 1e9, 1e9, 1e9)
+    v_ibm = colMeans(arr[151:200, 1, 1, it,])
+    dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1, 1, 1e9, 1e9, 1e9, 1, 1, 1, 1, 1,1,1,1,1,1)
+  }
+  # dat$employment = dat$emp.sea+dat$emp.shr
+  # dat$profit = dat$profit.sea+dat$profit.shr
+  
+  xvec = tvec
+  xlab1 = "SST"
+  par(mfrow = c(4,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5)
+  matplot(ylab="ssb (MT)",y=cbind(dat_ibm$ssb, dat$ssb), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="tsb (MT)",y=cbind(dat_ibm$tsb, dat$tsb), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="yield (MT)",y=cbind(dat_ibm$yield, dat$yield), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="employment sea (PY)",y=cbind(dat_ibm$emp.sea, dat$emp.sea), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="employment shore (PY)",y=cbind(dat_ibm$emp.shr, dat$emp.shr), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="profit sea (Bn NOK)",y=cbind(dat_ibm$profit.sea, dat$profit.sea), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="profit shore (Bn NOK)",y=cbind(dat_ibm$profit.shr, dat$profit.shr), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
+  matplot(ylab="Length %iles",y=cbind(dat_ibm$max_length, dat_ibm$length90), x=xvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="dl ratio, r ratio",y=cbind(dat_ibm$factor_dg, dat_ibm$factor_dr), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="Superfish",y=cbind(dat_ibm$nsuperfish), x=xvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="Survival prob / Maturity",y=cbind(dat_ibm$p_survival, dat_ibm$maturity), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="Survival prob / Maturity / Nrel",y=cbind(dat_ibm$p_survival, dat_ibm$maturity, dat_ibm$Nrel), x=xvec, type="l", col=c("cyan3", "magenta3", "yellow3"), lwd=1, lty=1, xlab=xlab1)
+  }
+
+```
+
+```{r fig.height=9}
+# pop$par$dsea = 0.054
+tvec = seq(5.6, 10, length.out=100)
+res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, 0.2, nsteps, 1.93e3, T)
+
+plot_Tscan(res_ibm_full, 0.2)
 ```
