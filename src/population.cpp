@@ -132,12 +132,17 @@ inline double rnorm(double mu=0, double sd=1){
 
 
 std::vector<double> Population::update(double temp){
+	for (auto& f : fishes) assert(f.isAlive);
+	
 	// 1. Maturation
 	// update maturity 
 	for (auto& f: fishes){
 		f.updateMaturity();
 	}
-
+	double maturity = 0;
+	for (auto& f : fishes) if (f.isAlive && f.isMature) maturity += 1;
+	maturity /= fishes.size();
+	
 	// 2. Growth
 	double tsb = 0;
 	for (auto& f : fishes) if (f.isAlive && f.age >= 3) tsb += par.n * f.weight;
@@ -145,6 +150,27 @@ std::vector<double> Population::update(double temp){
 	for (auto& f: fishes){
 		f.grow(tsb/1e6, temp); // convert tsb to kT
 	}
+	
+	// calculate metrics to analyse density-inhibition on growth
+	double factor_dg = 0;
+	for (auto& f: fishes){
+		factor_dg += f.dl_real/(f.dl_potential+1e-12); 
+	}
+	factor_dg /= fishes.size();
+	
+	// calc 90%ile length
+	double lmax = 0;
+	for (auto &f : fishes) lmax = fmax(lmax, f.length);
+
+	vector<Fish> ff = fishes;
+	std::sort(ff.begin(), ff.end(), [](const Fish &f1, const Fish &f2){return f1.length > f2.length;});  // sort fishes descending by length
+	for (int i=1; i<ff.size(); ++i) assert(ff[i].length <= ff[i-1].length);
+
+	double length90 = 0;
+	double cut = 0.05;
+	for (int i=0; i < ceil(cut*ff.size()); ++i) length90 += ff[i].length;
+	length90 /= ceil(cut*ff.size());
+	
 	//print_summary();
 
 	// 3. Reproduction 
@@ -152,16 +178,19 @@ std::vector<double> Population::update(double temp){
 	double ssb = calcSSB();
 //	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf); // * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
 	double nrecruits = 0;
+	double nrecruits_potential = 0;
 	for (auto &f: fishes) {
 		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 		if (f.isAlive && f.isMature){
-			nrecruits += f.produceRecruits() * par.n * (1/(1+ssb/par.Bhalf));
+			nrecruits += f.produceRecruits() * par.n * (1/(1+ssb/f.par.Bhalf));
+			nrecruits_potential += f.produceRecruits() * par.n;
 		}
 	}
 	//nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
 	nrecruits = std::min(nrecruits, par.rmax);
-	double r0_avg = nrecruits * (1 + ssb/par.Bhalf) / ssb;
-
+	double r0_avg = nrecruits * (1 + ssb/proto_fish.par.Bhalf) / ssb;
+	double factor_dr = nrecruits / (nrecruits_potential+1e-12);
+	
 	// 4. Mortality 
 //	if (par.use_old_model_effort) summarize(); // population summary for calculation of Nrel
 	
@@ -177,10 +206,10 @@ std::vector<double> Population::update(double temp){
 //			Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
 //		}
 //		else {
-			Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-10;
+			Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-20;
 //		}
 		
-		E_req = effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
+		E_req = (Nrel < 1e-10)? 0 : effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
 		D_sea_req  = par.dsea * E_req;
 		D_sea_real = D_sea_req / (1 + D_sea_req/par.dmax);
 		
@@ -191,16 +220,19 @@ std::vector<double> Population::update(double temp){
 
 	// implement mortality over the year and calculate yield
 	double yield = 0;
+	double survival_mean = 0;
 	for (auto& f : fishes){
 		double fishing_mort_rate = selectivity(f.length)*F_real; //(f.isMature)? par.mort_fishing_mature : par.mort_fishing_immature;
 		double mortality_rate = f.naturalMortalityRate() + fishing_mort_rate; // post-spawning mortality rate is same for mature and immature individuals
 		double survival_prob = exp(-mortality_rate*1.0);	// mortality during post-spawining, over full year.
-		
+		survival_mean += survival_prob;
+
 		f.isAlive = f.isAlive && ((rand() / double(RAND_MAX)) <= survival_prob);	// set the fish to die probabilistically, if not dead already.
 		
 		if (!f.isAlive) yield += fishing_mort_rate/mortality_rate * par.n*f.weight;
 	} 
-
+	survival_mean /= fishes.size();
+	
 	// remove dead fish from population
 	fishes.erase(std::remove_if(fishes.begin(), fishes.end(), [](Fish &f){return !f.isAlive;}), fishes.end());
 
@@ -229,7 +261,7 @@ std::vector<double> Population::update(double temp){
 
 	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
-	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits};	
+	return {ssb, yield, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits, nfish(), factor_dg, factor_dr, lmax, length90, survival_mean, maturity, Nrel};	
 }
 
 

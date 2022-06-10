@@ -11,7 +11,8 @@ void Simulator::setNaturalPopulation(Population &pop){
 	noFishingPop = pop;
 }
 
-vector<double> Simulator::equilibriateNaturalPopulation(double tsb0, double temp){
+vector<double> Simulator::equilibriateNaturalPopulation(double tsb0, double temp, double _n){
+	noFishingPop.set_superFishSize(_n);
 	return noFishingPop.noFishingEquilibriate(tsb0, temp);
 }
 
@@ -108,7 +109,7 @@ vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<doub
 
 Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, double temp, bool re_init){
 	int niters = 1;
-	Tensor<double> res({niters, 6, lminvec.size(), hvec.size(), nyears});
+	Tensor<double> res({niters, 17, lminvec.size(), hvec.size(), nyears});
 	Population pop_ref = pop;
 
 	for (int iter = 0; iter < niters; ++iter){
@@ -117,7 +118,7 @@ Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 				pop = pop_ref;
 				pop.set_harvestProp(hvec[ih]);
 				pop.set_minSizeLimit(lminvec[il]);
-//				pop.set_superFishSize(1e6*(exp(-6*hvec[ih])));
+//				if (hvec[ih] > 0.5) pop.set_superFishSize(1e0);
 				
 				noFishingPop.set_harvestProp(hvec[ih]);
 				noFishingPop.set_minSizeLimit(lminvec[il]);
@@ -131,12 +132,15 @@ Tensor<double> Simulator::simulate_multi_2d(Population &pop, vector<double> lmin
 				for (int t=0; t<nyears; ++t){
 					std::vector<double> state_now = pop.update();
 					
-					res({iter, 0, il, ih, t}) = state_now[0];               // ssb
-					res({iter, 1, il, ih, t}) = state_now[1];               // yield
-					res({iter, 2, il, ih, t}) = state_now[2];  // employment sea
-					res({iter, 3, il, ih, t}) = state_now[3];  // employment shore
-					res({iter, 4, il, ih, t}) = state_now[4];  // profit sea
-					res({iter, 5, il, ih, t}) = state_now[5];  // profit shore
+					for (int col=0; col<state_now.size(); ++col){
+						res({iter, col, il, ih, t}) = state_now[col];
+					}
+//					res({iter, 0, il, ih, t}) = state_now[0];               // ssb
+//					res({iter, 1, il, ih, t}) = state_now[1];               // yield
+//					res({iter, 2, il, ih, t}) = state_now[2];  // employment sea
+//					res({iter, 3, il, ih, t}) = state_now[3];  // employment shore
+//					res({iter, 4, il, ih, t}) = state_now[4];  // profit sea
+//					res({iter, 5, il, ih, t}) = state_now[5];  // profit shore
 				}
 			}
 			std::this_thread::sleep_for(std::chrono::microseconds(100));
@@ -205,61 +209,30 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	if (re_init) pop.init(1000, tsb0, temp);
 //	pop.print_summary();
 
-	std::vector<double> ssb;
-	ssb.reserve(nyears);
-	
-	std::vector<double> yield;
-	yield.reserve(nyears);
-	
-	std::vector<double> emp_sea;
-	emp_sea.reserve(nyears);
-	std::vector<double> emp_shore;
-	emp_shore.reserve(nyears);
-	
-	std::vector<double> psea;
-	psea.reserve(nyears);
-	std::vector<double> pshr;
-	pshr.reserve(nyears);
+	vector<string> colnames = {"ssb", "yield", "employment.sea", "employment.shore", 
+	                           "profit.sea", "profit.shore", "tsb", 
+	                           "r0", "nrecruits", "nsuperfish",
+	                           "factor_dg", "factor_dr", "max_length", "length90", 
+	                           "survival_mean", "maturity", "Nrel"};
 
-	std::vector<double> tsb;
-	tsb.reserve(nyears);
-
-	std::vector<double> r0;
-	r0.reserve(nyears);
-
-	std::vector<double> nsfish;
-	nsfish.reserve(nyears);
-
-	std::vector<double> nrecruits;
-	nrecruits.reserve(nyears);
+	vector<vector<double>> columns(colnames.size());
+	for (auto& vec : columns) vec.reserve(nyears);
 	
 	Rcpp::DataFrame df = Rcpp::DataFrame::create();
 
 	for (int i=0; i<nyears; ++i){
 		std::vector<double> state_now = pop.update();
-		ssb.push_back(state_now[0]);
-		yield.push_back(state_now[1]);
-		emp_sea.push_back(state_now[2]);
-		emp_shore.push_back(state_now[3]);
-		psea.push_back(state_now[4]);
-		pshr.push_back(state_now[5]);
-		tsb.push_back(state_now[6]);
-		r0.push_back(state_now[7]);
-		nrecruits.push_back(state_now[8]);
-		nsfish.push_back(pop.nfish());
+		
+		for (int col=0; col<state_now.size(); ++col){
+			columns[col].push_back(state_now[col]);
+		}
+	}
+
+	for (int i=0; i<columns.size(); ++i){	
+		cout << "Adding columns[" << i << "] = " << colnames[i] << endl; 
+		df.push_back(columns[i], colnames[i]);
 	}
 	
-	df.push_back(ssb, "ssb");
-	df.push_back(yield, "yield");
-	df.push_back(emp_sea, "employment.sea");
-	df.push_back(emp_shore, "employment.shore");
-	df.push_back(psea, "profit.sea");
-	df.push_back(pshr, "profit.shore");
-	df.push_back(tsb, "tsb");
-	df.push_back(r0, "r0");
-	df.push_back(nsfish, "nsuperfish");
-	df.push_back(nrecruits, "nrecruits");
-
 	return df;
 }
 

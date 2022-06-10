@@ -112,14 +112,23 @@ void Fish::grow(double tsb, double temp){
 	else if (par.growth_model == Model::Joshi23){
 		double tsb_ano = tsb - par.tsbmean;
 		double temp_ano = temp - par.Tmean;
-		double dl = fish::dl_power(tsb_ano, temp_ano, par.gamma1, par.gamma2, par.alpha1, par.alpha2, par.beta1, par.beta2);
-		double lnew;
+		double dl     = fish::dl_power(tsb_ano,      temp_ano, par.gamma1, par.gamma2, par.alpha1, par.alpha2, par.beta1, par.beta2);
+		double dl_pot = fish::dl_power(-par.tsbmean, temp_ano, par.gamma1, par.gamma2, par.alpha1, par.alpha2, par.beta1, par.beta2);
+		double lnew, lnew_pot;
 		if (isMature){
-			lnew = fish::length_adult(length, dl, par.gamma1, par.gamma2, par.gsi);
+			lnew     = fish::length_adult(length, dl,     par.gamma1, par.gamma2, par.gsi);
+			lnew_pot = fish::length_adult(length, dl_pot, par.gamma1, par.gamma2, par.gsi);
 		}
 		else{
-			lnew = fish::length_juvenile(length, dl, par.gamma1, par.gamma2);
+			lnew     = fish::length_juvenile(length, dl,     par.gamma1, par.gamma2);
+			lnew_pot = fish::length_juvenile(length, dl_pot, par.gamma1, par.gamma2);
 		}
+
+		// for analysis
+		dl_real      = lnew     - length;
+		dl_potential = lnew_pot - length;
+//		cout << "tsb_ano = " << tsb << " / " << par.tsbmean << ", fac = " << dl_real << " / " << dl_potential << endl; 
+
 		gsi_effective = fish::gsi(lnew, length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 		set_length(lnew);
 	}

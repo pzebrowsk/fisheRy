@@ -37,7 +37,7 @@ explore = function(beta1, beta2, s0, Bhalf, gm = 1, oldmat=F, oldmor=F, oldfec=F
   
   nsteps = 200
   sim = new(Simulator, fish)
-  sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+  sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
   dat = sim$simulate(pop, 45, 0, nsteps, 1.93e3, 5.61, T)
 
   d = pop$get_state()

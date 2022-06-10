@@ -17,8 +17,8 @@ class FishParams {
 	double k = 0.00674;
 	double alpha = 3.056863227;
 	double E1 = 2500;
-	double pmrn_lp50 = 118.122779*0.75;
-	double pmrn_width = 47.532614*0.5;
+	double pmrn_lp50 = 118.122779;
+	double pmrn_width = 47.532614;
 	double pmrn_slope = -6.609008;
 	double pmrn_envelope = 0.25;
 	double Lref = 70.48712; //80;
@@ -36,6 +36,7 @@ class FishParams {
 	// Juvenile length and survival probability 
 	double L0 = 9.1;
 	double s0 = 0.02; // 0.09637
+	double Bhalf = 3.65e8;  // Bhalf for recruitment 
 
 	// temperature and density dependence
 	double beta1 = -7.07e-5;
@@ -128,6 +129,8 @@ class Fish{
 	int age = 1;		// age in years
 	double length;  // length in cm
 	double gsi_effective; // saved from previous growth spurt
+
+	double dl_real, dl_potential;
 
 	// physiological variables
 	double weight;	// weight in kg

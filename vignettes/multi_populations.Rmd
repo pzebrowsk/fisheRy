@@ -31,7 +31,7 @@ fish = new(Fish)
 
 sim = new(Simulator, fish)
 
-sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
 ```
 
 
@@ -99,7 +99,7 @@ fish$par$use_old_model_mor = T
 
 sim = new(Simulator, fish)
 
-sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
 
 pop = new(Population, fish)
 pop$verbose = F
@@ -125,7 +125,7 @@ fish$par$s0 = 0.0937
 
 sim = new(Simulator, fish)
 
-sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
 
 pop = new(Population, fish)
 pop$par$Bhalf = 3.65e8
@@ -158,7 +158,7 @@ fish$par$s0 = 0.0937
 
 sim = new(Simulator, fish)
 
-sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
 
 pop = new(Population, fish)
 pop$par$Bhalf = 3.65e8
@@ -187,7 +187,7 @@ fish$par$s0 = 0.09637
 
 sim = new(Simulator, fish)
 
-sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
 
 pop = new(Population, fish)
 pop$par$Bhalf = 3.65e8

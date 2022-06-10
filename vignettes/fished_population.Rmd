@@ -30,7 +30,12 @@ As usual, we begin with creating a prototype fish
 ```{r}
 # Create a prototype fish as usual
 fish = new(Fish)
+# Parameters to reproduce Dankel et al results
 fish$par$use_old_model_mor = T
+fish$par$use_old_model_mat = T
+fish$par$use_old_model_fec = T
+fish$par$growth_model = 0
+fish$par$s0 = 0.09637
 ```
 
 We then create a simulator, specifying the prototype fish:
@@ -42,7 +47,7 @@ sim = new(Simulator, fish)
 The simulator already contains a reference population, which we can simulate under non-fished conditions. The simulator will perform requisite calculations on this population as and when required.
 
 ```{r}
-sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
 ```
 
 
@@ -52,6 +57,10 @@ Finally, we are ready to simulate a fished population. We create a population to
 
 ```{r}
 pop = new(Population, fish)
+# Parameters to reproduce Dankel et al results
+pop$par$Bhalf = 3.65e8
+pop$par$dsea = 0.09 # tuned value
+pop$set_superFishSize(2e6)
 ```
 
 Then, suppose we want to simulate this population for 200 years with a harvest proportion of 0.3 and minimum size limit of 45, 
@@ -65,8 +74,6 @@ lf = 45
 we simply do
 ```{r}
 pop$verbose = F
-# pop$set_superFishSize(1e6*(exp(-6*h)))
-pop$set_superFishSize(2e6)
 res_ibm = sim$simulate(pop, lf, h, nsteps, 1.93e3, 5.61, T)
 ```
 
@@ -132,7 +139,7 @@ try_h = function(h, n){
   fish$par$use_old_model_mat = T
   
   sim = new(Simulator, fish)
-  sim$equilibriateNaturalPopulation(1.93e3, 5.61)
+  sim$equilibriateNaturalPopulation(1.93e3, 5.61, 10e6)
   
   pop = new(Population, fish)
   
@@ -156,5 +163,5 @@ try_h(0, 2e6)
 ```{r}
 try_h(0.3, 2e6)
 
-try_h(0.99, 2e3)
+try_h(0.99, 2e6)
 ```
