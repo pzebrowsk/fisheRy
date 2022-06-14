@@ -153,14 +153,14 @@ plot_Tscan = function(res_ibm_full, nsteps=200){
 
 ```{r}
 # pop$par$dsea = 0.054
-nsteps=50
+nsteps_jss = 200
 hvec = c(0.2)
-tvec = seq(5.6, 10, length.out = 20)
+tvec = seq(5.6, 10, length.out = 50)
 pop = pop_sq
 pop$set_superFishSize(5e5)
-res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps, 1.93e3, F)
+res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps_jss, 1.93e3, F)
 
-plot_Tscan(res_ibm_full, nsteps)
+plot_Tscan(res_ibm_full, nsteps_jss)
 ```
 
 <!-- ```{r} -->
@@ -180,7 +180,7 @@ plot_Tscan(res_ibm_full, nsteps)
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
-d = sim$max_avg_utils_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
+d = sim$max_avg_utils_2d(c(4,length(tvec), length(lfvec),length(hvec),nsteps_jss), arr)
 
 utils = array(data=d, dim=c(length(hvec),length(lfvec),length(tvec), 4))
 
@@ -199,7 +199,7 @@ legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill 
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
-ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
+ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec),nsteps_jss), arr)
 
 par(mfrow=c(1,2), mar=c(4,4,1,1))
 matplot(y=matrix(data=ss, ncol=5), x=tvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
