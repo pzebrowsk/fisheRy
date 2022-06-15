@@ -160,10 +160,11 @@ plot_hscan = function(res_ibm_full, nsteps=200){
 ```{r fig.height=9}
 # pop$par$dsea = 0.054
 nsteps=50
-hvec = seq(0., 0.99, length.out=20)
+hvec = seq(0., 0.99, length.out=25)
 pop = pop_sq
 pop$set_superFishSize(5e5)
 res_ibm_full = sim$simulate_multi_2d(pop, c(5.6), lf, hvec, nsteps, 1.93e3, F)
+save(res_ibm_full, file = "res_ibm_h.Rdata")
 
 plot_hscan(res_ibm_full, nsteps)
 ```
@@ -220,8 +221,9 @@ JSS_min = apply(mat, 1, min)
 JSS_mean = apply(mat, 1, mean)
 JSS_hmean = 1/apply(1/mat, 1, mean)
 
+par(mfrow=c(1,2), mar=c(4,4,1,1))
 matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F, ylim=c(0,1))
 legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
 
 ```

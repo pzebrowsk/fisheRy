@@ -159,7 +159,7 @@ tvec = seq(5.6, 10, length.out = 20)
 pop = pop_sq
 pop$set_superFishSize(5e5)
 res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps, 1.93e3, F)
-
+save(res_ibm_full, file = "res_ibm_hxT.Rdata")
 ```
 
 <!-- ```{r} -->
