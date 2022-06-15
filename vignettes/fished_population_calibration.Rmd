@@ -127,7 +127,7 @@ error_fun = function(par, nsup = 10e6, bplot=F){
   
   if (bplot) {
     plot_timeseries(res_ibm, pop, h)
-    plot(obs~pred)
+    plot(obs~pred, ylim=c(0, max(c(obs,pred))), xlim=c(0, max(c(obs,pred))) )
     abline(0,1,col="grey")
   }
   
@@ -138,14 +138,14 @@ error_fun = function(par, nsup = 10e6, bplot=F){
 error_fun(c(0.0815841, 196815664, 148.2958), nsup=2e6, bplot=T)
 ```
 
-<!-- Optimize -->
-
-<!-- ```{r} -->
-<!-- optim(par = c(0.08, 2.65e8, 118), fn = error_fun, ns = 5e6, control=list(parscale=c(0.05, 2.65e8, 118))) -->
-<!-- ``` -->
+Optimize
 
 ```{r}
-error_fun(c(0.08094733, 187837572, 148.6918), ns=5e6, bplot=T)
+optim(par = c(0.08, 2.65e8, 118), fn = error_fun, ns = 5e6, control=list(parscale=c(0.05, 2.65e8, 118)))
+```
+
+```{r}
+error_fun(c(0.07528598, 139629289, 154.3379), ns=5e6, bplot=T)
 ```
 
 

@@ -106,7 +106,7 @@ class Population{
 	double fishableBiomass();
 
 	double calcRealizedFishingMortality();
-	double effort(double Nr, double F);
+	double effort(double Nr, double F, double temp);
 
 	std::vector<double> update(double temp = 5.6);
 

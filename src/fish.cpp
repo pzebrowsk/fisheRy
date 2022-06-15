@@ -65,7 +65,7 @@ void Fish::set_length(double s){
 
 
 
-double Fish::naturalMortalityRate(){
+double Fish::naturalMortalityRate(double temp){
 	double rate;
 	if (age > par.amax) return 1e20; // FIXME: use inf
 	else {
@@ -75,7 +75,7 @@ double Fish::naturalMortalityRate(){
 			return rate;
 		}
 		else {
-			return fish::natural_mortality(length, par.M0, par.gamma3, par.alpha3, par.Lref);
+			return fish::natural_mortality(length, temp, par.M0, par.gamma3, par.alpha3, par.Lref, par.Tref, par.cT);
 		}
 	}
 }
@@ -129,7 +129,7 @@ void Fish::grow(double tsb, double temp){
 		dl_potential = lnew_pot - length;
 //		cout << "tsb_ano = " << tsb << " / " << par.tsbmean << ", fac = " << dl_real << " / " << dl_potential << endl; 
 
-		gsi_effective = fish::gsi(lnew, length, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
+		gsi_effective = fish::gsi(lnew, length, dl, par.gamma1, par.gamma2, par.alpha1, par.alpha2);
 		set_length(lnew);
 	}
 	else{

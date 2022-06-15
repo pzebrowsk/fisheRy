@@ -28,7 +28,7 @@ fish$par$use_old_model_mat = F
 fish$par$use_old_model_fec = F
 fish$par$growth_model = 1
 
-par = c(0.08094733, 187837572, 148.6918)
+par = c(0.07528598, 139629289, 154.3379)
 fish$par$s0 = par[1] #0.07
 fish$par$Bhalf = par[2] #2.65e8
 fish$par$pmrn_lp50 = par[3] #118.122779*1.15
@@ -151,10 +151,10 @@ plot(c(res_ibm_sq$ssb, res_ibm$ssb)~seq(1,700), type="l", col="cyan3")
 
 <!-- ``` -->
 
-```{r}
+```{r fig.height=9}
 # pop$par$dsea = 0.054
 nsteps=50
-hvec = seq(0, 0.7, length.out=20)
+hvec = seq(0, 0.99, length.out = 20)
 tvec = seq(5.6, 10, length.out = 20)
 pop = pop_sq
 pop$set_superFishSize(5e5)
@@ -175,7 +175,7 @@ res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps, 1.93e3, F)
 
 ### Utilties
 
-```{r}
+```{r fig.height=7.5}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -194,7 +194,7 @@ for (i in 1:4){
 
 ### JSS
 
-```{r}
+```{r fig.height=4}
 arr = res_ibm_full[,,,,1:4]
 
 ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
@@ -207,7 +207,7 @@ for (i in 1:5){
 ```
 
 
-```{r}
+```{r fig.height=7.5}
 
   JSS = array(dim=c(length(hvec),length(lfvec),length(tvec),3))
 

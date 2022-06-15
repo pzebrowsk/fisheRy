@@ -31,9 +31,9 @@ inline double dl_power(double tsb_ano, double temp_ano, double gamma_1, double g
 
 // [[Rcpp::export]]
 inline double length_juvenile(double init_length, double pow_dl, double gamma_1, double gamma_2){
-	double t1 = pow(init_length, gamma_1 * gamma_2);
-	double t2 = t1 + pow_dl;
-	return pow(t2, 1 / (gamma_1 * gamma_2));
+	double lp0 = pow(init_length, gamma_1 * gamma_2);
+	double lp1 = lp0 + pow_dl;
+	return pow(lp1, 1 / (gamma_1 * gamma_2));
 }
 
 
@@ -73,25 +73,25 @@ inline double fecundity(double body_length, double gamma_2, double alpha_2, doub
 
 // effective GDI given initial and final length
 // [[Rcpp::export]]
-inline double gsi(double body_length, double init_body_length, double gamma_1, double gamma_2, double alpha_1, double alpha_2){
-	double t1 = pow(init_body_length, gamma_1 * gamma_2);
-	double t2 = pow(body_length, gamma_1 * gamma_2);
-	double t3 = gamma_1 * alpha_1 * pow(alpha_2, -gamma_1);
-	double d  = gamma_1 * pow(body_length, gamma_1 * gamma_2);
+inline double gsi(double body_length, double init_body_length, double pow_dl, double gamma_1, double gamma_2, double alpha_1, double alpha_2){
+	double lp0 = pow(init_body_length, gamma_1 * gamma_2);
+	double lp1 = pow(body_length, gamma_1 * gamma_2);
+//	double dl = gamma_1 * alpha_1 * pow(alpha_2, -gamma_1);
+//	double d  = gamma_1 * pow(body_length, gamma_1 * gamma_2);
 	
-	return fmax(0, (t1 - t2 + t3)/d); // ensure that effective GSI is not negative due to numerical errors
+	return fmax(0, (lp0 - lp1 + pow_dl)/(lp1*gamma_1)); // ensure that effective GSI is not negative due to numerical errors
 }
 
 
 // [[Rcpp::export]]
-inline double natural_mortality(double body_length, double M0, double gamma_3, double alpha_3, double body_length_ref){
-	return M0 + alpha_3 * pow(body_length / body_length_ref, gamma_3);
+inline double natural_mortality(double body_length, double temp, double M0, double gamma_3, double alpha_3, double body_length_ref, double Tref, double cT){
+	return (M0 + alpha_3 * pow(body_length / body_length_ref, gamma_3)) * pow(temp/Tref, cT);
 }
 
 
 // [[Rcpp::export]]
-inline double survival_probability(double body_length, double M0, double gamma_3, double alpha_3, double body_length_ref, double fishing_mortality, double dt = 1){
-	double total_mortality = natural_mortality(body_length, M0, gamma_3, alpha_3, body_length_ref) + fishing_mortality;
+inline double survival_probability(double body_length, double temp, double M0, double gamma_3, double alpha_3, double body_length_ref, double Tref, double cT, double fishing_mortality, double dt = 1){
+	double total_mortality = natural_mortality(body_length, temp, M0, gamma_3, alpha_3, body_length_ref, Tref, cT) + fishing_mortality;
 	return exp(-total_mortality * dt);
 }
 

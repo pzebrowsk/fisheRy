@@ -17,7 +17,7 @@ class FishParams {
 	double k = 0.00674;
 	double alpha = 3.056863227;
 	double E1 = 2500;
-	double pmrn_lp50 = 118.122779;
+	double pmrn_lp50 = 148.6918; //118.122779;
 	double pmrn_width = 47.532614;
 	double pmrn_slope = -6.609008;
 	double pmrn_envelope = 0.25;
@@ -35,15 +35,19 @@ class FishParams {
 
 	// Juvenile length and survival probability 
 	double L0 = 9.1;
-	double s0 = 0.02; // 0.09637
-	double Bhalf = 3.65e8;  // Bhalf for recruitment 
+	double s0 = 0.08094733; // 0.02; // 0.09637
+	double Bhalf = 187837572; //3.65e8;  // Bhalf for recruitment 
 
-	// temperature and density dependence
+	// temperature and density dependence of growth
 	double beta1 = -7.07e-5;
 	double beta2 = 0.178;
 	double Tmean = 5.61;
 	double tsbmean = 1.93e9/1e6; // convert kg to kT
 	
+	// temperature dependence of mortality
+	double cT = 0.196;
+	double Tref = 5.6;
+		
 	// growth 
 	double gamma1; // = 0.33333;
 	double gamma2; // = 3.519072971;
@@ -152,7 +156,7 @@ class Fish{
 	bool matureNow();		// check if fish should mature now, based on maturation probability
 	void updateMaturity();	
 	
-	double naturalMortalityRate();
+	double naturalMortalityRate(double temp);
 	//double survivalProbability(double external_mortality_rate, double interval);     // return the probability that this individual survives during the given time interval
 
 	double produceRecruits();

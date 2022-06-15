@@ -104,12 +104,12 @@ double Population::fishableBiomass(){
 }
 
 
-double Population::effort(double Nr, double F){
+double Population::effort(double Nr, double F, double temp){
 //	double M = proto_fish.par.mam[proto_fish.par.amax];
 	double sum_wimi = 0, sum_wi = 0;
 	for (auto& f : fishes){
 		if (f.age <= f.par.amax){
-			sum_wimi += f.weight * selectivity(f.length) * f.naturalMortalityRate();
+			sum_wimi += f.weight * selectivity(f.length) * f.naturalMortalityRate(temp);
 			sum_wi   += f.weight * selectivity(f.length);
 		}
 	} 
@@ -139,8 +139,8 @@ std::vector<double> Population::update(double temp){
 	for (auto& f: fishes){
 		f.updateMaturity();
 	}
-	double maturity = 0;
-	for (auto& f : fishes) if (f.isAlive && f.isMature) maturity += 1;
+	double maturity = 0, nspawners = 0;
+	for (auto& f : fishes) if (f.isAlive && f.isMature) {maturity += 1; nspawners += par.n;}
 	maturity /= fishes.size();
 	
 	// 2. Growth
@@ -190,6 +190,7 @@ std::vector<double> Population::update(double temp){
 	nrecruits = std::min(nrecruits, par.rmax);
 	double r0_avg = nrecruits * (1 + ssb/proto_fish.par.Bhalf) / ssb;
 	double factor_dr = nrecruits / (nrecruits_potential+1e-12);
+	double nrecruits_per_fish = nrecruits/nspawners;
 	
 	// 4. Mortality 
 //	if (par.use_old_model_effort) summarize(); // population summary for calculation of Nrel
@@ -209,13 +210,13 @@ std::vector<double> Population::update(double temp){
 			Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-20;
 //		}
 		
-		E_req = (Nrel < 1e-10)? 0 : effort(Nrel, F_req); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
+		E_req = (Nrel < 1e-10)? 0 : effort(Nrel, F_req, temp); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
 		D_sea_req  = par.dsea * E_req;
 		D_sea_real = D_sea_req / (1 + D_sea_req/par.dmax);
 		
 		E_real = D_sea_real / par.dsea;
 		// Solve for F_real
-		F_real = pn::zero(0, F_req, [E_real, Nrel, this](double F){ return (E_real - effort(Nrel, F));}, 1e-6).root;
+		F_real = pn::zero(0, F_req, [E_real, Nrel, temp, this](double F){ return (E_real - effort(Nrel, F, temp));}, 1e-6).root;
 	}
 
 	// implement mortality over the year and calculate yield
@@ -223,7 +224,7 @@ std::vector<double> Population::update(double temp){
 	double survival_mean = 0;
 	for (auto& f : fishes){
 		double fishing_mort_rate = selectivity(f.length)*F_real; //(f.isMature)? par.mort_fishing_mature : par.mort_fishing_immature;
-		double mortality_rate = f.naturalMortalityRate() + fishing_mort_rate; // post-spawning mortality rate is same for mature and immature individuals
+		double mortality_rate = f.naturalMortalityRate(temp) + fishing_mort_rate; // post-spawning mortality rate is same for mature and immature individuals
 		double survival_prob = exp(-mortality_rate*1.0);	// mortality during post-spawining, over full year.
 		survival_mean += survival_prob;
 

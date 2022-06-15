@@ -1,5 +1,5 @@
 ---
-title: "Safe operating spaces 2D"
+title: "Safe operating spaces wrt T"
 author: "Jaideep Joshi"
 date: "28 March 2022"
 output: html_document
@@ -14,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, include = F, echo = F}
 library(rfish)
 library(tidyverse)
+
+rm(list=ls())
 source("../tests/ref/parameters.cod.R")
 source("../tests/ref/simulator.7.R")
 ```
@@ -28,10 +30,13 @@ fish$par$use_old_model_mat = F
 fish$par$use_old_model_fec = F
 fish$par$growth_model = 1
 
-par = c(0.08094733, 187837572, 148.6918)
+par = c(0.07528598, 139629289, 154.3379)
 fish$par$s0 = par[1] #0.07
 fish$par$Bhalf = par[2] #2.65e8
 fish$par$pmrn_lp50 = par[3] #118.122779*1.15
+
+# fish$par$beta2 = 1
+# fish$par$beta1 = 0
 
 sim = new(Simulator, fish)
 sim$equilibriateNaturalPopulation(1.93e3, 5.61, 2e6)
@@ -79,11 +84,11 @@ plot_timeseries = function(res_ibm, pop, h, nsteps=200){
 Simulate a status quo population with 
 $h = 0.41$, $L50 = 45$, $T = 5.6$.
 
-```{r}
+```{r fig.height=9}
 pop_sq = new(Population, fish)
 pop_sq$set_superFishSize(2e6)
 
-h_sq = 0.05
+h_sq = 0.0
 lf_sq = 45
 t_sq = 5.6
 nsteps_sq = 500
@@ -94,9 +99,9 @@ plot_timeseries(res_ibm_sq, pop_sq, h_sq, nsteps_sq)
 
 Continue population under different conditions
 
-```{r}
+```{r fig.height=9}
 nsteps = 200
-h = 0.41
+h = 0.
 lf = 45
 
 pop1 = pop_sq ## NO! This creates a shallow copy
@@ -107,7 +112,7 @@ plot_timeseries(res_ibm, pop1, h, nsteps)
 
 Thus, we can plot the two populations together:
 
-```{r}
+```{r fig.height=9}
 plot(c(res_ibm_sq$ssb, res_ibm$ssb)~seq(1,700), type="l", col="cyan3")
 ```
 
@@ -126,7 +131,7 @@ plot_Tscan = function(res_ibm_full, nsteps=200){
   dat_ibm = data.frame(matrix(ncol=length(names), nrow=0))
   colnames(dat_ibm) = names
   for (it in 1:length(tvec)){
-    v_ibm = colMeans(arr[, 1, 1, it,])
+    v_ibm = colMeans(arr[(nsteps-50+1):nsteps, 1, 1, it,])
     dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1,1, 1, 1, 1e9, 1e9, 1e9, 1, 1, 1, 1, 1,1,1,1,1,1)
   }
   # dat$employment = dat$emp.sea+dat$emp.shr
@@ -134,7 +139,7 @@ plot_Tscan = function(res_ibm_full, nsteps=200){
   
   xlab1 = "SST"
   xvec = tvec
-  par(mfrow = c(4,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5)
+  par(mfrow = c(5,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5)
   matplot(ylab="ssb (MT)",y=cbind(dat_ibm$ssb), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
   matplot(ylab="tsb (MT)",y=cbind(dat_ibm$tsb), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
   matplot(ylab="yield (MT)",y=cbind(dat_ibm$yield), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
@@ -143,19 +148,21 @@ plot_Tscan = function(res_ibm_full, nsteps=200){
   matplot(ylab="profit sea (Bn NOK)",y=cbind(dat_ibm$profit.sea), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
   matplot(ylab="profit shore (Bn NOK)",y=cbind(dat_ibm$profit.shr), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1)
   matplot(ylab="Length %iles",y=cbind(dat_ibm$max_length, dat_ibm$length90), x=xvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab=xlab1)
-  matplot(ylab="dl ratio, r ratio",y=cbind(dat_ibm$factor_dg, dat_ibm$factor_dr), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="dl ratio",y=cbind(dat_ibm$factor_dg), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
   matplot(ylab="Superfish",y=cbind(dat_ibm$nsuperfish), x=xvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab=xlab1)
   matplot(ylab="Survival prob / Maturity",y=cbind(dat_ibm$p_survival, dat_ibm$maturity), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
   matplot(ylab="Survival prob / Maturity / Nrel",y=cbind(dat_ibm$p_survival, dat_ibm$maturity, dat_ibm$Nrel), x=xvec, type="l", col=c("cyan3", "magenta3", "yellow3"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="r ratio",y=cbind(dat_ibm$factor_dr), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
+  matplot(ylab="n recruits",y=cbind(dat_ibm$nrecruits), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1)
   }
 
 ```
 
-```{r}
+```{r fig.height=9}
 # pop$par$dsea = 0.054
 nsteps_jss = 200
 hvec = c(0.2)
-tvec = seq(5.6, 10, length.out = 50)
+tvec = seq(5.6, 10, length.out = 20)
 pop = pop_sq
 pop$set_superFishSize(5e5)
 res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps_jss, 1.93e3, F)
@@ -176,7 +183,7 @@ plot_Tscan(res_ibm_full, nsteps_jss)
 
 ### Utilties
 
-```{r}
+```{r fig.height=3}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -195,7 +202,7 @@ legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill 
 
 ### JSS
 
-```{r}
+```{r fig.height=3}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -204,21 +211,19 @@ ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec
 par(mfrow=c(1,2), mar=c(4,4,1,1))
 matplot(y=matrix(data=ss, ncol=5), x=tvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
 abline(h=0, col="grey")
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F, ylim=c(0,1))
 legend(x = 0.7, y = 1, legend = c("Industrial", "Artisanal", "Emp. policymakers", "Profit. policymakers", "Conservationists"), fill=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
 ```
 
 
-```{r}
+```{r fig.height=3}
+mat = matrix(data=ss, ncol=5)
+JSS_min = apply(mat, 1, min)
+JSS_mean = apply(mat, 1, mean)
+JSS_hmean = 1/apply(1/mat, 1, mean)
 
-  mat = matrix(data=ss, ncol=5)
-  JSS_min = apply(mat, 1, min)
-  JSS_mean = apply(mat, 1, mean)
-  JSS_hmean = 1/apply(1/mat, 1, mean)
-
-  matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=tvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
-  plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
-  legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
-
-
+par(mfrow=c(1,2), mar=c(4,4,1,1))
+matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=tvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
+legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
 ```
