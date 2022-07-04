@@ -53,10 +53,11 @@ RCPP_MODULE(fish_module) {
 		.method("print_header", &Fish::print_header)
 
 		.method("set_age", &Fish::set_age)
-		//.method("set_length", &Fish::set_length)
+		.method("set_length", &Fish::set_length)
 
 		.method("init", &Fish::init)
 		.method("matureNow", &Fish::matureNow)
+		.method("maturationProb", &Fish::maturationProb)
 		.method("updateMaturity", &Fish::updateMaturity)
 		.method("grow", &Fish::grow)
 		

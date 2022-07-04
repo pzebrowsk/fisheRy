@@ -87,6 +87,13 @@ double Fish::naturalMortalityRate(double temp){
 	//return exp(-mortality_rate*interval);
 //}
 
+double Fish::maturationProb(){
+	double maturation_prob;
+	if (par.use_old_model_mat) maturation_prob = (age > par.amax)? 1 : par.ma[age];
+	else                       maturation_prob = fish::maturation_probability(age, length, par.steepness, par.pmrn_slope, par.pmrn_intercept);
+	return maturation_prob;
+}
+
 bool Fish::matureNow(){
 	double runif = rand() / double(RAND_MAX);
 	

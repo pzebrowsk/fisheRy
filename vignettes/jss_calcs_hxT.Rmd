@@ -156,10 +156,12 @@ plot(c(res_ibm_sq$ssb, res_ibm$ssb)~seq(1,700), type="l", col="cyan3")
 nsteps=50
 hvec = seq(0, 0.99, length.out = 20)
 tvec = seq(5.6, 10, length.out = 20)
-pop = pop_sq
-pop$set_superFishSize(5e5)
-res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps, 1.93e3, F)
-save(res_ibm_full, file = "res_ibm_hxT.Rdata")
+
+# pop = pop_sq
+# pop$set_superFishSize(5e5)
+# res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps, 1.93e3, F)
+# save(res_ibm_full, file = "res_ibm_hxT.Rdata")
+load("res_ibm_hxT.Rdata")
 ```
 
 <!-- ```{r} -->
@@ -175,7 +177,7 @@ save(res_ibm_full, file = "res_ibm_hxT.Rdata")
 
 ### Utilties
 
-```{r fig.height=7.5}
+```{r fig.wigth=9, fig.height=2.5}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -183,9 +185,10 @@ d = sim$max_avg_utils_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
 
 utils = array(data=d, dim=c(length(hvec),length(lfvec),length(tvec), 4))
 
-par(mfrow=c(2,2), mar=c(4,4,4,1))
+par(mfrow=c(1,4), mar=c(5,5,4,1), oma=c(1,1,1,1), cex.lab=1.2)
 for (i in 1:4){
-  image(x=hvec, y=tvec, z=utils[,1,,i], col=scales::viridis_pal()(100), zlim=c(0,1), main=c("ssb","yield","employment","profit")[i])
+  image(x=hvec, y=tvec, z=utils[,1,,i], col=scales::viridis_pal()(100), zlim=c(0,1), main=c("Spawning stock biomass","Yield","Employment","Profit")[i], 
+        xlab="Harvest proportion", ylab=expression("Temperature ("^o*"C)"))
 }
 
 
@@ -199,9 +202,10 @@ arr = res_ibm_full[,,,,1:4]
 
 ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
 scs = array(data=ss, dim=c(length(hvec),length(lfvec),length(tvec), 5))
-par(mfrow=c(2,3), mar=c(4,4,4,1))
+par(mfrow=c(2,3), mar=c(5,5,3,1), oma=c(1,1,1,1))
 for (i in 1:5){
-  image(x=hvec, y=tvec, z=scs[,1,,i], col=scales::viridis_pal()(100), zlim=c(0,1), main=c("Industrial", "Artisanal", "Emp. policymakers", "Profit. policymakers", "Conservationists")[i])
+  image(x=hvec, y=tvec, z=scs[,1,,i], col=scales::viridis_pal()(100), zlim=c(0,1), main=c("Industrial fishers", "Artisanal fishers", "Employment-prioritizing policymakers", "Profit-prioritizing policymakers", "Conservationists")[i], 
+        xlab="Harvest proportion", ylab=expression("Temperature ("^o*"C)"))
 }
 
 ```

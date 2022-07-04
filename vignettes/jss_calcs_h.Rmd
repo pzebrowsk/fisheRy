@@ -44,9 +44,9 @@ plot_timeseries = function(res_ibm, pop, h, nsteps=200){
   table(d$age)
   par(mfrow = c(4,3), mar=c(4,4,1,1))
   
-  plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="SSB (MT)", xlab="Year", col="cyan3", type="l")
+  plot(y=res_ibm$ssb/1e9, x=seq(1,nsteps,1), ylab="Spawning stock biomass (Mt)", xlab="Year", col="cyan3", type="l")
   
-  plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (MT)", xlab="Year", col="cyan3", type="l")
+  plot(y=res_ibm$yield/1e9, x=seq(1,nsteps,1), ylab="Yield (Mt)", xlab="Year", col="cyan3", type="l")
   
   plot(y=res_ibm$employment.sea, x=seq(1,nsteps,1), ylab="Employment at sea (person-years)", xlab="Year", col="cyan3", type="l")
   
@@ -86,7 +86,7 @@ pop_sq$set_superFishSize(1e6)
 h_sq = 0.05
 lf_sq = 45
 t_sq = 5.6
-nsteps_sq = 500
+nsteps_sq = 200
 res_ibm_sq = sim$simulate(pop_sq, lf_sq, h_sq, nsteps_sq, 1.93e3, t_sq, T)
 
 plot_timeseries(res_ibm_sq, pop_sq, h_sq, nsteps_sq)
@@ -113,7 +113,7 @@ matplot(y=utils, x=1:50, xlab="Years", ylab="Utilities", col=c("darkgreen", "dar
 Thus, we can plot the two populations together:
 
 ```{r}
-plot(c(res_ibm_sq$ssb, res_ibm$ssb)~seq(1,550), type="l", col="cyan3")
+plot(y=c(res_ibm_sq$ssb, res_ibm$ssb)/1e9, x=seq(1,250), type="l", col="cyan3", xlab="Year", ylab="SSB (MT)", lwd=2)
 ```
 
 ### Multiple populations
@@ -139,20 +139,20 @@ plot_hscan = function(res_ibm_full, nsteps=200){
   # dat$employment = dat$emp.sea+dat$emp.shr
   # dat$profit = dat$profit.sea+dat$profit.shr
   
-  
-  par(mfrow = c(4,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5)
-  matplot(ylab="ssb (MT)",y=cbind(dat_ibm$ssb), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="tsb (MT)",y=cbind(dat_ibm$tsb), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="yield (MT)",y=cbind(dat_ibm$yield), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="employment sea (PY)",y=cbind(dat_ibm$emp.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="employment shore (PY)",y=cbind(dat_ibm$emp.shr), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="profit sea (Bn NOK)",y=cbind(dat_ibm$profit.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="profit shore (Bn NOK)",y=cbind(dat_ibm$profit.shr), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab="Harvest prop")
-  matplot(ylab="Length %iles",y=cbind(dat_ibm$max_length, dat_ibm$length90), x=hvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab="Harvest prop")
-  matplot(ylab="dl ratio, r ratio",y=cbind(dat_ibm$factor_dg, dat_ibm$factor_dr), x=hvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab="Harvest prop")
-  matplot(ylab="Superfish",y=cbind(dat_ibm$nsuperfish), x=hvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab="Harvest prop")
-  matplot(ylab="Survival prob / Maturity",y=cbind(dat_ibm$p_survival, dat_ibm$maturity), x=hvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab="Harvest prop")
-  matplot(ylab="Survival prob / Maturity / Nrel",y=cbind(dat_ibm$p_survival, dat_ibm$maturity, dat_ibm$Nrel), x=hvec, type="l", col=c("cyan3", "magenta3", "yellow3"), lwd=1, lty=1, xlab="Harvest prop")
+  xname = "Harvest proportion"
+  par(mfrow = c(4,3), mar=c(7,7,1,1), oma=c(1,1,1,1), cex.lab=1.5, cex.axis=1.5)
+  matplot(ylab="Spawning stock\nbiomass (Mt)",y=cbind(dat_ibm$ssb), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab="Total stock\nbiomass (Mt)",y=cbind(dat_ibm$tsb), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab="Yield (Mt)",y=cbind(dat_ibm$yield), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab="Employment at\nsea (person-yrs)",y=cbind(dat_ibm$emp.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab="Employment on\nshore (person-yrs)",y=cbind(dat_ibm$emp.shr), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab=expression(atop("Profit at", "sea (10"^9*" NOK)")),y=cbind(dat_ibm$profit.sea), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab=expression(atop("Profit on", "shore (10"^9*" NOK)")),y=cbind(dat_ibm$profit.shr), x=hvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab = xname)
+  matplot(ylab="Length %iles",y=cbind(dat_ibm$max_length, dat_ibm$length90), x=hvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab = xname)
+  matplot(ylab="dl ratio, r ratio",y=cbind(dat_ibm$factor_dg, dat_ibm$factor_dr), x=hvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab = xname)
+  matplot(ylab="Superfish",y=cbind(dat_ibm$nsuperfish), x=hvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab = xname)
+  matplot(ylab="Survival prob / Maturity",y=cbind(dat_ibm$p_survival, dat_ibm$maturity), x=hvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab = xname)
+  matplot(ylab="Survival prob / Maturity / Nrel",y=cbind(dat_ibm$p_survival, dat_ibm$maturity, dat_ibm$Nrel), x=hvec, type="l", col=c("cyan3", "magenta3", "yellow3"), lwd=1, lty=1, xlab = xname)
   }
 
 ```
@@ -161,11 +161,12 @@ plot_hscan = function(res_ibm_full, nsteps=200){
 # pop$par$dsea = 0.054
 nsteps=50
 hvec = seq(0., 0.99, length.out=25)
-pop = pop_sq
-pop$set_superFishSize(5e5)
-res_ibm_full = sim$simulate_multi_2d(pop, c(5.6), lf, hvec, nsteps, 1.93e3, F)
-save(res_ibm_full, file = "res_ibm_h.Rdata")
+# pop = pop_sq
+# pop$set_superFishSize(5e5)
+# res_ibm_full = sim$simulate_multi_2d(pop, c(5.6), lf, hvec, nsteps, 1.93e3, F)
+# save(res_ibm_full, file = "res_ibm_h.Rdata")
 
+load("res_ibm_h.Rdata")
 plot_hscan(res_ibm_full, nsteps)
 ```
 
@@ -182,7 +183,7 @@ plot_hscan(res_ibm_full, nsteps)
 
 ### Utilties
 
-```{r fig.height=3}
+```{r fig.height=6}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -190,16 +191,16 @@ d = sim$max_avg_utils_2d(c(4,1, length(lfvec),length(hvec),50), arr)
 
 utils = array(data=d, dim=c(length(hvec),length(lfvec),1, 4))
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=matrix(data=d, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
+par(mfrow=c(1,1), mar=c(8,8,1,1), cex.lab=1.2)
+matplot(y=matrix(data=d, ncol=4), x=hvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1), ylab="Normalized\nutility components", xlab="Harvest proportion")
 abline(h=0, col="grey")
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
-legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F, ylim=c(0,1))
+legend(x = 0.7, y = 1, legend = c("Spawning stock biomass", "Yield", "Employment", "Profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
 
 
 ```
 
-### JSS
+### Stakeholder satisfaction
 
 ```{r fig.height=3}
 arr = res_ibm_full[,,,,1:4]
@@ -207,13 +208,14 @@ arr = res_ibm_full[,,,,1:4]
 lfvec = c(lf)
 ss = sim$stakeholder_satisfaction_2d(c(4,1, length(lfvec),length(hvec),50), arr)
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=matrix(data=ss, ncol=5), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+par(mfrow=c(2,1), mar=c(4,4,1,1))
+matplot(y=matrix(data=ss, ncol=5), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"), xlab="Harvest proportion", ylab="Stakeholder satisfaction")
 abline(h=0, col="grey")
-plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
-legend(x = 0.7, y = 1, legend = c("Industrial", "Artisanal", "Emp. policymakers", "Profit. policymakers", "Conservationists"), fill=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
+plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F, ylim=c(0,1))
+legend(x = 0.6, y = 1, legend = c("Industrial fishers", "Artisanal fishers", "Employment-prioritizing policymakers", "Profit-prioritizing policymakers", "Conservationists"), fill=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
 ```
 
+### JSS
 
 ```{r fig.height=3}
 mat = matrix(data=ss, ncol=5)
@@ -221,9 +223,9 @@ JSS_min = apply(mat, 1, min)
 JSS_mean = apply(mat, 1, mean)
 JSS_hmean = 1/apply(1/mat, 1, mean)
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
-matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
+par(mfrow=c(2,1), mar=c(4,4,1,1))
+matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=hvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"), ylab="Joint stakeholder\nsatisfaction", xlab="Harvest proportion")
 plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F, ylim=c(0,1))
-legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
+legend(x = 0.7, y = 1, legend = c("Arithmetic mean", "Harmonic mean", "Minimum"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
 
 ```

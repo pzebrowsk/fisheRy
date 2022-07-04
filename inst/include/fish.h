@@ -153,6 +153,7 @@ class Fish{
 	void grow(double tsb, double temp);
 
 	//double maturationProbability();   // return the probability of maturation
+	double maturationProb();
 	bool matureNow();		// check if fish should mature now, based on maturation probability
 	void updateMaturity();	
 	
