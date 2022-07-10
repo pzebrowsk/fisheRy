@@ -17,26 +17,46 @@ library(tidyverse)
 library(rfish)
 ```
 
-### Create a fish with default parameters
+## Simulating a fish
 
-A fish can be created by instancing an object of the Rcpp class `Fish`. Once created, the fish **must** be initialized using the `init()` function, which computes parameter values and sets the initial length of the fish. The function `init()` needs 2 arguments, the current total stock biomass (in kilotons) and current temperature (in deg C).
+### Creating a fish object
+
+A fish can be created by instancing an object of the Rcpp class `Fish`. Fish parameters should be specified by passing a parameters file to the constructor. 
+
+The format of the parameters file is `.ini`, which can be a simple text file containing key-value pairs, such as 
+```{r}
+# Parmaeters for NEA cod
+beta = 0.655793 # 0.648728
+r = 0.090367 # 0.077281
+c = 6.519584 # 6.318308 #6.51559
+```
+where text followed by `#` are comments as in R.
 
 
 ```{r }
-fish = new(Fish)
+params_file = "../params/cod_params.ini"
+fish = new(Fish, params_file)
+```
+
+After instantiation, the fish must be initialized using the `init()` function, which computes dependent parameter values and sets the initial length of the fish. The function `init()` needs 2 arguments, the current total stock biomass (in kilotons) and current temperature (in deg C).
+
+```{r}
 fish$init(tsb = 1.93e3, temp = 5.61)
 fish$t_birth
 fish$length
+fish$par$print()
 ```
 
 ### Change fish parameters
 
-Suppose we want to create a Fish with custom parameters. 
+Some fish parameters can be changed manually after instanciation of the fish object using the `par` object in the fish. 
 
-We can access and set parameters using the `par` object in the fish:
+<span style="color: red;">
+After manually changing parameters, the fish must be reinitialized using the same init() function as above.
+</span>
+
 
 ```{r}
-fish = new(Fish)
 fish$par$c = 6.5
 
 fish$par$c
@@ -46,11 +66,12 @@ fish$t_birth
 fish$length # Notice the change in initial length due to a change in the parameter 'c'
 ```
 
-Alternatively, create a parameters object, change the parameters as desired, and assign it to the fish. 
+Another way to change fish parameters is to create a parameters object, change the parameters as desired, and assign it to the fish. 
 
 ```{r}
 # Create parameters object
 fish.par = new(FishParams)
+fish.par$initFromFile(params_file)
 
 # Change specific parameter values
 fish.par$s0 = 0.09637
@@ -59,6 +80,7 @@ fish.par$s0 = 0.09637
 fish$par = fish.par
 
 fish$par$s0
+fish$init(1.93e3, 5.61)
 ```
 
 
@@ -74,9 +96,6 @@ To get the state of the fish, i.e., its length, age, maturation status, whether 
 + weight
 
 ```{r}
-fish = new(Fish)
-fish$init(tsb = 1.93e3, temp = 5.61)
-
 fish$get_state()
 ```
 
@@ -93,110 +112,6 @@ fish$set_age(fish$age+1) # The argument is the new age
 fish$length
 ```
 
-
-### Simulating a fish over multiple years
-
-Let us now simulate a fish starting at age 1 upto age 30, performing maturation, growth, and age increment every year in that order. We will record the fish length at each timestep so that we can plot the growth trajectory.
-
-```{r}
-fish = new(Fish)
-par = c(0.08094733, 187837572, 148.6918)
-fish$par$s0 = par[1] #0.07
-fish$par$Bhalf = par[2] #2.65e8
-fish$par$pmrn_lp50 = par[3] #118.122779*1.15
-
-fish$init(0, 5.61)
-years = 1:31
-length = numeric(31)
-for (i in years){
-  length[i] = fish$length
-  fish$updateMaturity()
-  fish$grow(0, 5.61)
-  fish$set_age(fish$age+1)
-}
-
-plot(length~years, xlab="Age", ylab="Length", type="l", lwd=2)
-```
-
-Now, since the growth trajectory of a fish depends on the age at which it matures, and since maturation is arandom process, let us simulate lots of fish and look at the possible growth trajectories. 
-
-```{r fig.width=4, fig.height=4}
-# NEW MODEL
-names = c("t_birth",	"age",	"isMature",	"isAlive",	"length",	"weight", "mort", "temp")
-dat_full = data.frame(data=matrix(nrow=0, ncol=length(names)))
-colnames(dat_full) = names
-N = 50
-plot(x=1, y=NA, xlim=c(0,31), ylim=c(0,250), xlab="Age", ylab = "Length")
-for (f in 1:N){
-  fish = new(Fish)
-  par = c(0.08094733, 187837572, 148.6918)
-  fish$par$s0 = par[1] #0.07
-  fish$par$Bhalf = par[2] #2.65e8
-  fish$par$pmrn_lp50 = par[3] #118.122779*1.15
-
-  dat = data.frame(data=matrix(nrow=0, ncol=length(names)))
-  colnames(dat) = names
-
-  fish$init(runif(1, min = 0, max = 1.93e3*3), rnorm(1, mean=5.61, sd=3))
-  dat[1,] = c(fish$get_state(), fish$naturalMortalityRate(5.61), 5.61)
-  
-  for (i in 2:30){
-    temp = rnorm(1, mean=5.61, sd=2)
-    fish$updateMaturity()
-    fish$grow(runif(1, min = 0, max = 1.93e3*3), temp)
-    fish$set_age(fish$age+1)
-    dat[i,] = c(fish$get_state(), fish$naturalMortalityRate(temp), temp)
-  }
-  points(dat$length~dat$age, type="l", col=rainbow(N)[f])
-  dat_full = rbind(dat_full, dat)
-}
-```
-
-#### Maturity
-
-```{r fig.width=4, fig.height=5}
-par(mfrow = c(2,1), mar=c(4,4,1,1))
-dat_full %>% group_by(age) %>% summarize(maturity = mean(isMature)) %>% with(plot(maturity~age, ylab="Maturity", xlab="Age", type="l", col="cyan3", lwd=2))
-dat_full %>% mutate(length_class = cut(length, breaks=20)) %>% group_by(length_class) %>% summarize(maturity = mean(isMature), length=mean(length)) %>% with(plot(maturity~length, ylab="Maturity", xlab="Length", type="l", col="cyan3", lwd=2))
-```
-
-
-#### Mortality
-
-```{r fig.height=5, fig.width=6}
-dat_full %>% ggplot(aes(y=mort, x=length, col=temp))+geom_point(alpha=0.5)+geom_jitter()+labs(x="Length", y=expression("Inst. natural mortality rate (yr"^"-1"*")"), col="Temp")+theme_classic(base_size = 20)+scale_color_viridis_c()+scale_y_log10()+scale_x_log10()
-
-tibble(length = seq(0,200,length.out=100)) %>% mutate(mort = 1/(1+exp(-0.1222*(length-45)))) %>% ggplot(aes(y=mort, x=length))+geom_line(col="red", size=2)+labs(x="Length", y="Fishing selectivity", col="Temp")+theme_classic(base_size = 25)
-
-dat_full %>% mutate(sel = 1/(1+exp(-0.1222*(length-45)))) %>% ggplot(aes(y=mort-log(1-0.4)*sel, x=length, col=temp))+geom_point(alpha=0.5)+geom_jitter()+labs(x="Length", y=expression("Inst. total mortality rate (yr"^"-1"*")"), col="Temp")+theme_classic(base_size = 20)+scale_color_viridis_c()+scale_y_log10()+scale_x_log10()
-
-```
-
-
-### Maturation
-
-```{r}
-fish = new(Fish)
-par = c(0.08094733, 187837572, 148.6918)
-fish$par$s0 = par[1] #0.07
-fish$par$Bhalf = par[2] #2.65e8
-fish$par$pmrn_lp50 = par[3] #118.122779*1.15
-
-fish$init(0, 5.61)
-
-lvec = seq(0,200, length.out = 100)
-avec = seq(1,31, length.out = 31)
-mat = matrix(nrow=100, ncol=31)
-for (ia in 1:31){
-  fish$set_age(avec[ia])
-  for (il in 1:100){
-    fish$set_length(lvec[il])
-    mat[il,ia] = fish$maturationProb()
-  }
-}
-
-image(x=avec, y=lvec, z=t(mat), col=scales::viridis_pal()(100), ylab="Length", xlab="Age",cex.lab=1.5)
-```
 
 ### Using different models for life processes
 
@@ -240,13 +155,13 @@ plot(dat$length~dat$age, type="l", xlab="Age", ylab="Length", col="black")
 
 
 
-### Beverton Holt Recruitment
+<!-- ### Beverton Holt Recruitment -->
 
-```{r}
-x = seq(0,10, length.out=100)
-y = 1/(1+x/0.17)
-plot(y~x, type="l", col="cyan3", xlab="Spawning stock biomass (Mt)", ylab = "Fraction of maximum recruits")
-```
+<!-- ```{r} -->
+<!-- x = seq(0,10, length.out=100) -->
+<!-- y = 1/(1+x/0.17) -->
+<!-- plot(y~x, type="l", col="cyan3", xlab="Spawning stock biomass (Mt)", ylab = "Fraction of maximum recruits") -->
+<!-- ``` -->
 
 
 

@@ -36,11 +36,14 @@ RCPP_MODULE(fish_module) {
 		.field("use_old_model_mat", &FishParams::use_old_model_mat)
 		.field("use_old_model_mor", &FishParams::use_old_model_mor)
 		.field("use_old_model_fec", &FishParams::use_old_model_fec)
+
+		.method("print", &FishParams::print)
+		.method("initFromFile", &FishParams::initFromFile)	
 	;
 
 	class_ <Fish>("Fish")
 		.constructor()
-//		.constructor<double>()
+		.constructor<std::string>()
 		
 		.field("age", &Fish::age)
 		.field("length", &Fish::length)
@@ -56,10 +59,11 @@ RCPP_MODULE(fish_module) {
 		.method("set_length", &Fish::set_length)
 
 		.method("init", &Fish::init)
-		.method("matureNow", &Fish::matureNow)
+		//.method("matureNow", &Fish::matureNow)
 		.method("maturationProb", &Fish::maturationProb)
 		.method("updateMaturity", &Fish::updateMaturity)
 		.method("grow", &Fish::grow)
+		.method("produceRecruits", &Fish::produceRecruits)
 		
 		.method("naturalMortalityRate", &Fish::naturalMortalityRate)
 		//.method("survivalProbability", &Fish::survivalProbability)

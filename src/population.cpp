@@ -50,6 +50,7 @@ void Population::init(int n, double tsb, double temp){
 	current_year = 1;
 	fishes.clear();
 	proto_fish.init(tsb, temp);
+	proto_fish.t_birth = current_year;
 	fishes.resize(n, proto_fish);
 //	if (par.use_old_model_effort) calc_athresh(tsb, temp);
 }
@@ -92,9 +93,9 @@ double Population::selectivity(double len){
 }
 
 
-double Population::calcRealizedFishingMortality(){
-	
-}
+//double Population::calcRealizedFishingMortality(){
+//	
+//}
 
 
 double Population::fishableBiomass(){
@@ -182,8 +183,8 @@ std::vector<double> Population::update(double temp){
 	for (auto &f: fishes) {
 		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 		if (f.isAlive && f.isMature){
-			nrecruits += f.produceRecruits() * par.n * (1/(1+ssb/f.par.Bhalf));
-			nrecruits_potential += f.produceRecruits() * par.n;
+			nrecruits += f.produceRecruits(ssb) * par.n; // * (1/(1+ssb/f.par.Bhalf));
+			nrecruits_potential += f.produceRecruits(0) * par.n;
 		}
 	}
 	//nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
@@ -247,6 +248,7 @@ std::vector<double> Population::update(double temp){
 	int nr = nrecruits/par.n;
 	if (nr <= 0) nr = 1;
 	proto_fish.init(tsb/1e6, temp);
+	++proto_fish.t_birth;
 	fishes.resize(fishes.size()+nr, proto_fish);
 
 	// calculate employment

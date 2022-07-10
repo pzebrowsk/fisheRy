@@ -9,7 +9,7 @@
 class PopulationParams {	
 	public:
 	// reproduction
-	double r0 = 21.77072;		// recruitment rate per kg SSB 
+	//double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
 //	double Bhalf = 3.65e8*10; ///5000;	// Half saturation constant of recruitment
 
@@ -74,18 +74,18 @@ class Population{
 	std::vector<double> carrying_capacity;
 	
 	public:
-	bool verbose = false;
+	bool verbose = false;          ///< Should population summary be printed at every update?
 	
 	public:
-	double K_fishableBiomass = 0;	
+	double K_fishableBiomass = 0;  ///< Fishable biomass under zero fishing pressure. This is set by the simulator
 	
 	public:
-	double current_year = 1;
+	double current_year = 1;       ///< Current simulation year
 
-	Fish proto_fish;	//  a copy of this fish is always used to initialize new fish in population
-	std::vector<Fish> fishes;
+	Fish proto_fish;	           ///< Prototype fish. A copy of this fish is always used to initialize new fish in population.
+	std::vector<Fish> fishes;      ///< Vector of all fish in the population
 	
-	PopulationParams par;	
+	PopulationParams par;	       ///< Socioeconomic parameters
 	
 	public:
 	Population(Fish f);
@@ -105,7 +105,7 @@ class Population{
 	double selectivity(double len);
 	double fishableBiomass();
 
-	double calcRealizedFishingMortality();
+	//double calcRealizedFishingMortality();
 	double effort(double Nr, double F, double temp);
 
 	std::vector<double> update(double temp = 5.6);

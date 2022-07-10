@@ -45,7 +45,7 @@ navbar:
           href: articles/single_fish.html
         - text: Simulating an unfished population
           icon: fa-fish
-          href: articles/fish_population.html
+          href: articles/unfished_population.html
         - text: Simulating a fished population
           icon: fa-fish
           href: articles/fished_population.html
