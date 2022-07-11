@@ -138,7 +138,7 @@ std::vector<double> Population::update(double temp){
 	// 1. Maturation
 	// update maturity 
 	for (auto& f: fishes){
-		f.updateMaturity();
+		f.updateMaturity(temp);
 	}
 	double maturity = 0, nspawners = 0;
 	for (auto& f : fishes) if (f.isAlive && f.isMature) {maturity += 1; nspawners += par.n;}

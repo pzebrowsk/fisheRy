@@ -63,13 +63,15 @@ inline double maturation_steepness(double pmrn_width, double pmrn_envelope){
 
 // [[Rcpp::export]]
 /// @brief Calculate the maturation probability given age \f$a\f$ and body length \f$l_a\f$,
-/// \f[m(a,l_a) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}}\right)}}\f]
+/// \f[m(a,l_a) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}} + \beta_3(T-T_\text{ref})\right)}}\f]
 /// @param steepness Steepness \f$d_m\f$ of the probabilistic maturation reaction norm (PMRN) as calculated by maturation_steepness()
 /// @param pmrn_slope Slope \f$s_m\f$ of the PMRN 
-/// @param pmrn_intercept Intercept \f$i_m\f$ of the PMRN 
-inline double maturation_probability(double age, double body_length, double steepness, double pmrn_slope, double pmrn_intercept){
+/// @param pmrn_intercept Intercept \f$i_m\f$ of the PMRN
+/// @param temp Temperature (deg C) 
+inline double maturation_probability(double age, double body_length, double temp, double Tref, double steepness, double pmrn_slope, double pmrn_intercept, double beta_3){
 	double pmrn_midpoint = pmrn_slope * age + pmrn_intercept;
-	double p = 1.0 / (1.0 + exp(- (body_length - pmrn_midpoint) / steepness));
+	double arg = (body_length - pmrn_midpoint)/steepness + beta_3*(temp - Tref);
+	double p = 1.0 / (1.0 + exp(-arg));
 	//std::cout << "p_mat: age = " << age << ", length = " << body_length << ", slope = " << pmrn_slope << ", int = " << pmrn_intercept << ", mid = " << pmrn_midpoint << ", steepness = " << steepness << ", p = " << p << "\n";
 	return p;  
 }

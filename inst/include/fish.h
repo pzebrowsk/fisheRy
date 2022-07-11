@@ -59,6 +59,7 @@ class FishParams {
 	// maturation
 	double pmrn_intercept; // = 18.399575;
 	double steepness;  // calculated by constructor
+	double beta3;
 
 	// reproducttion
 	double delta; // = 1820;
@@ -154,11 +155,11 @@ class Fish{
 	void grow(double tsb, double temp);
 
 	/// @brief Calculate the probability of maturation
-	double maturationProb();
+	double maturationProb(double temp);
 	// @brief Check if the fish should mature in the current year based on maturationProb()
-	//bool matureNow();		
+	//bool matureNow();
 	/// @brief Implement maturation is matureNow() returns true.
-	void updateMaturity();	
+	void updateMaturity(double temp);	
 	
 	/// @brief Calculate the instantaneous matural mortality rate
 	double naturalMortalityRate(double temp);

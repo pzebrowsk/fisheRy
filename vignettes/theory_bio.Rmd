@@ -105,7 +105,7 @@ years = 1:31
 length = numeric(31)
 for (i in years){
   length[i] = fish$length
-  fish$updateMaturity()
+  fish$updateMaturity(5.61)
   fish$grow(0, 5.61)
   fish$set_age(fish$age+1)
 }
@@ -117,11 +117,10 @@ plot(length~years, xlab="Age", ylab="Length", type="l", lwd=2)
 Now, since the growth trajectory of a fish depends on the age at which it matures, and since maturation is a random process, let us simulate lots of fish and look at the possible growth trajectories. 
 
 ```{r fig.width=4, fig.height=4}
-growth_trajectories = function(beta1=NULL, beta2=NULL){
+growth_trajectories = function(beta1=NULL, beta2=NULL, N=50){
   names = c("t_birth",	"age",	"isMature",	"isAlive",	"length",	"weight", "mort", "temp", "fec", "ssb")
   dat_full = data.frame(data=matrix(nrow=0, ncol=length(names)))
   colnames(dat_full) = names
-  N = 50
   plot(x=1, y=NA, xlim=c(0,31), ylim=c(0,250), xlab="Age", ylab = "Length")
   for (f in 1:N){
     fish = new(Fish, params_file)
@@ -139,7 +138,7 @@ growth_trajectories = function(beta1=NULL, beta2=NULL){
     for (i in 2:30){
       temp = rnorm(1, mean=5.61, sd=3)
       tsb = runif(1, min = 0, max = 1.93e3*3)
-      fish$updateMaturity()
+      fish$updateMaturity(temp)
       fish$grow(tsb, temp)
       fish$set_age(fish$age+1)
       dat[i,] = c(fish$get_state(), fish$naturalMortalityRate(temp), temp, fish$produceRecruits(0.8*tsb*1e6), 0.8*tsb) # Assuming SSB is 80% of TSB, since we are not simulating a population
@@ -152,15 +151,15 @@ growth_trajectories = function(beta1=NULL, beta2=NULL){
 ```
 
 ```{r}
-dat_full = growth_trajectories()
+dat_full = growth_trajectories(N=200)
 ```
 
 ## Decision to mature
 
-Decision to mature is defined by a probabilistic maturation reaction norm (PMRN), with a probability of maturing in the next year depending on age $a$ and length $l$,* given by the following equation.
+Decision to mature is defined by a probabilistic maturation reaction norm (PMRN), with a probability of maturing in the next year depending on age $a$, length $l$, and temperature $T$, given by the following equation,
 
 $$
-m(a,l_a) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}}\right)}},
+m(a,l_a,T) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}} + \beta_3(T-T_\text{ref})\right)}},
 $$
 
 with the steepness of the curve $d_m$ calculated as
@@ -181,7 +180,7 @@ fish$init(0, 5.61)
 calc_maturation_prob1 = function(a,l){
   fish$set_age(a)
   fish$set_length(l)
-  p = fish$maturationProb()
+  p = fish$maturationProb(5.61)
   p
 }
 
@@ -208,7 +207,9 @@ dat_full %>% group_by(age) %>% summarize(maturity = mean(isMature)) %>% with(plo
 dat_full %>% mutate(length_class = cut(length, breaks=20)) %>% group_by(length_class) %>% summarize(maturity = mean(isMature), length=mean(length)) %>% with(plot(maturity~length, ylab="Maturity", xlab="Length", type="l", col="cyan3", lwd=2))
 ```
 
-
+```{r}
+dat_full %>% mutate(length_class = ave(length, cut(length, breaks=20)), temp_class = ave(temp, cut(temp, breaks=5))) %>% group_by(length_class, temp_class) %>% summarize(maturity = mean(isMature)) %>% ggplot() + geom_line(aes(y=maturity, x=length_class, group=temp_class, colour=temp_class))+scale_colour_viridis_c()+theme_classic(base_size = 20)+labs(x="Length", y="Maturity", colour="T")
+```
 Parameters for maturation process are listed in the following
 table:
 

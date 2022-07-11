@@ -88,10 +88,10 @@ double Fish::naturalMortalityRate(double temp){
 }
 
 
-double Fish::maturationProb(){
+double Fish::maturationProb(double temp){
 	double maturation_prob;
 	if (par.use_old_model_mat) maturation_prob = (age > par.amax)? 1 : par.ma[age];
-	else                       maturation_prob = fish::maturation_probability(age, length, par.steepness, par.pmrn_slope, par.pmrn_intercept);
+	else                       maturation_prob = fish::maturation_probability(age, length, temp, par.Tref, par.steepness, par.pmrn_slope, par.pmrn_intercept, par.beta3);
 	return maturation_prob;
 }
 
@@ -108,8 +108,8 @@ double Fish::maturationProb(){
 // }
 // 
 
-void Fish::updateMaturity(){
-	isMature = isMature || ((rand()/double(RAND_MAX)) <= maturationProb());	
+void Fish::updateMaturity(double temp){
+	isMature = isMature || ((rand()/double(RAND_MAX)) <= maturationProb(temp));	
 }
 
 
@@ -268,6 +268,9 @@ void FishParams::initFromFile(std::string params_file){
 	READ_PAR(cT); // = 0.196;
 	READ_PAR(Tref); // = 5.6;
 
+	// temperature dependence of maturation
+	READ_PAR(beta3); // = 0.196;
+	
 	#undef READ_PAR
 
 	init();	
@@ -320,6 +323,7 @@ void FishParams::print(){
 	// maturation
 	PRINT_PAR(pmrn_intercept); // = 18.399575;
 	PRINT_PAR(steepness);  // calculated by constructor
+	PRINT_PAR(beta3);  // calculated by constructor
 
 	// reproducttion
 	PRINT_PAR(delta); // = 1820;
