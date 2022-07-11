@@ -143,7 +143,7 @@ growth_trajectories = function(beta1=NULL, beta2=NULL, N=50){
       fish$set_age(fish$age+1)
       dat[i,] = c(fish$get_state(), fish$naturalMortalityRate(temp), temp, fish$produceRecruits(0.8*tsb*1e6), 0.8*tsb) # Assuming SSB is 80% of TSB, since we are not simulating a population
     }
-    points(dat$length~dat$age, type="l", col=rainbow(N)[f])
+    points(dat$length~dat$age, type="l", col=scales::alpha(rainbow(N)[f], 0.3))
     dat_full = rbind(dat_full, dat)
   }
   dat_full
@@ -177,10 +177,10 @@ avec = seq(1,31, length.out = 31)
 fish = new(Fish, params_file)
 fish$init(0, 5.61)
 
-calc_maturation_prob1 = function(a,l){
+calc_maturation_prob1 = function(a,l, temp=5.61){
   fish$set_age(a)
   fish$set_length(l)
-  p = fish$maturationProb(5.61)
+  p = fish$maturationProb(temp)
   p
 }
 
@@ -188,6 +188,11 @@ calc_maturation_prob1 = function(a,l){
 list(lvec = seq(0,200, length.out = 100), avec = seq(1,31, length.out = 31)) %>% cross_df() %>% mutate(prob = purrr::map2_dbl(avec, lvec, ~calc_maturation_prob1(.x, .y))) %>% 
 ggplot() + 
 geom_raster(aes(x=avec, y=lvec, fill=prob)) + scale_fill_viridis_c() + labs(x="Age", y="Length") + theme_classic(base_size=20)
+
+
+list(lvec = seq(0,200, length.out = 100), temp = c(4.61,5.61,6.61)) %>% cross_df() %>% mutate(prob = purrr::map2_dbl(lvec, temp, ~calc_maturation_prob1(a=10, l=.x, temp = .y))) %>% 
+ggplot() + 
+geom_line(aes(x=lvec, y=prob, group=temp, col=temp)) + scale_colour_viridis_c() + labs(x="Length", y="Maturation probability") + theme_classic(base_size=20)
 
 ```
 
@@ -207,9 +212,10 @@ dat_full %>% group_by(age) %>% summarize(maturity = mean(isMature)) %>% with(plo
 dat_full %>% mutate(length_class = cut(length, breaks=20)) %>% group_by(length_class) %>% summarize(maturity = mean(isMature), length=mean(length)) %>% with(plot(maturity~length, ylab="Maturity", xlab="Length", type="l", col="cyan3", lwd=2))
 ```
 
-```{r}
-dat_full %>% mutate(length_class = ave(length, cut(length, breaks=20)), temp_class = ave(temp, cut(temp, breaks=5))) %>% group_by(length_class, temp_class) %>% summarize(maturity = mean(isMature)) %>% ggplot() + geom_line(aes(y=maturity, x=length_class, group=temp_class, colour=temp_class))+scale_colour_viridis_c()+theme_classic(base_size = 20)+labs(x="Length", y="Maturity", colour="T")
-```
+<!-- ```{r} -->
+<!-- dat_full %>% mutate(length_class = ave(length, cut(length, breaks=20)), temp_class = ave(temp, cut(temp, breaks=10))) %>% group_by(length_class, temp_class) %>% summarize(maturity = mean(isMature)) %>% ggplot() + geom_line(aes(y=maturity, x=length_class, group=temp_class, colour=temp_class))+scale_colour_viridis_c()+theme_classic(base_size = 20)+labs(x="Length", y="Maturity", colour="T") -->
+<!-- ``` -->
+
 Parameters for maturation process are listed in the following
 table:
 
