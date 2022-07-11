@@ -7,7 +7,10 @@ using namespace Rcpp;
 RCPP_EXPOSED_CLASS(Fish);
 RCPP_EXPOSED_CLASS(FishParams);
 
-RCPP_EXPOSED_ENUM_NODECL(Model)
+RCPP_EXPOSED_ENUM_NODECL(GrowthModel)
+RCPP_EXPOSED_ENUM_NODECL(MaturationModel)
+RCPP_EXPOSED_ENUM_NODECL(MortalityModel)
+RCPP_EXPOSED_ENUM_NODECL(RecruitmentModel)
 
 RCPP_MODULE(fish_module) {
 	

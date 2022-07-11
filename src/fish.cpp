@@ -34,7 +34,7 @@ void Fish::init(double tsb, double temp){
 	set_age(1);
 	
 	/// - In Joshi et al model, length at age 1 is explicitly calculated using length, temperature, and TSB, at birth.
-	if (par.growth_model == Model::Joshi23){
+	if (par.growth_model == GrowthModel::Bioenergetic){
 		// calc length at age 1
 		double tsb_ano = tsb - par.tsbmean;
 		double temp_ano = temp - par.Tmean;
@@ -50,7 +50,7 @@ void Fish::set_age(int _a){
 
 	/// In Dankel model, length is a direct function of age.
 	/// Hence, setting age automatically sets length in the Dankel et al model.
-	if (par.growth_model == Model::Dankel22){
+	if (par.growth_model == GrowthModel::Dankel22){
 		length = par.l8*(1-exp(-par.kappa*(age-par.a0)));
 		set_length(length);
 	}
@@ -59,7 +59,7 @@ void Fish::set_age(int _a){
 void Fish::set_length(double s){
 	length = s;
 	
-	if (par.growth_model == Model::Dankel22){ 
+	if (par.growth_model == GrowthModel::Dankel22){ 
 		weight = par.theta*pow(length, par.zeta);  // Eq. 2
 	}
 	else{
@@ -76,23 +76,28 @@ double Fish::naturalMortalityRate(double temp){
 	double rate;
 	if (age > par.amax) return 1e20; // FIXME: use inf
 	else {
-		if (par.use_old_model_mor){
+		if (par.mortality_model == MortalityModel::Dankel22){
 		   	if (isMature) rate = par.mam[age]; 
 			else          rate = par.mai[age]; 
 			return rate;
 		}
-		else {
+		else if (par.mortality_model == MortalityModel::Bioenergetic){
 			return fish::natural_mortality(length, temp, par.M0, par.gamma3, par.alpha3, par.Lref, par.Tref, par.cT);
+		}
+		else{
+			throw std::runtime_error("Invalid mortality model specified");
 		}
 	}
 }
 
 
 double Fish::maturationProb(double temp){
-	double maturation_prob;
-	if (par.use_old_model_mat) maturation_prob = (age > par.amax)? 1 : par.ma[age];
-	else                       maturation_prob = fish::maturation_probability(age, length, temp, par.Tref, par.steepness, par.pmrn_slope, par.pmrn_intercept, par.beta3);
-	return maturation_prob;
+	if (par.maturation_model == MaturationModel::Dankel22) 
+		return (age > par.amax)? 1 : par.ma[age];
+	else if (par.maturation_model == MaturationModel::Bioenergetic) 
+		return fish::maturation_probability(age, length, temp, par.Tref, par.steepness, par.pmrn_slope, par.pmrn_intercept, par.beta3);
+	else 
+		throw std::runtime_error("Invalid maturation model specified");
 }
 
 
@@ -122,11 +127,11 @@ void Fish::updateMaturity(double temp){
 /// i.e., there is not density constraint on growth. real increment is calculated using the actual tsb.
 /// Actual length increment is based on the real increment. Potential increment is for analysis purposes.
 void Fish::grow(double tsb, double temp){
-	if (par.growth_model == Model::Dankel22){
+	if (par.growth_model == GrowthModel::Dankel22){
 		// do nothing. age is incremented by population update
 		gsi_effective = par.gsi; // required if new fecundity model is used in combination with old growth model
 	}
-	else if (par.growth_model == Model::Joshi23){
+	else if (par.growth_model == GrowthModel::Bioenergetic){
 		double tsb_ano = tsb - par.tsbmean;
 		double temp_ano = temp - par.Tmean;
 		
@@ -168,16 +173,30 @@ void Fish::grow(double tsb, double temp){
 /// - \f$s_0\f$ is the survival probability of offspring until recruitment
 /// - \f$1/(1+S/B_{1/2})\f$ is the probability of survival during recruitment. This is modelled as a Beverton-Holt function.
 double Fish::produceRecruits(double ssb){
-	if (par.use_old_model_fec){
+	if (par.recruitment_model == RecruitmentModel::BevertonHoltDirect){
 		double recruits = par.r0 * weight;
 		recruits *= 1 / (1 + ssb/par.Bhalf); 
 		return recruits;
 	}
-	else{
+	else if (par.recruitment_model == RecruitmentModel::RickerDirect){
+		double recruits = par.r0 * weight;
+		recruits *= exp(-ssb/par.Bhalf);
+		return recruits;
+	}
+	else if (par.recruitment_model == RecruitmentModel::BevertonHoltBioenergetic){
 		double eggs = fish::fecundity(weight, par.delta, gsi_effective);  // Total eggs produced
 		eggs *= par.s0;                                     // offspring surviving through first year
-	    double recruits = eggs * 1 / (1 + ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
+		double recruits = eggs * 1 / (1 + ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
 		return recruits; 
+	}
+	else if (par.recruitment_model == RecruitmentModel::RickerBioenergetic){
+		double eggs = fish::fecundity(weight, par.delta, gsi_effective);  // Total eggs produced
+		eggs *= par.s0;                                 // offspring surviving through first year
+		double recruits = eggs * exp(-ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
+		return recruits; 
+	}
+	else{
+		throw std::runtime_error("Invalid recruitment model specified");
 	}
 }
 
@@ -226,6 +245,11 @@ void FishParams::init(){
 	alpha3 = Mref;
 	gamma3 = -b;
 	
+	growth_model = growth_names_map.at(growth_model_name);
+	maturation_model = maturation_names_map.at(maturation_model_name);
+	mortality_model = mortality_names_map.at(mortality_model_name);
+	recruitment_model = recruitment_names_map.at(recruitment_model_name);
+	
 //		s0 = (growth_model == Joshi23)? 0.02 : 0.09637;
 }
 
@@ -270,8 +294,13 @@ void FishParams::initFromFile(std::string params_file){
 
 	// temperature dependence of maturation
 	READ_PAR(beta3); // = 0.196;
-	
+
 	#undef READ_PAR
+	
+	growth_model_name = I.get<string>("growth_model_name");
+	recruitment_model_name = I.get<string>("recruitment_model_name");
+	mortality_model_name = I.get<string>("mortality_model_name");
+	maturation_model_name = I.get<string>("maturation_model_name");
 
 	init();	
 }
@@ -331,6 +360,12 @@ void FishParams::print(){
 	// mortality
 	PRINT_PAR(gamma3); // = -1.20565;
 	PRINT_PAR(alpha3); // = 0.57792;
+
+	cout << "growth_model = " << growth_model_name << " (" << int(growth_model) << ")\n";
+	cout << "recruitment_model = " << recruitment_model_name << " (" << int(recruitment_model) << ")\n";
+	cout << "mortality_model = " << mortality_model_name << " (" << int(mortality_model) << ")\n";
+	cout << "maturation_model = " << maturation_model_name << " (" << int(maturation_model) << ")\n";
+
 
 	#undef PRINT_PAR	
 }

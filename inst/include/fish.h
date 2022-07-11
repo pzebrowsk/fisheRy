@@ -2,12 +2,31 @@
 #define RFISH_FISH_H_
 
 #include <vector>
+#include <map>
 #include "functions.h"
 #include "initializer_v2.h"
 
-enum class Model {Dankel22, Joshi23};
+enum class GrowthModel       {Dankel22, Bioenergetic};
+enum class MaturationModel   {Dankel22, Bioenergetic};
+enum class MortalityModel    {Dankel22, Bioenergetic};
+enum class RecruitmentModel  {BevertonHoltDirect, BevertonHoltBioenergetic, RickerDirect, RickerBioenergetic};
 
 class FishParams {
+	private:
+	std::map<std::string, GrowthModel> growth_names_map{{"Dankel22", GrowthModel::Dankel22}, 
+	                                                    {"Bioenergetic", GrowthModel::Bioenergetic}};
+
+	std::map<std::string, MaturationModel> maturation_names_map{{"Dankel22", MaturationModel::Dankel22}, 
+	                                                            {"Bioenergetic", MaturationModel::Bioenergetic}};
+
+	std::map<std::string, MortalityModel> mortality_names_map{{"Dankel22", MortalityModel::Dankel22}, 
+	                                                          {"Bioenergetic", MortalityModel::Bioenergetic}};
+
+	std::map<std::string, RecruitmentModel> recruitment_names_map{{"BevertonHoltDirect", RecruitmentModel::BevertonHoltDirect}, 
+	                                                              {"BevertonHoltBioenergetic", RecruitmentModel::BevertonHoltBioenergetic},
+	                                                              {"RickerDirect", RecruitmentModel::RickerDirect}, 
+	                                                              {"RickerBioenergetic", RecruitmentModel::RickerBioenergetic}};
+	
 	public:
 	// Original parameters (from file) North Arctic cod
 	//double amax = 20;
@@ -94,7 +113,16 @@ class FishParams {
 	// debug
 	int flag = 0;
 	
-	Model growth_model = Model::Joshi23;
+	std::string growth_model_name;
+	std::string maturation_model_name;
+	std::string mortality_model_name;
+	std::string recruitment_model_name;
+	
+	GrowthModel growth_model;
+	MaturationModel maturation_model;
+	MortalityModel mortality_model;
+	RecruitmentModel recruitment_model;
+
 	bool use_old_model_mat = false;
 	bool use_old_model_fec = false;
 	bool use_old_model_mor = false;
