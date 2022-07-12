@@ -82,6 +82,7 @@ class FishParams {
 
 	// reproducttion
 	double delta; // = 1820;
+	double beta4;
 	
 	// mortality
 	double gamma3; // = -1.20565;
@@ -194,7 +195,8 @@ class Fish{
 
 	/// @brief Calculate the number of surviving recruits produced based on egg production and offspring survival until recruitment.
 	/// @param ssb Total spawning stock biomass \f$S\f$ of the population (kg)
-	double produceRecruits(double ssb);
+	/// @param temp Temperature (deg C)
+	double produceRecruits(double ssb, double temp);
 
 	void print();
 	void print_line();

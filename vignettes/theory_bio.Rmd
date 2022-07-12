@@ -141,7 +141,7 @@ growth_trajectories = function(beta1=NULL, beta2=NULL, N=50){
       fish$updateMaturity(temp)
       fish$grow(tsb, temp)
       fish$set_age(fish$age+1)
-      dat[i,] = c(fish$get_state(), fish$naturalMortalityRate(temp), temp, fish$produceRecruits(0.8*tsb*1e6), 0.8*tsb) # Assuming SSB is 80% of TSB, since we are not simulating a population
+      dat[i,] = c(fish$get_state(), fish$naturalMortalityRate(temp), temp, fish$produceRecruits(0.8*tsb*1e6, temp), 0.8*tsb) # Assuming SSB is 80% of TSB, since we are not simulating a population
     }
     points(dat$length~dat$age, type="l", col=scales::alpha(rainbow(N)[f], 0.3))
     dat_full = rbind(dat_full, dat)
@@ -151,7 +151,7 @@ growth_trajectories = function(beta1=NULL, beta2=NULL, N=50){
 ```
 
 ```{r}
-dat_full = growth_trajectories(N=200)
+dat_full = growth_trajectories(N=50)
 ```
 
 ## Decision to mature

@@ -172,7 +172,8 @@ void Fish::grow(double tsb, double temp){
 /// The number of surviving eggs is then calculated by applying two survival probabilities:
 /// - \f$s_0\f$ is the survival probability of offspring until recruitment
 /// - \f$1/(1+S/B_{1/2})\f$ is the probability of survival during recruitment. This is modelled as a Beverton-Holt function.
-double Fish::produceRecruits(double ssb){
+double Fish::produceRecruits(double ssb, double temp){
+	double temp_ano = temp - par.Tref;
 	if (par.recruitment_model == RecruitmentModel::BevertonHoltDirect){
 		double recruits = par.r0 * weight;
 		recruits *= 1 / (1 + ssb/par.Bhalf); 
@@ -180,7 +181,7 @@ double Fish::produceRecruits(double ssb){
 	}
 	else if (par.recruitment_model == RecruitmentModel::RickerDirect){
 		double recruits = par.r0 * weight;
-		recruits *= exp(-ssb/par.Bhalf);
+		recruits *= exp(par.beta4*temp_ano) * pow(2, -ssb/par.Bhalf);
 		return recruits;
 	}
 	else if (par.recruitment_model == RecruitmentModel::BevertonHoltBioenergetic){
@@ -192,7 +193,7 @@ double Fish::produceRecruits(double ssb){
 	else if (par.recruitment_model == RecruitmentModel::RickerBioenergetic){
 		double eggs = fish::fecundity(weight, par.delta, gsi_effective);  // Total eggs produced
 		eggs *= par.s0;                                 // offspring surviving through first year
-		double recruits = eggs * exp(-ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
+		double recruits = eggs * exp(par.beta4*temp_ano) * pow(2, -ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
 		return recruits; 
 	}
 	else{
@@ -292,8 +293,9 @@ void FishParams::initFromFile(std::string params_file){
 	READ_PAR(cT); // = 0.196;
 	READ_PAR(Tref); // = 5.6;
 
-	// temperature dependence of maturation
+	// temperature dependence of maturation and recruitment
 	READ_PAR(beta3); // = 0.196;
+	READ_PAR(beta4); // = 0.196;
 
 	#undef READ_PAR
 	
@@ -360,6 +362,8 @@ void FishParams::print(){
 	// mortality
 	PRINT_PAR(gamma3); // = -1.20565;
 	PRINT_PAR(alpha3); // = 0.57792;
+
+	PRINT_PAR(beta4);  // calculated by constructor
 
 	cout << "growth_model = " << growth_model_name << " (" << int(growth_model) << ")\n";
 	cout << "recruitment_model = " << recruitment_model_name << " (" << int(recruitment_model) << ")\n";
