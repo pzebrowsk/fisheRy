@@ -35,10 +35,11 @@ RCPP_MODULE(fish_module) {
 		.field("s0", &FishParams::s0)
 		.field("Bhalf", &FishParams::Bhalf)
 		.field("pmrn_lp50", &FishParams::pmrn_lp50)
-		.field("growth_model", &FishParams::growth_model)
-		.field("use_old_model_mat", &FishParams::use_old_model_mat)
-		.field("use_old_model_mor", &FishParams::use_old_model_mor)
-		.field("use_old_model_fec", &FishParams::use_old_model_fec)
+		.field("growth_model_name", &FishParams::growth_model_name)
+		.field("maturation_model_name", &FishParams::maturation_model_name)
+		.field("mortality_model_name", &FishParams::mortality_model_name)
+		.field("recruitment_model_name", &FishParams::recruitment_model_name)
+		.field("r0", &FishParams::r0)
 
 		.method("print", &FishParams::print)
 		.method("initFromFile", &FishParams::initFromFile)	
@@ -79,10 +80,16 @@ RCPP_MODULE(fish_module) {
 #include "population.h"
 
 RCPP_EXPOSED_CLASS(PopulationParams);
+RCPP_EXPOSED_CLASS(SeaEnvironment);
 
 
 ////RCPP_EXPOSED_AS(Population);
 RCPP_MODULE(population_module){
+	class_ <SeaEnvironment>("SeaEnvironment")
+		.field("temperature", &SeaEnvironment::temperature)
+		.field("recruitment_noise_multiplier", &SeaEnvironment::recruitment_noise_multiplier)
+	;
+
 	class_ <PopulationParams>("PopulationParams")
 		.constructor()
 		.field("n", &PopulationParams::n)
@@ -96,6 +103,7 @@ RCPP_MODULE(population_module){
 	class_ <Population>("Population")
 		.constructor<Fish>()
 		.field("par", &Population::par)
+		.field("env", &Population::env)
 		.field("verbose", &Population::verbose)
 		.field("K", &Population::K_fishableBiomass)
 		
@@ -116,6 +124,9 @@ RCPP_MODULE(population_module){
 		.method("summarize", &Population::summarize)
 		.method("print_summary", &Population::print_summary)
 		.method("nfish", &Population::nfish)
+
+		.method("readEnvironmentFile", &Population::readEnvironmentFile)
+		.method("updateEnv", &Population::updateEnv)
 	;
 }
 

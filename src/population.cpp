@@ -4,8 +4,62 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
+
+int Population::readEnvironmentFile(std::string filename){
+	
+	ifstream fin(filename.c_str());
+	if (!fin) throw std::runtime_error("Could not open file: " + filename);
+	
+	// skip header
+	std::string line;
+	getline(fin, line);
+	
+	// read CO2 file
+	while (fin.peek() != EOF){
+		std::getline(fin, line);
+	
+		std::stringstream lineStream(line);
+
+		std::string cell;
+		
+		std::getline(lineStream, cell, ',');
+		int year = stoi(cell);
+
+		SeaEnvironment env;
+
+		std::getline(lineStream, cell, ',');
+		env.temperature = stod(cell);
+		
+		std::getline(lineStream, cell, ',');
+		env.recruitment_noise_multiplier = stod(cell);
+		
+		t_env.push_back(year);
+		v_env.push_back(env);
+	}
+	
+	//for (int i=0; i<t_env.size(); ++i) cout << "env: " << t_env[i] << " " << v_env[i].temperature << "\n";
+		
+	return 0;
+
+}
+
+void Population::updateEnv(double t){
+	if (par.update_env){
+		int id = (t - *t_env.begin());
+		int D = t_env.size(); // NEVER USE UNSIGNED INTs in modulo operations. Hence store in int.
+		id = id % D;
+		if (id < 0) id += D;
+	
+		//cout << "update: t = " << t << " " << id << " " << t_env[id] << " " << v_env[id].temperature << " (" << *t_env.begin() << ", " << t_env.size() << ")\n";	
+		env = v_env[id];
+	}
+}
+
+
 
 Population::Population(Fish f) : proto_fish(f){
 //	proto_fish = f;

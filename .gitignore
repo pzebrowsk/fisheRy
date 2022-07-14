@@ -16,3 +16,5 @@ gmon.out
 **/*.test
 docs
 *.html
+*.csv
+*.xlsx

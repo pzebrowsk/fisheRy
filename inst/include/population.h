@@ -8,6 +8,7 @@
 
 class PopulationParams {	
 	public:
+	bool update_env = true;
 	// reproduction
 	//double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;
@@ -68,12 +69,24 @@ class PopulationSummary{
 };
 
 
+class SeaEnvironment{
+	public:
+	double temperature = 5.61;
+	double recruitment_noise_multiplier = 1;
+};
+
+
 class Population{
 	private:
 	std::vector<double> vage, vfreq, vlen, vmat;
 	std::vector<double> carrying_capacity;
-	
+
 	public:
+	// SeaEnvironment
+	SeaEnvironment env;
+	std::vector<int> t_env;
+	std::vector<SeaEnvironment> v_env;
+
 	bool verbose = false;          ///< Should population summary be printed at every update?
 	
 	public:
@@ -91,6 +104,9 @@ class Population{
 	Population(Fish f);
 	
 	void set_superFishSize(double _n);
+
+	int readEnvironmentFile(std::string filename);
+	void updateEnv(double t);
 
 	// OLD MODEL EFFORT DYNAMICS
 	void calc_athresh(double tsb0, double temp);
