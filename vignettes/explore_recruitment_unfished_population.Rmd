@@ -80,5 +80,5 @@ explore(r0 = 21.77, Bhalf = 3.65e8, s0 = 0.09637, grow = "Dankel22", mat = "Dank
 ### Old fecundity model with Ricker density dependence
 
 ```{r}
-explore(r0 = NA, Bhalf = 5.3e8, s0 = 0.18, grow = "Dankel22", mat = "Dankel22", mort = "Dankel22", recr = "RickerDirect")
+explore(r0 = NA, Bhalf = 5.3e8, s0 = 0.15, grow = "Dankel22", mat = "Dankel22", mort = "Dankel22", recr = "RickerBioenergetic")
 ```
