@@ -40,6 +40,7 @@ RCPP_MODULE(fish_module) {
 		.field("mortality_model_name", &FishParams::mortality_model_name)
 		.field("recruitment_model_name", &FishParams::recruitment_model_name)
 		.field("r0", &FishParams::r0)
+		.field("M0", &FishParams::M0)
 
 		.method("print", &FishParams::print)
 		.method("initFromFile", &FishParams::initFromFile)	

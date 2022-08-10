@@ -15,6 +15,7 @@ class PopulationParams {
 //	double Bhalf = 3.65e8*10; ///5000;	// Half saturation constant of recruitment
 
 //	double s0 = 0.1126797; //0.11;          // Egg survival propbability
+	int recruitmentAge = 3;
 
 	// management / fishing selectivity
 	double sf = 0.1222;	// steepness of selectivity curve
@@ -82,6 +83,16 @@ class Population{
 	std::vector<double> carrying_capacity;
 
 	public:
+	// names of variables returned by Population::upodate()
+	std::vector<std::string> colnames = 
+	    {"ssb", "yield", "employment", "profit",
+	     "employment.sea", "employment.shore", 
+	     "profit.sea", "profit.shore", "tsb", 
+	     "r0", "nrecruits", "nfish_ra", "nsuperfish",
+	     "factor_dg", "factor_dr", "max_length", "length90", 
+	     "survival_mean", "maturity", "Nrel"};
+
+	public:
 	// SeaEnvironment
 	SeaEnvironment env;
 	std::vector<int> t_env;
@@ -117,7 +128,10 @@ class Population{
 
 	std::vector<double> noFishingEquilibriate(double tsb0, double temp);	
 
-	double calcSSB();	
+	double calcSSB();
+	double calcTSB();
+	std::vector<double> calcSB();
+
 	double selectivity(double len);
 	double fishableBiomass();
 

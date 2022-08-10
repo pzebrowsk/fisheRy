@@ -18,3 +18,4 @@ docs
 *.html
 *.csv
 *.xlsx
+.vscode

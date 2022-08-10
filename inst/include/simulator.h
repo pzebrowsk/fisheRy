@@ -12,6 +12,7 @@ class Simulator{
 	Population noFishingPop;
 	
 	public:
+	bool verbose = false;
 
 	public:
 	Simulator(Fish f);

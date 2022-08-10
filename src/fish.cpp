@@ -16,7 +16,7 @@ Fish::Fish(double tb){
 Fish::Fish(string params_file){
 	t_birth = 0;
 	par.initFromFile(params_file);
-	par.print();
+	//par.print();
 }
 
 //Fish::Fish(double xb, double tb){
@@ -256,7 +256,7 @@ void FishParams::init(){
 
 void FishParams::initFromFile(std::string params_file){
 	io::Initializer I;
-	I.parse(params_file);
+	I.parse(params_file, false, verbose);
 
 	#define READ_PAR(x) x = I.get<double>(#x)
 
@@ -364,6 +364,7 @@ void FishParams::print(){
 	PRINT_PAR(alpha3); // = 0.57792;
 
 	PRINT_PAR(beta4);  // calculated by constructor
+	PRINT_PAR(verbose);  // calculated by constructor
 
 	cout << "growth_model = " << growth_model_name << " (" << int(growth_model) << ")\n";
 	cout << "recruitment_model = " << recruitment_model_name << " (" << int(recruitment_model) << ")\n";

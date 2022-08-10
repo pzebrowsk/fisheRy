@@ -211,12 +211,13 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	if (re_init) pop.init(1000, tsb0, temp);
 //	pop.print_summary();
 
-	vector<string> colnames = {"ssb", "yield", "employment", "profit",
-	                           "employment.sea", "employment.shore", 
-	                           "profit.sea", "profit.shore", "tsb", 
-	                           "r0", "nrecruits", "nsuperfish",
-	                           "factor_dg", "factor_dr", "max_length", "length90", 
-	                           "survival_mean", "maturity", "Nrel"};
+	vector<string> colnames = pop.colnames;
+	// vector<string> colnames = {"ssb", "yield", "employment", "profit",
+	//                            "employment.sea", "employment.shore", 
+	//                            "profit.sea", "profit.shore", "tsb", 
+	//                            "r0", "nrecruits", "nfish_ra", "nsuperfish",
+	//                            "factor_dg", "factor_dr", "max_length", "length90", 
+	//                            "survival_mean", "maturity", "Nrel"};
 
 	vector<vector<double>> columns(colnames.size());
 	for (auto& vec : columns) vec.reserve(nyears);
@@ -232,7 +233,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	}
 
 	for (int i=0; i<columns.size(); ++i){	
-		cout << "Adding columns[" << i << "] = " << colnames[i] << endl; 
+		if (verbose) cout << "Adding columns[" << i << "] = " << colnames[i] << endl; 
 		df.push_back(columns[i], colnames[i]);
 	}
 	
