@@ -99,6 +99,7 @@ RCPP_MODULE(population_module){
 //		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
 //		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
 		.field("dsea", &PopulationParams::dsea)
+		.field("recruitmentAge", &PopulationParams::recruitmentAge)
 	;
 	
 	class_ <Population>("Population")
@@ -107,7 +108,8 @@ RCPP_MODULE(population_module){
 		.field("env", &Population::env)
 		.field("verbose", &Population::verbose)
 		.field("K", &Population::K_fishableBiomass)
-		
+		.field("colnames", &Population::colnames)
+
 		.method("set_superFishSize", &Population::set_superFishSize) 
 		
 		.method("set_harvestProp", &Population::set_harvestProp) 

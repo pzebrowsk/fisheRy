@@ -109,7 +109,7 @@ vector<double> Simulator::stakeholder_satisfaction(vector<int> dims, vector<doub
 
 Tensor<double> Simulator::simulate_multi_2d(Population pop, vector<double> Tvec, vector<double> lminvec, vector<double> hvec, int nyears, double tsb0, bool re_init){
 	int niters = 1;
-	Tensor<double> res({niters, 19, Tvec.size(), lminvec.size(), hvec.size(), nyears});
+	Tensor<double> res({niters, pop.colnames.size(), Tvec.size(), lminvec.size(), hvec.size(), nyears});
 	Population pop_ref = pop;
 
 	for (int iter = 0; iter < niters; ++iter){

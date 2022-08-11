@@ -66,7 +66,7 @@ class FishParams {
 	
 	// temperature dependence of mortality
 	double cT; // = 0.196;
-	double Tref; // = 5.6;
+	double Tref; // = 5.61;
 		
 	// growth 
 	double gamma1; // = 0.33333;
@@ -124,9 +124,9 @@ class FishParams {
 	MortalityModel mortality_model;
 	RecruitmentModel recruitment_model;
 
-	bool use_old_model_mat = false;
-	bool use_old_model_fec = false;
-	bool use_old_model_mor = false;
+	// bool use_old_model_mat = false;
+	// bool use_old_model_fec = false;
+	// bool use_old_model_mor = false;
 	
 	bool verbose = false;
 

@@ -175,25 +175,21 @@ void Fish::grow(double tsb, double temp){
 double Fish::produceRecruits(double ssb, double temp){
 	double temp_ano = temp - par.Tref;
 	if (par.recruitment_model == RecruitmentModel::BevertonHoltDirect){
-		double recruits = par.r0 * weight;
-		recruits *= 1 / (1 + ssb/par.Bhalf); 
+		double recruits = par.r0 * weight * 1 / (1 + ssb/par.Bhalf);
 		return recruits;
 	}
 	else if (par.recruitment_model == RecruitmentModel::RickerDirect){
-		double recruits = par.r0 * weight;
-		recruits *= exp(par.beta4*temp_ano) * pow(2, -ssb/par.Bhalf);
+		double recruits = par.r0 * weight * exp(par.beta4*temp_ano) * pow(2, -ssb/par.Bhalf);
 		return recruits;
 	}
 	else if (par.recruitment_model == RecruitmentModel::BevertonHoltBioenergetic){
 		double eggs = fish::fecundity(weight, par.delta, gsi_effective);  // Total eggs produced
-		eggs *= par.s0;                                     // offspring surviving through first year
-		double recruits = eggs * 1 / (1 + ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
+		double recruits = eggs * par.s0 * 1 / (1 + ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
 		return recruits; 
 	}
 	else if (par.recruitment_model == RecruitmentModel::RickerBioenergetic){
 		double eggs = fish::fecundity(weight, par.delta, gsi_effective);  // Total eggs produced
-		eggs *= par.s0;                                 // offspring surviving through first year
-		double recruits = eggs * exp(par.beta4*temp_ano) * pow(2, -ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
+		double recruits = eggs * par.s0 * exp(par.beta4*temp_ano) * pow(2, -ssb/par.Bhalf);   // offspring surviving density-dependent recruitment
 		return recruits; 
 	}
 	else{

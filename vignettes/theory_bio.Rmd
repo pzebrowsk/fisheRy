@@ -159,7 +159,7 @@ dat_full = growth_trajectories(N=50)
 Decision to mature is defined by a probabilistic maturation reaction norm (PMRN), with a probability of maturing in the next year depending on age $a$, length $l$, and temperature $T$, given by the following equation,
 
 $$
-m(a,l_a,T) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}} + \beta_3(T-T_\text{ref})\right)}},
+m(a,l_a,T) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}} + \beta_3 \Delta T\right)}},
 $$
 
 with the steepness of the curve $d_m$ calculated as
@@ -244,16 +244,16 @@ $$
 and $\delta$ is the mass-specific oocyte density of the mature pre-spawning ovary.
 
 Eggs survive the first year with a probability $s_0$ to become recruits.
-Number of recruits additionally also follows a Beverton-Holt density dependence with parameter $B_{1/2}$,
+Number of recruits additionally also follows a temperature dependence with parameter $\beta_4$ and a Ricker density dependence with parameter $B_{1/2}$,
 
 $$
-n_\text{recruits} = n_\text{eggs}\cdot s_0 \cdot \frac{1}{1+\frac{S}{B_{1/2}}},
+n_\text{recruits} = n_\text{eggs}\cdot s_0 \cdot e^{\beta_4 \Delta T} \cdot 2^{-S/B_{1/2}},
 $$  
 
 where $S$ is the spawning stock biomass of the population
 
 $$
-S = \sum_{\text{mature individuals}} w_a,
+S = \sum_{\text{a >= 3}} w_a I_\text{mature},
 $$
 
 
@@ -266,14 +266,14 @@ $B_{1/2}$                   SSB at which survival probability drops to half
 
 
 ```{r}
-tibble(x = seq(0,10, length.out=100)) %>% mutate(y = 1/(1+x/0.17)) %>% 
-ggplot(aes(y=y,x=x)) + geom_line(col="cyan3", size=2) + labs(x="Spawning stock biomass (Mt)", y = "Fraction of surviving recruits") + theme_classic(base_size = 20)
+list(x = seq(0,10, length.out=100), temp = c(4.61, 5.61, 6.61)) %>% cross_df() %>% mutate(y = exp(0.5135*(temp-5.61)) * 2^(-x/0.530)) %>% 
+ggplot(aes(y=y,x=x, col=temp, group=temp)) + geom_line(size=1) + labs(x="Spawning stock biomass (Mt)", y = "Recruits / Recruits_0") + theme_classic(base_size = 20) + scale_colour_viridis_c()
 ```
 
 Here is the number of recruits per fish as a function of spawning stock biomass obtained from the growth trajectories above.
 
 ```{r}
-dat_full %>% ggplot(aes(x=ssb, y=fec)) + geom_point(aes(col=temp)) + scale_colour_viridis_c() + labs(x="Spawning stock biomass (kT)", y = "Recruits per capita") + theme_classic(base_size=20)
+dat_full %>% ggplot(aes(x=ssb, y=fec)) + geom_point(aes(col=temp)) + scale_colour_viridis_c() + labs(x="Spawning stock biomass (kT)", y = "Recruits per capita") + theme_classic(base_size=20) + scale_y_log10(limits = c(1e-4, NA)) 
 ```
 
 ```{r}
