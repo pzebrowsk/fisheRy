@@ -106,18 +106,14 @@ abline(v=500)
 plot_hscan = function(res_ibm_full, nsteps=200){
   lf = 45
   arr = res_ibm_full 
-  names = c("ssb", "yield", "emp", "profit", "emp.sea", "emp.shr", 
-	                           "profit.sea", "profit.shr", "tsb", 
-	                           "r0", "nrecruits", "nsuperfish",
-	                           "factor_dg", "factor_dr", "max_length",
-                             "length90", "p_survival", "maturity", "Nrel")
+  names = pop_sq$colnames
   dat_ibm = data.frame(matrix(ncol=length(names), nrow=0))
   colnames(dat_ibm) = names
   dat = data.frame(matrix(ncol=7, nrow=0))
   colnames(dat) = c("ssb", "yield", "emp.sea", "emp.shr", "profit.sea", "profit.shr", "tsb")
   for (ih in 1:length(hvec)){
     v_ibm = colMeans(arr[, ih, 1, 1,])
-    dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1,1, 1, 1, 1e9, 1e9, 1e9, 1, 1, 1, 1, 1,1,1,1,1,1)
+    dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1,1, 1, 1, 1e9, 1e9, 1e9, 1e9, 1, 1, 1, 1, 1,1,1,1,1,1)
   }
   # dat$employment = dat$emp.sea+dat$emp.shr
   # dat$profit = dat$profit.sea+dat$profit.shr
@@ -144,10 +140,10 @@ plot_hscan = function(res_ibm_full, nsteps=200){
 # pop$par$dsea = 0.054
 nsteps=50
 hvec = seq(0., 0.99, length.out=25)
-pop = pop_sq
-pop$set_superFishSize(5e6)
-res_ibm_full = sim$simulate_multi_2d(pop, c(5.6), lf, hvec, nsteps, 1.93e3, F)
-save(res_ibm_full, file = "res_ibm_h.Rdata")
+# pop = pop_sq
+# pop$set_superFishSize(5e6)
+# res_ibm_full = sim$simulate_multi_2d(pop, c(5.6), lf, hvec, nsteps, 1.93e3, F)
+# save(res_ibm_full, file = "res_ibm_h.Rdata")
 
 load("res_ibm_h.Rdata")
 plot_hscan(res_ibm_full, nsteps)
