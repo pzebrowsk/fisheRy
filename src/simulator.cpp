@@ -45,7 +45,7 @@ Tensor<double> Simulator::simulate_multi(Population &pop, vector<double> hvec, i
 			//pop.print_summary();
 		
 			for (int t=0; t<nyears; ++t){
-				std::vector<double> state_now = pop.update();
+				std::vector<double> state_now = pop.update(temp);
 				
 				res({iter, 0, ih, t}) = state_now[0];				// ssb
 				res({iter, 1, ih, t}) = state_now[1];				// yield
@@ -225,7 +225,7 @@ Rcpp::DataFrame Simulator::simulate_r(Population &pop, double lf, double h, int 
 	Rcpp::DataFrame df = Rcpp::DataFrame::create();
 
 	for (int i=0; i<nyears; ++i){
-		std::vector<double> state_now = pop.update();
+		std::vector<double> state_now = pop.update(temp);
 		
 		for (int col=0; col<state_now.size(); ++col){
 			columns[col].push_back(state_now[col]);
