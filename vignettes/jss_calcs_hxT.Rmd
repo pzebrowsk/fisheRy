@@ -18,24 +18,25 @@ source("../tests/ref/parameters.cod.R")
 source("../tests/ref/simulator.7.R")
 ```
 
+```{r}
+re_simulate = F
+
+# if one of the files doesnt exist, re-run the simulations
+re_simulate = re_simulate | !file.exists("res_ibm_jss_hxT.Rdata")
+```
+
+```{r}
+params_file = "../params/cod_params.ini"
+```
 
 ```{r}
 # Create a prototype fish as usual
-fish = new(Fish)
-# All old parameters But new growth model
-fish$par$use_old_model_mor = F
-fish$par$use_old_model_mat = F
-fish$par$use_old_model_fec = F
-fish$par$growth_model = 1
-
-par = c(0.07528598, 139629289, 154.3379)
-fish$par$s0 = par[1] #0.07
-fish$par$Bhalf = par[2] #2.65e8
-fish$par$pmrn_lp50 = par[3] #118.122779*1.15
+fish = new(Fish, params_file)
 
 sim = new(Simulator, fish)
-sim$equilibriateNaturalPopulation(1.93e3, 5.61, 2e6)
+sim$equilibriateNaturalPopulation(1.93e3, 5.61, 5e6)
 ```
+
 
 ```{r}
 plot_timeseries = function(res_ibm, pop, h, nsteps=200){
@@ -100,7 +101,7 @@ h = 0.41
 lf = 45
 
 pop1 = pop_sq ## NO! This creates a shallow copy
-res_ibm = sim$simulate(pop1, lf, h, nsteps, 1.93e3, 5.61, F)
+res_ibm = sim$simulate(pop1, lf, h, nsteps, 1.93e3, 6.61, F)
 
 plot_timeseries(res_ibm, pop1, h, nsteps)
 ```
@@ -109,59 +110,26 @@ Thus, we can plot the two populations together:
 
 ```{r}
 plot(c(res_ibm_sq$ssb, res_ibm$ssb)~seq(1,700), type="l", col="cyan3")
+abline(v = 500)
 ```
 
 ### Multiple populations
 
 
-<!-- ```{r} -->
-<!-- plot_hxTscan = function(res_ibm_full, nsteps=200){ -->
-<!--   lf = 45 -->
-<!--   arr = res_ibm_full  -->
-<!--   names = c("ssb", "yield", "emp", "profit", "emp.sea", "emp.shr",  -->
-<!-- 	                           "profit.sea", "profit.shr", "tsb",  -->
-<!-- 	                           "r0", "nrecruits", "nsuperfish", -->
-<!-- 	                           "factor_dg", "factor_dr", "max_length", -->
-<!--                              "length90", "p_survival", "maturity", "Nrel") -->
-<!--   dat_ibm = data.frame(matrix(ncol=length(names), nrow=0)) -->
-<!--   colnames(dat_ibm) = names -->
-<!--   for (it in 1:length(tvec)){ -->
-<!--     v_ibm = colMeans(arr[, 1, 1, it,]) -->
-<!--     dat_ibm[nrow(dat_ibm)+1,] = v_ibm/c(1e9, 1e9, 1,1, 1, 1, 1e9, 1e9, 1e9, 1, 1, 1, 1, 1,1,1,1,1,1) -->
-<!--   } -->
-<!--   # dat$employment = dat$emp.sea+dat$emp.shr -->
-<!--   # dat$profit = dat$profit.sea+dat$profit.shr -->
-
-<!--   xlab1 = "SST" -->
-<!--   xvec = tvec -->
-<!--   par(mfrow = c(4,3), mar=c(5,5,1,1), cex.lab=1.5, cex.axis=1.5) -->
-<!--   matplot(ylab="ssb (MT)",y=cbind(dat_ibm$ssb), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="tsb (MT)",y=cbind(dat_ibm$tsb), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="yield (MT)",y=cbind(dat_ibm$yield), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="employment sea (PY)",y=cbind(dat_ibm$emp.sea), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="employment shore (PY)",y=cbind(dat_ibm$emp.shr), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="profit sea (Bn NOK)",y=cbind(dat_ibm$profit.sea), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="profit shore (Bn NOK)",y=cbind(dat_ibm$profit.shr), x=xvec, type="l", col=c("cyan2", "black"), lwd=2:1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="Length %iles",y=cbind(dat_ibm$max_length, dat_ibm$length90), x=xvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="dl ratio, r ratio",y=cbind(dat_ibm$factor_dg, dat_ibm$factor_dr), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="Superfish",y=cbind(dat_ibm$nsuperfish), x=xvec, type="l", col=c("cyan2", "cyan4"), lwd=1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="Survival prob / Maturity",y=cbind(dat_ibm$p_survival, dat_ibm$maturity), x=xvec, type="l", col=c("cyan3", "magenta3"), lwd=1, lty=1, xlab=xlab1) -->
-<!--   matplot(ylab="Survival prob / Maturity / Nrel",y=cbind(dat_ibm$p_survival, dat_ibm$maturity, dat_ibm$Nrel), x=xvec, type="l", col=c("cyan3", "magenta3", "yellow3"), lwd=1, lty=1, xlab=xlab1) -->
-<!--   } -->
-
-<!-- ``` -->
-
 ```{r fig.height=9}
 # pop$par$dsea = 0.054
-nsteps=50
+nsteps_jss=50
 hvec = seq(0, 0.99, length.out = 20)
-tvec = seq(5.6, 10, length.out = 20)
+tvec = seq(4.5, 7.5, length.out = 20)
 
-# pop = pop_sq
-# pop$set_superFishSize(5e5)
-# res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps, 1.93e3, F)
-# save(res_ibm_full, file = "res_ibm_hxT.Rdata")
-load("res_ibm_hxT.Rdata")
+pop = pop_sq
+if (re_simulate){ 
+  pop$set_superFishSize(5e5)
+  res_ibm_full = sim$simulate_multi_2d(pop, tvec, lf, hvec, nsteps_jss, 1.93e3, F)
+  save(res_ibm_full, file = "res_ibm_hxT.Rdata")
+} else{
+  load("res_ibm_jss_hxT.Rdata")
+}
 ```
 
 <!-- ```{r} -->
@@ -177,7 +145,7 @@ load("res_ibm_hxT.Rdata")
 
 ### Utilties
 
-```{r fig.wigth=9, fig.height=2.5}
+```{r fig.wigth=5, fig.height=7}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -185,7 +153,7 @@ d = sim$max_avg_utils_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
 
 utils = array(data=d, dim=c(length(hvec),length(lfvec),length(tvec), 4))
 
-par(mfrow=c(1,4), mar=c(5,5,4,1), oma=c(1,1,1,1), cex.lab=1.2)
+par(mfrow=c(2,2), mar=c(5,5,4,1), oma=c(1,1,1,1), cex.lab=1.2)
 for (i in 1:4){
   image(x=hvec, y=tvec, z=utils[,1,,i], col=scales::viridis_pal()(100), zlim=c(0,1), main=c("Spawning stock biomass","Yield","Employment","Profit")[i], 
         xlab="Harvest proportion", ylab=expression("Temperature ("^o*"C)"))
@@ -197,7 +165,7 @@ for (i in 1:4){
 
 ### JSS
 
-```{r fig.height=4}
+```{r fig.height=6, fig.width=8}
 arr = res_ibm_full[,,,,1:4]
 
 ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec),50), arr)
@@ -211,7 +179,7 @@ for (i in 1:5){
 ```
 
 
-```{r fig.height=7.5}
+```{r fig.height=6, fig.width=6}
 
   JSS = array(dim=c(length(hvec),length(lfvec),length(tvec),3))
 

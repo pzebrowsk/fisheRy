@@ -142,7 +142,7 @@ plot_scan(dat_ibm, xname = "Temperature", xvec = tvec)
 
 ### Utilties
 
-```{r fig.height=3}
+```{r  fig.height=9, fig.width=5}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
@@ -151,24 +151,23 @@ d = sim$max_avg_utils_2d(c(4,length(tvec), length(lfvec),length(hvec),nsteps_jss
 
 utils = array(data=d, dim=c(length(hvec),length(lfvec),length(tvec), 4))
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
+par(mfrow=c(2,1), mar=c(4,4,1,1))
 matplot(y=matrix(data=d, ncol=4), x=tvec, lty=1, type="l", col=c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"), lwd=3, ylim=c(0,1))
 abline(h=0, col="grey")
 plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
 legend(x = 0.7, y = 1, legend = c("ssb", "yield", "employment", "profit"), fill = c("darkgreen", "darkgoldenrod1", "dodgerblue3", "coral1"))
 
-
 ```
 
 ### JSS
 
-```{r fig.height=3}
+```{r  fig.height=9, fig.width=5}
 arr = res_ibm_full[,,,,1:4]
 
 lfvec = c(lf)
 ss = sim$stakeholder_satisfaction_2d(c(4,length(tvec), length(lfvec),length(hvec),nsteps_jss), arr)
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
+par(mfrow=c(2,1), mar=c(4,4,1,1))
 matplot(y=matrix(data=ss, ncol=5), x=tvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("grey", "darkgoldenrod1", "dodgerblue3", "coral1","darkgreen"))
 abline(h=0, col="grey")
 plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F, ylim=c(0,1))
@@ -176,13 +175,13 @@ legend(x = 0.7, y = 1, legend = c("Industrial", "Artisanal", "Emp. policymakers"
 ```
 
 
-```{r fig.height=3}
+```{r  fig.height=9, fig.width=5}
 mat = matrix(data=ss, ncol=5)
 JSS_min = apply(mat, 1, min)
 JSS_mean = apply(mat, 1, mean)
 JSS_hmean = 1/apply(1/mat, 1, mean)
 
-par(mfrow=c(1,2), mar=c(4,4,1,1))
+par(mfrow=c(2,1), mar=c(4,4,1,1))
 matplot(y=cbind(JSS_mean, JSS_hmean, JSS_min), x=tvec, lty=1, type="l", lwd=3, ylim=c(0,1), col=c("darkgoldenrod1", "dodgerblue3", "darkgreen"))
 plot(1,1, cex=0.01, xlab = "", ylab = "", axes = F)
 legend(x = 0.7, y = 1, legend = c("Mean", "Harmonic mean", "Min"), fill=c("darkgoldenrod1", "dodgerblue3","darkgreen"))
