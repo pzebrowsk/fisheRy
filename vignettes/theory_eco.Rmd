@@ -1,8 +1,10 @@
 ---
-title: "Fisheries model theory: socioeconomic model"
+title: 'Fisheries model theory: socioeconomic model'
 author: "Jaideep Joshi"
 date: "28 March 2022"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 editor_options:
   chunk_output_type: inline
 ---

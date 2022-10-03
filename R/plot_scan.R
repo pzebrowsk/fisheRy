@@ -1,5 +1,5 @@
 plot_scan = function(dat_ibm, xname, xvec, dat_ref = NULL){
-  par(mfrow = c(4,3), mar=c(7,7,1,1), oma=c(1,1,1,1), cex.lab=1.5, cex.axis=1.5)
+  par(mfrow = c(4,3), mar=c(7,7,1,1), oma=c(1,1,1,1), cex.lab=1.3, cex.axis=1.3)
   
   yvec = cbind(dat_ibm$ssb)/1e9
   if(!is.null(dat_ref)) yvec = cbind(yvec, dat_ref$ssb/1e9)
