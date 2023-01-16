@@ -15,7 +15,7 @@ rm(list=ls())
 ```
 
 ```{r, include = F, echo = F}
-library(rfish)
+library(fisheRy)
 library(tidyverse)
 source("../tests/ref/parameters.cod.R")
 source("../tests/ref/simulator.7.R")

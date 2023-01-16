@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, include = F, echo = F}
-library(rfish)
+library(fisheRy)
 library(tidyverse)
 rm(list=ls())
 source("../tests/ref/parameters.cod.R")

@@ -1,5 +1,5 @@
-#ifndef RFISH_SIMULATOR_H
-#define RFISH_SIMULATOR_H
+#ifndef FISHERY_SIMULATOR_H
+#define FISHERY_SIMULATOR_H
 
 #include <vector>
 #include "population.h"

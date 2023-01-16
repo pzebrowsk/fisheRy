@@ -1,5 +1,5 @@
-#ifndef RFISH_FISH_H_
-#define RFISH_FISH_H_
+#ifndef FISHERY_FISH_H_
+#define FISHERY_FISH_H_
 
 #include <vector>
 #include <map>

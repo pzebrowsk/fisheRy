@@ -15,12 +15,12 @@ FisheRy is an R package to assess the impact of management choices on the sustai
 You can install `fisheRy` directly from github. Currently, you should install from the `new_model_restart` branch, like so: 
 
 ```r  
-devtools::install_github(repo = "jaideep777/rfish", ref = "new_model_restart")
+devtools::install_github(repo = "jaideep777/fisheRy", ref = "new_model_restart")
 ```
 
-**NOTE**: Currently, the package name is rfish, so load the packaged using 
+**NOTE**: Currently, the package name is fisheRy, so load the packaged using 
 ```r
-library(rfish)
+library(fisheRy)
 ```
 
 ### Stable release
@@ -29,7 +29,7 @@ Coming soon.
 
 ### Development version
 
-Latest development version can be found here: https://github.com/jaideep777/rfish/tree/new_model_restart 
+Latest development version can be found here: https://github.com/jaideep777/fisheRy/tree/new_model_restart 
 
 ## Usage
 
@@ -42,11 +42,11 @@ To solve a fishery model, you need to create four objects:
 
 The simulator allows for simultaneously simulating multiple populations with different control parameters, and also allows for calculation of utilties, stakeholder satisfaction, and joint stakeholder satisfaction. 
 
-For details on the usage, please see the tutorials [here](https://jaideep777.github.io/rfish/index.html).
+For details on the usage, please see the tutorials [here](https://jaideep777.github.io/fisheRy/index.html).
 
 ## Documentaion 
 
-Detailed documentation and totorials are available [here](please see the tutorials [here](https://jaideep777.github.io/rfish/index.html).
+Detailed documentation and totorials are available [here](please see the tutorials [here](https://jaideep777.github.io/fisheRy/index.html).
 
 ## Author and contact
 

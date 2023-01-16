@@ -1,5 +1,5 @@
-#ifndef RFISH_FUNCTIONS_H
-#define RFISH_FUNCTIONS_H
+#ifndef FISHERY_FUNCTIONS_H
+#define FISHERY_FUNCTIONS_H
 
 #include <cmath>
 #include <algorithm>

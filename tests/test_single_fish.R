@@ -1,5 +1,5 @@
 rm(list=ls())
-library(rfish)
+library(fisheRy)
 library(tidyverse)
 
     
