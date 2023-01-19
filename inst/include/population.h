@@ -9,6 +9,8 @@
 class PopulationParams {	
 	public:
 	bool update_env = true;
+	bool simulate_bio_only = false;
+	
 	// reproduction
 	//double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;

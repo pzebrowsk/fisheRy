@@ -277,25 +277,22 @@ std::vector<double> Population::update(double temp){
 //	// calculate realized mortality rate
 	double F_req = par.mort_fishing_mature; //, M = proto_fish.par.mam[proto_fish.par.amax];
 	double F_real = F_req; 
-	double E_req, E_real;
-	double D_sea_req, D_sea_real;
+	double E_req = 0, E_real = 0;
+	double D_sea_req = 0, D_sea_real = 0;
 	double Nrel = 0;
-	if (par.h > 0){
-//		if (par.use_old_model_effort){
-//			for (int i=par.a_thresh; i<vfreq.size(); ++i) Nrel += vfreq[i] / (carrying_capacity[i]+1e-20);	// FIXME: This has potential to blow up Nrel
-//			Nrel /= (proto_fish.par.amax - par.a_thresh + 1);
-//		}
-//		else {
+
+	if (!par.simulate_bio_only){
+		if (par.h > 0){
 			Nrel = (K_fishableBiomass > 0)? fishableBiomass() / K_fishableBiomass : 1e-20;
-//		}
-		
-		E_req = (Nrel < 1e-10)? 0 : effort(Nrel, F_req, temp); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
-		D_sea_req  = par.dsea * E_req;
-		D_sea_real = D_sea_req / (1 + D_sea_req/par.dmax);
-		
-		E_real = D_sea_real / par.dsea;
-		// Solve for F_real
-		F_real = pn::zero(0, F_req, [E_real, Nrel, temp, this](double F){ return (E_real - effort(Nrel, F, temp));}, 1e-6).root;
+			
+			E_req = (Nrel < 1e-10)? 0 : effort(Nrel, F_req, temp); //pow(Nrel, 1-par.b) * F * (exp(-(F+M)*(1-par.b))-1) / (par.q*(F+M)*(par.b-1));
+			D_sea_req  = par.dsea * E_req;
+			D_sea_real = D_sea_req / (1 + D_sea_req/par.dmax);
+			
+			E_real = D_sea_real / par.dsea;
+			// Solve for F_real
+			F_real = pn::zero(0, F_req, [E_real, Nrel, temp, this](double F){ return (E_real - effort(Nrel, F, temp));}, 1e-6).root;
+		}
 	}
 
 	// implement mortality over the year and calculate yield
@@ -335,10 +332,12 @@ std::vector<double> Population::update(double temp){
 
 	// calculate profit for the year
 	double profit_sea = 0, profit_shr = 0;
+	if (!par.simulate_bio_only){
 	//if (par.h > 0){
 		profit_sea = yield*par.price_sea - par.scale_catch*(D_sea_req*par.salary_sea + E_req*par.variable_costs_sea + par.fixed_costs_sea);
 		profit_shr = yield*(par.price_shore - par.price_sea) - yield*par.dshr * par.salary_shore - par.scale_catch*par.fixed_costs_shore;
 	//}
+	}
 
 	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;

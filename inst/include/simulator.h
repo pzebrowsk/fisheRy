@@ -7,6 +7,9 @@
 
 #include <Rcpp.h>
 
+// FIXME: In calculation of normalized utilities, exclude -ve profit regions
+// FIXME: See why harmonic mean blows up
+
 class Simulator{
 	private:
 	Population noFishingPop;
