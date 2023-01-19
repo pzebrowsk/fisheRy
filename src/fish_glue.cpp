@@ -100,6 +100,8 @@ RCPP_MODULE(population_module){
 //		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
 		.field("dsea", &PopulationParams::dsea)
 		.field("recruitmentAge", &PopulationParams::recruitmentAge)
+		.field("update_env", &PopulationParams::update_env)
+		.field("simulate_bio_only", &PopulationParams::simulate_bio_only)
 	;
 	
 	class_ <Population>("Population")

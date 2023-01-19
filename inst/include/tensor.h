@@ -1,5 +1,5 @@
-#ifndef RFISH_TENSOR_H_
-#define RFISH_TENSOR_H_
+#ifndef FISHERY_TENSOR_H_
+#define FISHERY_TENSOR_H_
 
 #include <iostream>
 #include <cassert>

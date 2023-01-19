@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, include = F, echo = F}
-library(rfish)
+library(fisheRy)
 library(tidyverse)
 source("../tests/ref/parameters.cod.R")
 source("../tests/ref/simulator.7.R")
@@ -23,7 +23,7 @@ To simulate a fished population, it is essential to first simulate an unfished p
 
 ### Using a simulator for fish populations 
 
-The `rfish` package provides a simulator to easily simulate populations of fish without the hassle of manual updating. The simulator can also simulate multiple populations with different control parameters at once, making it very convenient to analyse the control space (we will look at the control space in a later tutorial).  
+The `fisheRy` package provides a simulator to easily simulate populations of fish without the hassle of manual updating. The simulator can also simulate multiple populations with different control parameters at once, making it very convenient to analyse the control space (we will look at the control space in a later tutorial).  
 
 As usual, we begin with creating a prototype fish 
 

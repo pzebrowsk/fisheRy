@@ -1,4 +1,4 @@
-url: https://jaideep777.github.io/rfish
+url: https://jaideep777.github.io/fisheRy
 
 template:
   bootstrap: 5
@@ -63,6 +63,6 @@ navbar:
     github:
       text: GitHub
       icon: fa-github fa-lg
-      href: https://github.com/jaideep777/rfish
+      href: https://jaideep777.github.io/fisheRy
       
 

@@ -1,4 +1,4 @@
-Package: rfish
+Package: fisheRy
 Type: Package
 Title: Age-size-structured modelling of fish populations
 Version: 1.0

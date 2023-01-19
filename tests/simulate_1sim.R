@@ -1,13 +1,13 @@
 rm(list=ls())
-library(rfish)
+library(fisheRy)
 library(tidyverse)
 
-setwd("~/codes/rfish")
+setwd("~/codes/fisheRy")
 
 source("tests/ref/parameters.cod.R")
 source("tests/ref/simulator.7.R")
 
-library(rfish)
+library(fisheRy)
 
 fish = new(Fish)
 fish$par$s0 = 0.09637
@@ -88,7 +88,7 @@ points(d1$mat~d1$age, type="o", col="cyan3")
 # 
 
 #### Simulate vs hvec #####
-library(rfish)
+library(fisheRy)
 
 fish.par = new(FishParams)
 fish.par$s0 = 0.09637

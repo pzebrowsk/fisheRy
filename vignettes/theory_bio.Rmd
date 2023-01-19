@@ -3,8 +3,8 @@ title: 'Fisheries model theory: biological model'
 author: "Jaideep Joshi, Anna Shchiptsova"
 date: "28 March 2022"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 editor_options:
   chunk_output_type: inline
 ---
@@ -15,7 +15,7 @@ rm(list=ls())
 ```
 
 ```{r, include = F, echo = F}
-library(rfish)
+library(fisheRy)
 library(tidyverse)
 source("../tests/ref/parameters.cod.R")
 source("../tests/ref/simulator.7.R")

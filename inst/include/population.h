@@ -1,5 +1,5 @@
-#ifndef RFISH_POPULATION_H_
-#define RFISH_POPULATION_H_
+#ifndef FISHERY_POPULATION_H_
+#define FISHERY_POPULATION_H_
 
 #include "fish.h"
 #include <vector>
@@ -9,6 +9,8 @@
 class PopulationParams {	
 	public:
 	bool update_env = true;
+	bool simulate_bio_only = false;
+	
 	// reproduction
 	//double r0 = 21.77072;		// recruitment rate per kg SSB 
 	double rmax = 1e20;

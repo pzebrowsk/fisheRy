@@ -1,11 +1,14 @@
-#ifndef RFISH_SIMULATOR_H
-#define RFISH_SIMULATOR_H
+#ifndef FISHERY_SIMULATOR_H
+#define FISHERY_SIMULATOR_H
 
 #include <vector>
 #include "population.h"
 #include "tensor.h"
 
 #include <Rcpp.h>
+
+// FIXME: In calculation of normalized utilities, exclude -ve profit regions
+// FIXME: See why harmonic mean blows up
 
 class Simulator{
 	private:
