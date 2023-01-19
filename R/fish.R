@@ -5,7 +5,7 @@
 #' fish class
 #' 
 #' Imports
-#' @useDynLib rfish, .registration=T
+#' @useDynLib fisheRy, .registration=T
 #' @export fish_module, population_module, simulator_module
 #' @import Rcpp
 "_PACKAGE"

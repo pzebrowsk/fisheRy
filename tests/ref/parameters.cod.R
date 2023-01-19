@@ -1,6 +1,6 @@
 ### parameters
 # implementation parameters and age ranges
-ages<-30			# maximum age
+ages<-30			# maximum age 
 years<-250			# simulation years
 skip<-200			# transient years to be skipped
 N.ini<-1e9			# initial numbers at age 1

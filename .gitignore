@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
-.RData
+**/*.Rdata
+*.Rdata
 .Ruserdata
 src/*.o
 src/*.so
@@ -13,3 +14,8 @@ gmon.out
 **/*.txt
 **/*.o
 **/*.test
+docs
+*.html
+*.csv
+*.xlsx
+.vscode

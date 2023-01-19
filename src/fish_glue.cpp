@@ -2,19 +2,53 @@
 using namespace Rcpp;
 
 #include "fish.h"
+#include "functions.h"
 
 RCPP_EXPOSED_CLASS(Fish);
 RCPP_EXPOSED_CLASS(FishParams);
 
+RCPP_EXPOSED_ENUM_NODECL(GrowthModel)
+RCPP_EXPOSED_ENUM_NODECL(MaturationModel)
+RCPP_EXPOSED_ENUM_NODECL(MortalityModel)
+RCPP_EXPOSED_ENUM_NODECL(RecruitmentModel)
+
 RCPP_MODULE(fish_module) {
+	
+//	function("init_length", &fish::init_length);
+	function("length_juvenile", &fish::length_juvenile);
+	function("length_adult", &fish::length_adult);
+	function("maturation_steepness", &fish::maturation_steepness);
+	function("maturation_probability", &fish::maturation_probability);
+	function("weight_fish", &fish::weight_fish);
+	function("fecundity", &fish::fecundity);
+	function("gsi", &fish::gsi);
+	function("natural_mortality", &fish::natural_mortality);
+	function("survival_probability", &fish::survival_probability);
+	
 	class_ <FishParams>("FishParams")
 		.constructor()
 		.field("flag", &FishParams::flag)
+//		.field("Bhalf_growth", &FishParams::Bhalf_growth)
+		.field("c", &FishParams::c)
+		.field("beta1", &FishParams::beta1)
+		.field("beta2", &FishParams::beta2)
+		.field("s0", &FishParams::s0)
+		.field("Bhalf", &FishParams::Bhalf)
+		.field("pmrn_lp50", &FishParams::pmrn_lp50)
+		.field("growth_model_name", &FishParams::growth_model_name)
+		.field("maturation_model_name", &FishParams::maturation_model_name)
+		.field("mortality_model_name", &FishParams::mortality_model_name)
+		.field("recruitment_model_name", &FishParams::recruitment_model_name)
+		.field("r0", &FishParams::r0)
+		.field("M0", &FishParams::M0)
+
+		.method("print", &FishParams::print)
+		.method("initFromFile", &FishParams::initFromFile)	
 	;
 
-	class_<Fish>("Fish")
+	class_ <Fish>("Fish")
 		.constructor()
-		//.constructor<double,double>()
+		.constructor<std::string>()
 		
 		.field("age", &Fish::age)
 		.field("length", &Fish::length)
@@ -23,47 +57,81 @@ RCPP_MODULE(fish_module) {
 		.field("par", &Fish::par)
 
 		.method("print", &Fish::print)
-		.method("set_age", &Fish::set_age)
-		//.method("set_length", &Fish::set_length)
+		.method("print_line", &Fish::print_line)
+		.method("print_header", &Fish::print_header)
 
-		.method("matureNow", &Fish::matureNow)
+		.method("set_age", &Fish::set_age)
+		.method("set_length", &Fish::set_length)
+
+		.method("init", &Fish::init)
+		//.method("matureNow", &Fish::matureNow)
+		.method("maturationProb", &Fish::maturationProb)
 		.method("updateMaturity", &Fish::updateMaturity)
+		.method("grow", &Fish::grow)
+		.method("produceRecruits", &Fish::produceRecruits)
 		
 		.method("naturalMortalityRate", &Fish::naturalMortalityRate)
 		//.method("survivalProbability", &Fish::survivalProbability)
+
+		.method("get_state", &Fish::get_state)
+
 	;
 }	
 	
 #include "population.h"
 
 RCPP_EXPOSED_CLASS(PopulationParams);
+RCPP_EXPOSED_CLASS(SeaEnvironment);
 
 
 ////RCPP_EXPOSED_AS(Population);
 RCPP_MODULE(population_module){
+	class_ <SeaEnvironment>("SeaEnvironment")
+		.field("temperature", &SeaEnvironment::temperature)
+		.field("recruitment_noise_multiplier", &SeaEnvironment::recruitment_noise_multiplier)
+	;
+
 	class_ <PopulationParams>("PopulationParams")
 		.constructor()
 		.field("n", &PopulationParams::n)
-		.field("h", &PopulationParams::h)
-		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
-		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
+		.field_readonly("h", &PopulationParams::h)
+		.field_readonly("lf50", &PopulationParams::lf50)
+//		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
+//		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
+		.field("dsea", &PopulationParams::dsea)
+		.field("recruitmentAge", &PopulationParams::recruitmentAge)
+		.field("update_env", &PopulationParams::update_env)
+		.field("simulate_bio_only", &PopulationParams::simulate_bio_only)
 	;
 	
 	class_ <Population>("Population")
 		.constructor<Fish>()
+		.field("par", &Population::par)
+		.field("env", &Population::env)
+		.field("verbose", &Population::verbose)
+		.field("K", &Population::K_fishableBiomass)
+		.field("colnames", &Population::colnames)
+
+		.method("set_superFishSize", &Population::set_superFishSize) 
+		
 		.method("set_harvestProp", &Population::set_harvestProp) 
 		.method("set_minSizeLimit", &Population::set_minSizeLimit) 
 
-		.method("calcK", &Population::calcK) 
 		.method("selectivity", &Population::selectivity) 
 		.method("init", &Population::init) 
 		.method("update", &Population::update)
 		.method("calcSSB", &Population::calcSSB)
+		.method("fishableBiomass", &Population::fishableBiomass)
+
+		.method("noFishingEquilibriate", &Population::noFishingEquilibriate)
 
 		.method("get_state", &Population::get_state)
 		.method("summarize", &Population::summarize)
 		.method("print_summary", &Population::print_summary)
 		.method("nfish", &Population::nfish)
+
+		.method("readEnvironmentFile", &Population::readEnvironmentFile)
+		.method("updateEnv", &Population::updateEnv)
 	;
 }
 
@@ -73,14 +141,20 @@ RCPP_EXPOSED_CLASS(Population);
 
 RCPP_MODULE(simulator_module){
 	class_ <Simulator>("Simulator")
-		.constructor()
-    .method("simulate", &Simulator::simulate_r)
+	.constructor<Fish>()
+
+	//.field("noFishingPop", &Simulator::noFishingPop)
+
+	.method("setNaturalPopulation", &Simulator::setNaturalPopulation)
+	.method("equilibriateNaturalPopulation", &Simulator::equilibriateNaturalPopulation)
+	
+	.method("simulate", &Simulator::simulate_r)
     
-	.method("simulate_multi", &Simulator::simulate_multi)
+	.method("simulate_multi", &Simulator::simulate_multi_r)
     .method("max_avg_utils", &Simulator::max_avg_utils)
     .method("stakeholder_satisfaction", &Simulator::stakeholder_satisfaction)
 	
-	.method("simulate_multi_2d", &Simulator::simulate_multi_2d)
+	.method("simulate_multi_2d", &Simulator::simulate_multi_2d_r)
     .method("max_avg_utils_2d", &Simulator::max_avg_utils_2d)
     .method("stakeholder_satisfaction_2d", &Simulator::stakeholder_satisfaction_2d)
 	;

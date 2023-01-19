@@ -1,5 +1,5 @@
-#ifndef RFISH_TENSOR_H_
-#define RFISH_TENSOR_H_
+#ifndef FISHERY_TENSOR_H_
+#define FISHERY_TENSOR_H_
 
 #include <iostream>
 #include <cassert>
@@ -274,38 +274,45 @@ class Tensor{
 	Tensor<T>& operator += (const Tensor<S>& rhs){
 		assert(dim == rhs.dim);
 		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::plus<T>());
+		return *this;
 	}
 	
 	template <class S>
 	Tensor<T>& operator -= (const Tensor<S>& rhs){
 		assert(dim == rhs.dim);
 		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::minus<double>());
+		return *this;
 	}
 
 	template <class S>
 	Tensor<T>& operator *= (const Tensor<S>& rhs){
 		assert(dim == rhs.dim);
 		std::transform(vec.begin(), vec.end(), rhs.vec.begin(), vec.begin(), std::multiplies<T>());
+		return *this;
 	}
 
 	template<class S>	
 	Tensor<T>& operator += (S s){
 		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x+s;});
+		return *this;
 	}
 
 	template <class S>
 	Tensor<T>& operator -= (S s){
 		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x-s;});
+		return *this;
 	}
 
 	template <class S>
 	Tensor<T>& operator *= (S s){
 		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x*s;});
+		return *this;
 	}
 
 	template<class S>
 	Tensor<T>& operator /= (S s){
 		std::transform(vec.begin(), vec.end(), vec.begin(), [&s](const T& x){return x/s;});
+		return *this;
 	}
 
 };
