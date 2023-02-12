@@ -1,10 +1,11 @@
 #ifndef FISHERY_POPULATION_H_
 #define FISHERY_POPULATION_H_
 
-#include "fish.h"
 #include <vector>
-
+#include <random>
 #include <Rcpp.h>
+
+#include "fish.h"
 
 class PopulationParams {	
 	public:
@@ -84,6 +85,10 @@ class Population{
 	std::vector<double> vage, vfreq, vlen, vmat;
 	std::vector<double> carrying_capacity;
 
+	std::default_random_engine generator;
+	std::normal_distribution<double> normal_dist;
+	std::vector<double> nrecruits_vec;
+
 	public:
 	// names of variables returned by Population::upodate()
 	std::vector<std::string> colnames = 
@@ -146,6 +151,7 @@ class Population{
 	void summarize();
 	void print_summary();
 	Rcpp::DataFrame get_state();
+	Rcpp::DataFrame get_traits();
 
 };
 

@@ -253,23 +253,53 @@ std::vector<double> Population::update(double temp){
 	// implement spawning for remaining fish
 	double ssb = calcSSB();
 //	double nrecruits = par.r0*ssb / (1 + ssb/par.Bhalf); // * exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
-	double nrecruits = 0;
+	nrecruits_vec.resize(fishes.size());
+	std::fill(nrecruits_vec.begin(), nrecruits_vec.end(), 0.0);
+	double nrecruits_total = 0;
 	double nrecruits_potential = 0;
-	for (auto &f: fishes) {
+	for (int k=0; k<fishes.size(); ++k) {
+		auto &f = fishes[k];
 		// nrecruits += par.r0*n*f.weight/(1+ssb/par.Bhalf);
 		if (f.isAlive && f.isMature){
-			nrecruits           += f.produceRecruits(ssb, temp) * par.n; // * (1/(1+ssb/f.par.Bhalf));
+			double nrecruits_fish = f.produceRecruits(ssb, temp) * par.n;
+			nrecruits_vec[k] = nrecruits_fish;
+			nrecruits_total     += nrecruits_fish; // * (1/(1+ssb/f.par.Bhalf));
 			nrecruits_potential += f.produceRecruits(  0, temp) * par.n;
 		}
 	}
 	//nrecruits *= exp(rnorm(-par.sigmaf*par.sigmaf/2, par.sigmaf));
-	nrecruits = std::min(nrecruits, par.rmax);
-	
+	double nrecruits_real = std::min(nrecruits_total, par.rmax);
+//	for (auto& nn : nrecruits_vec) nn = nn*nrecruits_real/(nrecruits_total+1e-20); 
+
 	// ** for analysis
-	double r0_avg = nrecruits * (1 + ssb/proto_fish.par.Bhalf) / ssb;
-	double factor_dr = nrecruits / (nrecruits_potential+1e-12);
-	double nrecruits_per_fish = nrecruits/nspawners;
+	double r0_avg = nrecruits_real * (1 + ssb/proto_fish.par.Bhalf) / ssb;
+	double factor_dr = nrecruits_real / (nrecruits_potential+1e-12);
+	double nrecruits_per_fish = nrecruits_real/nspawners;
 	// **
+
+	// Generate recruits (in a separate vector)
+	// cout << "nrecruits_vec: ";
+	// for (auto nn : nrecruits_vec) cout << nn << " ";
+	// cout << "\n";
+	std::discrete_distribution<size_t> fitness_dist(nrecruits_vec.begin(), nrecruits_vec.end());
+	int nr = nrecruits_real/par.n;
+	if (nr <= 0) nr = 1;
+	++proto_fish.t_birth;
+
+	vector<Fish> recruits;
+	recruits.reserve(nr);
+	for (int i=0; i<nr; ++i){
+		vector<double> mother_traits = fishes[fitness_dist(generator)].get_traits();
+		vector<double> father_traits = fishes[fitness_dist(generator)].get_traits();
+		vector<double> offspring_traits(mother_traits.size());
+		for (int k=0; k<mother_traits.size(); ++k){
+			offspring_traits[k] = (mother_traits[k] + father_traits[k])/2 + sqrt(proto_fish.trait_variances[k])*proto_fish.trait_scalars[k]*normal_dist(generator);
+		}
+		proto_fish.set_traits(offspring_traits);
+		proto_fish.init(tsb/1e6, temp);
+		recruits.push_back(proto_fish);
+	}
+
 
 	// 4. Mortality 
 //	if (par.use_old_model_effort) summarize(); // population summary for calculation of Nrel
@@ -318,13 +348,9 @@ std::vector<double> Population::update(double temp){
 	for (auto& f: fishes){
 		f.set_age(f.age+1);
 	}
-	
-	// add recruits at age 1
-	int nr = nrecruits/par.n;
-	if (nr <= 0) nr = 1;
-	proto_fish.init(tsb/1e6, temp);
-	++proto_fish.t_birth;
-	fishes.resize(fishes.size()+nr, proto_fish);
+
+	// 6. Finally, add recruits to population 
+	fishes.insert(fishes.end(), recruits.begin(), recruits.end());
 
 	// calculate employment
 	double emp_sea = D_sea_req;
@@ -339,9 +365,9 @@ std::vector<double> Population::update(double temp){
 	//}
 	}
 
-	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
+	if (verbose) cout << "year = " << current_year << " | TSB = " << tsb/1e9 << ", SSB = " << ssb/1.0e9 << ", recruits = " << nrecruits_real << "/" << std::accumulate(nrecruits_vec.begin(), nrecruits_vec.end(), 0.0) << ", N_rel = " << Nrel << ", F_real = " << F_real << "(" << F_real/F_req*100 << "%), r0_avg = " << r0_avg << "\n";
 	++current_year;
-	return {ssb, yield, emp_sea+emp_shore, profit_sea+profit_shr, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits, nfish_ra, nfish(), factor_dg, factor_dr, lmax, length90, survival_mean, maturity, Nrel};	
+	return {ssb, yield, emp_sea+emp_shore, profit_sea+profit_shr, emp_sea, emp_shore, profit_sea, profit_shr, tsb, r0_avg, nrecruits_real, nfish_ra, nfish(), factor_dg, factor_dr, lmax, length90, survival_mean, maturity, Nrel};	
 }
 
 
@@ -440,3 +466,21 @@ Rcpp::DataFrame Population::get_state(){
 	return df;	
 }
 
+
+Rcpp::DataFrame Population::get_traits(){
+	vector<double> traits = proto_fish.get_traits();
+	vector<vector<double>> all_traits(traits.size());
+	for (auto& f: fishes){
+		traits = f.get_traits();
+		for (int i=0; i<traits.size(); ++i){
+			all_traits[i].push_back(traits[i]);
+		}
+	}
+
+	Rcpp::DataFrame df = Rcpp::DataFrame::create();
+	for (int i=0; i<proto_fish.trait_names.size(); ++i){
+		df.push_back(all_traits[i], proto_fish.trait_names[i]);
+	}
+	// df.push_back(nrecruits_vec, "nrecruits");
+	return df;
+}

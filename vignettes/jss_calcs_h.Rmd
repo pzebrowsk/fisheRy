@@ -19,20 +19,33 @@ source("../tests/ref/simulator.7.R")
 ```
 
 ```{r}
-re_simulate = F
+re_simulate = T
 
 # if one of the files doesnt exist, re-run the simulations
-re_simulate = re_simulate | !file.exists("res_ibm_jss_T.Rdata")
+re_simulate = re_simulate | !file.exists("res_ibm_jss_h.Rdata")
 ```
 
 ```{r}
 params_file = "../params/cod_params.ini"
 ```
 
+
+### Simulating the fishery with socioeconomic outputs
+
+The socio-economic part of the fishery deals with the calculation of realized fishing effort for a desired harvest rate, the resulting employment at sea and on shore, and the profit from operating the fishery.
+
+The effort calculations need require the equilibrium fishable biomass of an equivalent unfished population. To simplify such these simulations, fisheRy provides a `Simulator` which can not only precompute the properties of such a  hypothetical unfished population, but also allows simulating multiple populations under different management regimes. 
+
+We start with creating a protoype fish as usual,
+
 ```{r}
 # Create a prototype fish as usual
 fish = new(Fish, params_file)
+```
 
+Then we create a simulator and run the equivalent unfished population to equilibrium.
+
+```{r}
 sim = new(Simulator, fish)
 sim$equilibriateNaturalPopulation(1.93e3, 5.61, 5e6)
 ```
@@ -65,8 +78,10 @@ plot_timeseries = function(res_ibm, pop, h, nsteps=200){
 ```
 
 
-Simulate a status quo population with 
+Then, we create the fished population and simulate it for 500 years with a status quo management regime with 
 $h = 0.41$, $L50 = 45$, $T = 5.6$.
+
+We can also plot biological and socioeconomic parameters as a function of time.
 
 ```{r}
 pop_sq = new(Population, fish)
@@ -81,14 +96,14 @@ res_ibm_sq = sim$simulate(pop_sq, lf_sq, h_sq, nsteps_sq, 1.93e3, t_sq, T)
 plot_timeseries(res_ibm_sq, pop_sq, h_sq, nsteps_sq)
 ```
 
-Continue population under different conditions
+We can continue to simulate this population under different management conditions, e.g., here with a higher harvest proportion of 0.2.
 
 ```{r}
 nsteps = 50
 h = 0.2
 lf = 45
 
-pop1 = pop_sq ## NO! This creates a shallow copy
+pop1 = pop_sq ## NO! This creates a shallow copy, so pop_sq will also be modified.
 res_ibm = sim$simulate(pop1, lf, h, nsteps, 1.93e3, 5.61, F)
 
 plot_timeseries(res_ibm, pop1, h, nsteps)
@@ -108,13 +123,26 @@ abline(v=500)
 
 ### Multiple populations
 
+Computing JSS requires that we analyze the population's response to different management regimes. Here, we simulate 25 populations for 50 years under different harvesting regimes (specified by the `hvec` vector). Each population starts from an equilibrium under the same status quo management regime with $h=0.41$, $L_{min}=45$, and $T=5.61$.
+
+The `simulate_multi_2d` function returns an array of dimensions `{nsteps, length(hvec), length(lmin_vec), length(Tvec), 4}`. The last dimension is four because four utilities are returned: {ssb, yield, employment, profit}.
 
 ```{r}
 source("../R/plot_scan.R")
 ```
 
 ```{r fig.height=9}
-# pop$par$dsea = 0.054
+
+# Recreate status quo population because the earlier one was modified 
+pop_sq = new(Population, fish)
+pop_sq$set_superFishSize(5e6)
+h_sq = 0.41
+lf_sq = 45
+t_sq = 5.6
+nsteps_sq = 500
+res_ibm_sq = sim$simulate(pop_sq, lf_sq, h_sq, nsteps_sq, 1.93e3, t_sq, T)
+
+
 nsteps=50
 hvec = seq(0., 0.99, length.out=25)
 pop = pop_sq
@@ -140,6 +168,8 @@ plot_scan(dat_ibm, xname = "Harvest rate", xvec = hvec)
 
 ### Utilties
 
+We can calculate normalized utility components from the timeseries of bio-socio-economic parameters. This timeseries of 50 years includes a transient phase when the population is responding to the altered management regime, and possibly an equilibrium phase when the population equilibriates under the new regime. 
+
 ```{r fig.height=9, fig.width=5}
 arr = res_ibm_full[,,,,1:4]
 
@@ -158,6 +188,8 @@ legend(x = 0.7, y = 1, legend = c("Spawning stock biomass", "Yield", "Employment
 
 ### Stakeholder satisfaction
 
+From the normalized utility components, stakeholder satisfaction can be calculuted for each new management regime.
+
 ```{r  fig.height=9, fig.width=5}
 arr = res_ibm_full[,,,,1:4]
 
@@ -172,6 +204,8 @@ legend(x = 0.6, y = 1, legend = c("Industrial fishers", "Artisanal fishers", "Em
 ```
 
 ### JSS
+
+Finally, the JSS can be calculated by integrating over the satisfaction levels of individual stakeholders.
 
 ```{r  fig.height=9, fig.width=5}
 mat = matrix(data=ss, ncol=5)

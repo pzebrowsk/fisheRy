@@ -19,7 +19,7 @@ source("../tests/ref/simulator.7.R")
 ```
 
 ```{r}
-re_simulate = F
+re_simulate = T
 
 # if one of the files doesnt exist, re-run the simulations
 re_simulate = re_simulate | !file.exists("res_ibm_scan_T.Rdata")
@@ -48,13 +48,14 @@ sim$equilibriateNaturalPopulation(1.93e3, 5.61, 2e6)
 
 ### Create a population to simulate
 
+Then we create a population that will be reused by the simulator.
+
 ```{r}
 pop = new(Population, fish)
 pop$set_superFishSize(5e6)
 pop$verbose = F
 ```
 
-This population will be reused by the simulator.
 
 
 ### Plotting utility
@@ -103,7 +104,7 @@ dat_ref = data.frame(matrix(ncol=7, nrow=0))
 colnames(dat_ref) = c("ssb", "tsb", "yield", "employment.sea", "employment.shore", "profit.sea", "profit.shore")
 for (ih in 1:length(hvec)){
   res = simulate(hvec[ih], lf, F)
-  v = colMeans((res$summaries %>% select(SSB, TSB, Y, D.sea, D.shr, P.sea, P.shr))[151:250,])
+  v = colMeans((res$summaries %>% select(SSB, TSB, Y, D.sea, D.shr, P.sea, P.shr))[101:200,])
   dat_ref[nrow(dat_ref)+1,] = v
 }
 ```
@@ -143,7 +144,9 @@ for (i in 1:length(Tvec)){
 plot_scan(dat_ibm, xname = expression("Harvest proportion"), xvec = hvec) #, dat_ref=dat_ref)
 ```
 
-### Effect of harvest proportion (old model)
+### Effect of harvest proportion (Dankel et al. model)
+
+We also look at the predictions of the Dankel et al model implementation, and compare it with their results. 
 
 ```{r fig.height=9}
 fish = new(Fish, "../params/cod_params_dankel22.ini")
@@ -154,6 +157,7 @@ sim$equilibriateNaturalPopulation(1.93e3, 5.61, 2e6)
 
 pop = new(Population, fish)
 pop$par$recruitmentAge = 1
+pop$par$dmax = 30000
 pop$set_superFishSize(5e6)
 pop$verbose = F
 
