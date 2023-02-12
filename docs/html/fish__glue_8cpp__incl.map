@@ -1,7 +1,8 @@
 <map id="src/fish_glue.cpp" name="src/fish_glue.cpp">
-<area shape="rect" id="node3" href="$fish_8h.html" title="fish.h" alt="" coords="87,229,141,256"/>
-<area shape="rect" id="node5" href="$functions_8h.html" title="functions.h" alt="" coords="5,304,92,331"/>
-<area shape="rect" id="node9" href="$population_8h.html" title="population.h" alt="" coords="136,155,228,181"/>
-<area shape="rect" id="node10" href="$simulator_8h.html" title="simulator.h" alt="" coords="223,80,309,107"/>
-<area shape="rect" id="node11" href="$tensor_8h.html" title="tensor.h" alt="" coords="302,229,371,256"/>
+<area shape="rect" id="node3" href="$fish_8h.html" title="fish.h" alt="" coords="601,229,655,256"/>
+<area shape="rect" id="node6" href="$functions_8h.html" title="functions.h" alt="" coords="257,304,343,331"/>
+<area shape="rect" id="node17" href="$population_8h.html" title="population.h" alt="" coords="427,155,519,181"/>
+<area shape="rect" id="node19" href="$simulator_8h.html" title="simulator.h" alt="" coords="299,80,386,107"/>
+<area shape="rect" id="node10" href="$initializer__v2_8h.html" title="initializer_v2.h" alt="" coords="821,304,926,331"/>
+<area shape="rect" id="node20" href="$tensor_8h.html" title="tensor.h" alt="" coords="368,304,437,331"/>
 </map>

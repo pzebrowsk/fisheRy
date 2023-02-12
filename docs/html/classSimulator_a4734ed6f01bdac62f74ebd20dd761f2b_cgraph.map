@@ -1,9 +1,0 @@
-<map id="Simulator::simulate_multi" name="Simulator::simulate_multi">
-<area shape="rect" id="node2" href="$classPopulation.html#a20696fa511c914e7c8837acb2a254b33" title="Population::set_harvestProp" alt="" coords="188,5,375,32"/>
-<area shape="rect" id="node3" href="$classPopulation.html#a42c4b04852bdda937e50f82952106af1" title="Population::fishableBiomass" alt="" coords="188,56,375,83"/>
-<area shape="rect" id="node4" href="$classPopulation.html#a5440cd360f9b6af954085b442327633b" title="Population::init" alt="" coords="227,107,335,133"/>
-<area shape="rect" id="node5" href="$classPopulation.html#a345497aa32fe22f73153a59f469c6a19" title="Population::print_summary" alt="" coords="193,157,370,184"/>
-<area shape="rect" id="node6" href="$classPopulation.html#aa404f725dcde475806cdb26704b9fbcf" title="Population::update" alt="" coords="216,208,347,235"/>
-<area shape="rect" id="node7" href="$namespacepn.html#ad42003887dcc42a4758c69775f83a8d9" title="pn::zero" alt="" coords="423,208,492,235"/>
-<area shape="rect" id="node8" href="$structpn_1_1BrentRes.html#a4fa42a440c4b9dc765ea7f0d7fd3a412" title="pn::BrentRes::BrentRes" alt="" coords="540,208,703,235"/>
-</map>

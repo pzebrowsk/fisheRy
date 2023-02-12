@@ -1,8 +1,3 @@
 <map id="Population::print_summary" name="Population::print_summary">
-<area shape="rect" id="node2" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="236,5,360,32"/>
-<area shape="rect" id="node3" href="$classSimulator.html#a4734ed6f01bdac62f74ebd20dd761f2b" title="Simulator::simulate\l_multi" alt="" coords="231,57,365,98"/>
-<area shape="rect" id="node6" href="$classSimulator.html#a636e7a83b462c3e48769a85ae350e742" title="Simulator::simulate\l_multi_2d" alt="" coords="419,115,553,157"/>
-<area shape="rect" id="node7" href="$classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c" title="Simulator::simulate_r" alt="" coords="413,181,559,208"/>
-<area shape="rect" id="node4" href="$classSimulator.html#adb6faf4ee69f21998ce7dc79c065a3e9" title="Simulator::simulate\l_multi_r" alt="" coords="419,50,553,91"/>
-<area shape="rect" id="node5" href="$fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" title="RCPP_MODULE" alt="" coords="607,123,731,149"/>
+<area shape="rect" id="node2" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="231,5,355,32"/>
 </map>

@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['update',['update',['../classPopulation.html#aa404f725dcde475806cdb26704b9fbcf',1,'Population']]],
-  ['updatematurity',['updateMaturity',['../classFish.html#a9f59c976d73c231f73b873184262eedc',1,'Fish']]],
-  ['use_5fold_5fmodel_5ffec',['use_old_model_fec',['../structFishParams.html#aaf4b287d5c3c4cb59f070670d41c4fa9',1,'FishParams']]],
-  ['use_5fold_5fmodel_5fgro',['use_old_model_gro',['../structFishParams.html#a3c0827ae7c7174ad6c3338020438224b',1,'FishParams']]],
-  ['use_5fold_5fmodel_5fmat',['use_old_model_mat',['../structFishParams.html#adbdf6fc7c98c307eea9f3fcce8040fbc',1,'FishParams']]],
-  ['use_5fold_5fmodel_5fmor',['use_old_model_mor',['../structFishParams.html#aa97d4876ba39946dae22d8e651413370',1,'FishParams']]]
+  ['update',['update',['../classPopulation.html#a81c19d1c80cfb1d54d3872ecdefd0872',1,'Population']]],
+  ['update_5fenv',['update_env',['../classPopulationParams.html#a1dd66467f82f58b59de16598e6a227d2',1,'PopulationParams']]],
+  ['updateenv',['updateEnv',['../classPopulation.html#a59c8a171470f0cca4453940e07c3c1df',1,'Population']]],
+  ['updatematurity',['updateMaturity',['../classFish.html#ac6b4ad0b461d1e2bf97d13ed12a4984b',1,'Fish']]]
 ];

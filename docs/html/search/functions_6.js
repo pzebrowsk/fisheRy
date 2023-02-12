@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['get_5fstate',['get_state',['../classFish.html#aa5c5cb34e7f19c6a4ca93858adf3e16a',1,'Fish::get_state()'],['../classPopulation.html#a62f07e15a6d75f0e37e6e24e6a2eaec2',1,'Population::get_state()']]],
-  ['grow',['grow',['../classFish.html#ab95285bebae6447ce00fabcd2f0aa6d0',1,'Fish']]],
-  ['gsi',['gsi',['../namespacefish.html#a90c2a586379b7d0521d4ade4e55ee5ec',1,'fish']]]
+  ['fecundity',['fecundity',['../namespacefish.html#a55881de836369d1af447b740b433e50e',1,'fish']]],
+  ['fill_5fsequence',['fill_sequence',['../classTensor.html#a3739deb8aaf1c85889ccde23be35da35',1,'Tensor']]],
+  ['fish',['Fish',['../classFish.html#a6e44b925e372b9a14403dc73ad50cead',1,'Fish::Fish(double tb=0)'],['../classFish.html#a775cba53fd090f3db6d99d5a21fccd9e',1,'Fish::Fish(std::string params_file)']]],
+  ['fishablebiomass',['fishableBiomass',['../classPopulation.html#a42c4b04852bdda937e50f82952106af1',1,'Population']]],
+  ['fishparams',['FishParams',['../classFishParams.html#a897bd02c9634c93cb817341a77ca50ec',1,'FishParams']]]
 ];

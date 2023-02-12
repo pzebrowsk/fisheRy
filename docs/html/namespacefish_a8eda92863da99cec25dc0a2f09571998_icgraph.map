@@ -1,5 +1,4 @@
 <map id="fish::weight_fish" name="fish::weight_fish">
-<area shape="rect" id="node2" href="$namespacefish.html#a30a5cb4380aecc75b3cf0bf2774a6a4f" title="fish::fecundity" alt="" coords="176,5,280,32"/>
+<area shape="rect" id="node2" href="$classFish.html#a0a1f9fe15dae9fc71e5abbc2a03de9aa" title="Set fish length and other variables that scale directly with length. " alt="" coords="171,5,285,32"/>
 <area shape="rect" id="node3" href="$fish__glue_8cpp.html#a7b6a9b6d94c71377c935b2cfbffdfabc" title="RCPP_MODULE" alt="" coords="333,31,457,57"/>
-<area shape="rect" id="node4" href="$classFish.html#a0a1f9fe15dae9fc71e5abbc2a03de9aa" title="Fish::set_length" alt="" coords="171,107,285,133"/>
 </map>

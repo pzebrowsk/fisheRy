@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -80,6 +86,8 @@ $(document).ready(function(){initNavTree('fish_8cpp.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">fish.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -87,14 +95,60 @@ $(document).ready(function(){initNavTree('fish_8cpp.html','');});
 <div class="textblock"><code>#include &quot;<a class="el" href="fish_8h_source.html">fish.h</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fish.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="fish_8cpp__incl.svg" width="378" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="fish_8cpp__incl.svg" width="1016" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
 <p><a href="fish_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aac0e2f7a2e9c0486798d5373060b873c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fish_8cpp.html#aac0e2f7a2e9c0486798d5373060b873c">READ_PAR</a>(x)&#160;&#160;&#160;x = I.get&lt;double&gt;(#x)</td></tr>
+<tr class="separator:aac0e2f7a2e9c0486798d5373060b873c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28d234c610d7d5cbde8b32bf664a7129"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fish_8cpp.html#a28d234c610d7d5cbde8b32bf664a7129">PRINT_PAR</a>(x)&#160;&#160;&#160;std::cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot;\n&quot;</td></tr>
+<tr class="separator:a28d234c610d7d5cbde8b32bf664a7129"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a28d234c610d7d5cbde8b32bf664a7129"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28d234c610d7d5cbde8b32bf664a7129">&#9670;&nbsp;</a></span>PRINT_PAR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRINT_PAR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;std::cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot;\n&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac0e2f7a2e9c0486798d5373060b873c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac0e2f7a2e9c0486798d5373060b873c">&#9670;&nbsp;</a></span>READ_PAR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define READ_PAR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;x = I.get&lt;double&gt;(#x)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

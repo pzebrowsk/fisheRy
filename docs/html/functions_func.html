@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -103,18 +109,27 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a id="index_c"></a>- c -</h3><ul>
-<li>calcRealizedFishingMortality()
-: <a class="el" href="classPopulation.html#a970012ca8aefa9c78ecaa172ffc14ebe">Population</a>
+<li>calc_athresh()
+: <a class="el" href="classPopulation.html#a413a383f94e1d0ead9d8b11f7dbc27ce">Population</a>
+</li>
+<li>calcSB()
+: <a class="el" href="classPopulation.html#aaae10299ca2e22292f57559380805948">Population</a>
 </li>
 <li>calcSSB()
 : <a class="el" href="classPopulation.html#af15e7ba23b161c710d4013204b542cb6">Population</a>
+</li>
+<li>calcTSB()
+: <a class="el" href="classPopulation.html#ae942ef70cc9f4dfc40b5d843baf40b1e">Population</a>
 </li>
 </ul>
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
 <li>effort()
-: <a class="el" href="classPopulation.html#a3b95e8954be8c15e3547b5b9c6850e01">Population</a>
+: <a class="el" href="classPopulation.html#ad1840de2f00982c35d48b91a1d27ae13">Population</a>
+</li>
+<li>equilibriateNaturalPopulation()
+: <a class="el" href="classSimulator.html#a3dfce52c0bb26ec7ff2632b1eca50240">Simulator</a>
 </li>
 </ul>
 
@@ -130,18 +145,34 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classPopulation.html#a42c4b04852bdda937e50f82952106af1">Population</a>
 </li>
 <li>FishParams()
-: <a class="el" href="structFishParams.html#a897bd02c9634c93cb817341a77ca50ec">FishParams</a>
+: <a class="el" href="classFishParams.html#a897bd02c9634c93cb817341a77ca50ec">FishParams</a>
 </li>
 </ul>
 
 
 <h3><a id="index_g"></a>- g -</h3><ul>
+<li>get()
+: <a class="el" href="classio_1_1Initializer.html#a098a8511a950a4449925c8315af36bdb">io::Initializer</a>
+</li>
+<li>get_section()
+: <a class="el" href="classio_1_1Initializer.html#a310526fc5b0c2c257bee66d6f48fa4ae">io::Initializer</a>
+</li>
 <li>get_state()
 : <a class="el" href="classFish.html#aa5c5cb34e7f19c6a4ca93858adf3e16a">Fish</a>
 , <a class="el" href="classPopulation.html#a62f07e15a6d75f0e37e6e24e6a2eaec2">Population</a>
 </li>
+<li>get_traits()
+: <a class="el" href="classFish.html#ada02edec02f9bed880911ea21b6d1a60">Fish</a>
+, <a class="el" href="classPopulation.html#a29fa674d9ce3986f71b07f11d2374fde">Population</a>
+</li>
+<li>get_value()
+: <a class="el" href="classio_1_1Initializer.html#a06fe79d6d19f76180836e03e3ad6b7fb">io::Initializer</a>
+</li>
+<li>get_vector()
+: <a class="el" href="classio_1_1Initializer.html#a92f49c1ad4e16a85f3f0f12201cb9707">io::Initializer</a>
+</li>
 <li>grow()
-: <a class="el" href="classFish.html#ab95285bebae6447ce00fabcd2f0aa6d0">Fish</a>
+: <a class="el" href="classFish.html#abe4b5c9e5d1f6d3c56cc6be997db71cd">Fish</a>
 </li>
 </ul>
 
@@ -151,7 +182,12 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classTensor.html#a90a6b28226bcd1be7090fd2f8782d0b1">Tensor&lt; T &gt;</a>
 </li>
 <li>init()
-: <a class="el" href="classPopulation.html#a5440cd360f9b6af954085b442327633b">Population</a>
+: <a class="el" href="classFish.html#adf85bf269f1651352506e371ffd2cecc">Fish</a>
+, <a class="el" href="classFishParams.html#a9f2eb8f9cba3f7cc9b1d187e28a0e566">FishParams</a>
+, <a class="el" href="classPopulation.html#a012ef586a78b4e7c2082634b316072d0">Population</a>
+</li>
+<li>initFromFile()
+: <a class="el" href="classFishParams.html#a6a7122ea93777817165dfb09c1d840ac">FishParams</a>
 </li>
 </ul>
 
@@ -164,8 +200,8 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a id="index_m"></a>- m -</h3><ul>
-<li>matureNow()
-: <a class="el" href="classFish.html#acf6d815ee242fd3b3ee2412dbe11a2ed">Fish</a>
+<li>maturationProb()
+: <a class="el" href="classFish.html#ac7121f25ba24b82a7faabd07702d7e73">Fish</a>
 </li>
 <li>max_avg_utils()
 : <a class="el" href="classSimulator.html#addbc3da16a6f9c352eefbdc423419bca">Simulator</a>
@@ -181,13 +217,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a id="index_n"></a>- n -</h3><ul>
 <li>naturalMortalityRate()
-: <a class="el" href="classFish.html#a78cda076a02648a86822064657256027">Fish</a>
+: <a class="el" href="classFish.html#ad814087dbccdd9e4268a6c87db801536">Fish</a>
 </li>
 <li>nfish()
 : <a class="el" href="classPopulation.html#ac62fc3480d60b055cd1886649809c6a6">Population</a>
 </li>
 <li>noFishingEquilibriate()
-: <a class="el" href="classPopulation.html#a650981877120084dbc53323e34ddfd5e">Population</a>
+: <a class="el" href="classPopulation.html#aa7eba257f23cbc12aa3673ce012fb2cb">Population</a>
 </li>
 </ul>
 
@@ -212,6 +248,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a id="index_p"></a>- p -</h3><ul>
+<li>parse()
+: <a class="el" href="classio_1_1Initializer.html#a6c174190ba99677aac35c5c7e92b69b8">io::Initializer</a>
+</li>
 <li>plane()
 : <a class="el" href="classTensor.html#a862952dc137707abdccd06cf9cd5855b">Tensor&lt; T &gt;</a>
 </li>
@@ -220,6 +259,8 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>print()
 : <a class="el" href="classFish.html#a7734c4cfe4ae06e89474e86dae63235e">Fish</a>
+, <a class="el" href="classFishParams.html#aa0812994bb72e90dfa8c4fadc3039f57">FishParams</a>
+, <a class="el" href="classio_1_1Initializer.html#a6aa0d123a1a5db77168b3cda12988d5f">io::Initializer</a>
 , <a class="el" href="classTensor.html#af29c0ff50c2dbd82543cbc0d2ff95358">Tensor&lt; T &gt;</a>
 </li>
 <li>print_header()
@@ -232,12 +273,15 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="classPopulation.html#a345497aa32fe22f73153a59f469c6a19">Population</a>
 </li>
 <li>produceRecruits()
-: <a class="el" href="classFish.html#a86ee6df72c6b257d9a8501743553b40c">Fish</a>
+: <a class="el" href="classFish.html#a9550ba7371eef86c50349864bcf05b4a">Fish</a>
 </li>
 </ul>
 
 
 <h3><a id="index_r"></a>- r -</h3><ul>
+<li>readEnvironmentFile()
+: <a class="el" href="classPopulation.html#a2cbbf4e1d4fdfe6fc3f67b96a5aa698d">Population</a>
+</li>
 <li>repeat_inner()
 : <a class="el" href="classTensor.html#ae4622cf6280102eb5103cfe4c88c1ad8">Tensor&lt; T &gt;</a>
 </li>
@@ -266,20 +310,26 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>set_superFishSize()
 : <a class="el" href="classPopulation.html#ae8a6455aa45e65bf8bd41312f9caa328">Population</a>
 </li>
+<li>set_traits()
+: <a class="el" href="classFish.html#aaa3e67187a587efc7a99485b4a6ee248">Fish</a>
+</li>
 <li>setNaturalPopulation()
 : <a class="el" href="classSimulator.html#a1e385d56b6ae6694463f127b5f1d98d5">Simulator</a>
 </li>
 <li>simulate_multi()
-: <a class="el" href="classSimulator.html#a4734ed6f01bdac62f74ebd20dd761f2b">Simulator</a>
+: <a class="el" href="classSimulator.html#a7540919b97662be7deacba9194c0ed60">Simulator</a>
 </li>
 <li>simulate_multi_2d()
-: <a class="el" href="classSimulator.html#a636e7a83b462c3e48769a85ae350e742">Simulator</a>
+: <a class="el" href="classSimulator.html#ab21d1c6b0af00931f9a8fa5e0b6d417f">Simulator</a>
+</li>
+<li>simulate_multi_2d_r()
+: <a class="el" href="classSimulator.html#af1b0a9562ecf0ad8f98d61576efba28b">Simulator</a>
 </li>
 <li>simulate_multi_r()
-: <a class="el" href="classSimulator.html#adb6faf4ee69f21998ce7dc79c065a3e9">Simulator</a>
+: <a class="el" href="classSimulator.html#a1a5454ee4736819d709398b225d7876d">Simulator</a>
 </li>
 <li>simulate_r()
-: <a class="el" href="classSimulator.html#a16eef6e60e97dabc2a1205b58b10182c">Simulator</a>
+: <a class="el" href="classSimulator.html#aa6e6cfd73fd8d3200e7f515b473e88f2">Simulator</a>
 </li>
 <li>Simulator()
 : <a class="el" href="classSimulator.html#a1b65fa1ed6538201dffcba8bce997d82">Simulator</a>
@@ -311,10 +361,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a id="index_u"></a>- u -</h3><ul>
 <li>update()
-: <a class="el" href="classPopulation.html#aa404f725dcde475806cdb26704b9fbcf">Population</a>
+: <a class="el" href="classPopulation.html#a81c19d1c80cfb1d54d3872ecdefd0872">Population</a>
+</li>
+<li>updateEnv()
+: <a class="el" href="classPopulation.html#a59c8a171470f0cca4453940e07c3c1df">Population</a>
 </li>
 <li>updateMaturity()
-: <a class="el" href="classFish.html#a9f59c976d73c231f73b873184262eedc">Fish</a>
+: <a class="el" href="classFish.html#ac6b4ad0b461d1e2bf97d13ed12a4984b">Fish</a>
 </li>
 </ul>
 </div><!-- contents -->

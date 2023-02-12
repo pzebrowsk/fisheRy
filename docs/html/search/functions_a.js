@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['natural_5fmortality',['natural_mortality',['../namespacefish.html#a645c2b636a1dc9e837a5c267f7514027',1,'fish']]],
-  ['naturalmortalityrate',['naturalMortalityRate',['../classFish.html#a78cda076a02648a86822064657256027',1,'Fish']]],
-  ['nfish',['nfish',['../classPopulation.html#ac62fc3480d60b055cd1886649809c6a6',1,'Population']]],
-  ['nofishingequilibriate',['noFishingEquilibriate',['../classPopulation.html#a650981877120084dbc53323e34ddfd5e',1,'Population']]]
+  ['maturation_5fprobability',['maturation_probability',['../namespacefish.html#a214a54b82cb48878c083a73958c45847',1,'fish']]],
+  ['maturation_5fsteepness',['maturation_steepness',['../namespacefish.html#a79ee7b63f43f9e9bda95cc04deb3a082',1,'fish']]],
+  ['maturationprob',['maturationProb',['../classFish.html#ac7121f25ba24b82a7faabd07702d7e73',1,'Fish']]],
+  ['max_5favg_5futils',['max_avg_utils',['../classSimulator.html#addbc3da16a6f9c352eefbdc423419bca',1,'Simulator']]],
+  ['max_5favg_5futils_5f2d',['max_avg_utils_2d',['../classSimulator.html#a32eeba843e7526dceb75a2c6aebe240e',1,'Simulator']]],
+  ['max_5fdim',['max_dim',['../classTensor.html#abf7346c2dbd5e6b195cfe9b66e5049e8',1,'Tensor']]]
 ];

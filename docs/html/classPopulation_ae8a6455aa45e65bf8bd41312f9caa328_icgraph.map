@@ -1,3 +1,7 @@
 <map id="Population::set_superFishSize" name="Population::set_superFishSize">
-<area shape="rect" id="node2" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="252,5,376,32"/>
+<area shape="rect" id="node2" href="$fish__glue_8cpp.html#ab96ae82277aa9004dc603b77512c7265" title="RCPP_MODULE" alt="" coords="257,5,381,32"/>
+<area shape="rect" id="node3" href="$classSimulator.html#a3dfce52c0bb26ec7ff2632b1eca50240" title="Simulator::equilibriateNatural\lPopulation" alt="" coords="435,46,624,87"/>
+<area shape="rect" id="node5" href="$classSimulator.html#a7540919b97662be7deacba9194c0ed60" title="Simulator::simulate\l_multi" alt="" coords="252,109,387,150"/>
+<area shape="rect" id="node4" href="$fish__glue_8cpp.html#addebb0997b0e49067d8784c9954b7b96" title="RCPP_MODULE" alt="" coords="672,87,796,113"/>
+<area shape="rect" id="node6" href="$classSimulator.html#a1a5454ee4736819d709398b225d7876d" title="Simulator::simulate\l_multi_r" alt="" coords="462,111,597,153"/>
 </map>

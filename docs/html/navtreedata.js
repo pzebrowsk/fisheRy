@@ -13,9 +13,10 @@ var NAVTREE =
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
@@ -23,16 +24,19 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ]
+        [ "Variables", "globals_vars.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ],
-    [ "Github", "^https://github.com/jaideep777/rfish", null ]
+    [ "Github", "^https://github.com/jaideep777/fisheRy", null ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"../index.html"
+"../index.html",
+"fish_8h.html#a766487207e230e4d3b30e953ab944741ac93435785041b0a243231bb5fcb9d88d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['length_5fadult',['length_adult',['../namespacefish.html#a138fecf39fc899d469d340b073a4daec',1,'fish']]],
-  ['length_5fjuvenile',['length_juvenile',['../namespacefish.html#a9d32a06cd887d748fca34b49b1e8d3d4',1,'fish']]],
-  ['location',['location',['../classTensor.html#ac96d9345bd34612ca648f0b2cef1a147',1,'Tensor::location(std::vector&lt; int &gt; ix)'],['../classTensor.html#a2e4d51ac74c4a518c4e83a4be3eab68a',1,'Tensor::location(ARGS... ids)']]]
+  ['index',['index',['../classTensor.html#a90a6b28226bcd1be7090fd2f8782d0b1',1,'Tensor']]],
+  ['init',['init',['../classFishParams.html#a9f2eb8f9cba3f7cc9b1d187e28a0e566',1,'FishParams::init()'],['../classFish.html#adf85bf269f1651352506e371ffd2cecc',1,'Fish::init()'],['../classPopulation.html#a012ef586a78b4e7c2082634b316072d0',1,'Population::init()']]],
+  ['initfromfile',['initFromFile',['../classFishParams.html#a6a7122ea93777817165dfb09c1d840ac',1,'FishParams']]]
 ];

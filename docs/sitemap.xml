@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jaideep777.github.io/rfish/404.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/404.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/fished_population.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/compare_hscans.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/fish_population.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/evolving_unfished_population.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/index.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/fished_population.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/multi_populations.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/single_fish.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/jss_calcs_h.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/theory_bio.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/test_page.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/articles/theory_eco.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/theory_bio.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/authors.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/theory_eco.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/index.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/articles/unfished_population.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/reference/index.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/authors.html</loc>
   </url>
   <url>
-    <loc>https://jaideep777.github.io/rfish/reference/rfish-package.html</loc>
+    <loc>https://jaideep777.github.io/fisheRy/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jaideep777.github.io/fisheRy/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jaideep777.github.io/fisheRy/reference/rfish-package.html</loc>
   </url>
 </urlset>

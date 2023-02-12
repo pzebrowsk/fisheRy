@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="Individual based simulation of age-size-structured fish populations ">
-<title>Age-size-structured modelling of fish populations • rfish</title>
+<title>Age-size-structured modelling of fish populations • fisheRy</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -24,7 +24,7 @@
 
     <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
-    <a class="navbar-brand me-2" href="index.html">rfish</a>
+    <a class="navbar-brand me-2" href="index.html">fisheRy</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0</small>
 
@@ -68,25 +68,30 @@
     Tutorials
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--tutorials">
-    <a class="dropdown-item" href="articles/single_fish.html">
-      <span class="fa fa-fish"></span>
-       
-      Simulating a single fish
-    </a>
-    <a class="dropdown-item" href="articles/fish_population.html">
+    <a class="dropdown-item" href="articles/unfished_population.html">
       <span class="fa fa-fish"></span>
        
       Simulating an unfished population
     </a>
+    <a class="dropdown-item" href="articles/evolving_unfished_population.html">
+      <span class="fa fa-fish"></span>
+       
+      Simulating an unfished fished population with evolution
+    </a>
     <a class="dropdown-item" href="articles/fished_population.html">
       <span class="fa fa-fish"></span>
        
-      Simulating a fished population
+      Simulating a fished population (biological model only)
     </a>
-    <a class="dropdown-item" href="articles/multi_populations.html">
+    <a class="dropdown-item" href="articles/compare_hscans.html">
       <span class="fa fa-fish"></span>
        
       Simulating multiple populations at once
+    </a>
+    <a class="dropdown-item" href="articles/jss_calcs_h.html">
+      <span class="fa fa-fish"></span>
+       
+      Calculating JSS
     </a>
   </div>
 </li>
@@ -111,7 +116,7 @@
   </a>
 </li>
 <li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/jaideep777/rfish">
+  <a class="nav-link" href="https://jaideep777.github.io/fisheRy">
     <span class="fa fa-github fa-lg"></span>
      
     GitHub
@@ -133,11 +138,11 @@ age-size-structured biological model of the concerned fish, coupled to a
 socio-economic model of the fishery. It predicts the emergent properties
 of the fish population such as spawning stock biomass, as well as
 socio-economic outputs of the fishery, such as yield, employment, and
-net revenue. It can also compute satisfaction assessmnts of multiple
+net revenue. It can also compute satisfaction assessments of different
 stakeholders, such as convervationists, government, industry, and
-recreational users. It can thus be used to calculate the safe operating
-spaces, i.e., management regimes in which high joint stakeholder
-satisfaction is achieved.</p>
+recreational users. It can thus be used to calculate safe operating
+spaces for fisheries, i.e., management regimes in which high joint
+stakeholder satisfaction is achieved.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -155,14 +160,12 @@ available on Linux. On Windows, you will have to install <a href="http://cran.r-
 <h3 id="installing-fishery">Installing fisheRy<a class="anchor" aria-label="anchor" href="#installing-fishery"></a>
 </h3>
 <p>You can install <code>fisheRy</code> directly from github. Currently,
-you should install from the <code>new_model_restart</code> branch, like
-so:</p>
+you should install from the <code>develop</code> branch, like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="st">"jaideep777/rfish"</span>, ref <span class="op">=</span> <span class="st">"new_model_restart"</span><span class="op">)</span></code></pre></div>
-<p><strong>NOTE</strong>: Currently, the package name is rfish, so load
-the packaged using</p>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="st">"jaideep777/fisheRy"</span>, ref <span class="op">=</span> <span class="st">"develop"</span><span class="op">)</span></code></pre></div>
+<p>The package can be loaded by</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rfish</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fisheRy</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stable-release">Stable release<a class="anchor" aria-label="anchor" href="#stable-release"></a>
@@ -172,35 +175,32 @@ the packaged using</p>
 <div class="section level3">
 <h3 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
 </h3>
-<p>Latest development version can be found here: <a href="https://github.com/jaideep777/rfish/tree/new_model_restart" class="external-link uri">https://github.com/jaideep777/rfish/tree/new_model_restart</a></p>
+<p>Latest development version can be found here: <a href="https://github.com/jaideep777/fisheRy/tree/develop" class="external-link uri">https://github.com/jaideep777/fisheRy/tree/develop</a></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>To solve a fishery model, you need to create four objects:</p>
+<p>To solve a fishery model, you need to create three objects:</p>
 <ol style="list-style-type: decimal">
-<li>A <code>fish</code>, which will be used as a prototype to construct
+<li>A <code>Fish</code>, which will serve as a prototype to construct
 all fish in the population.</li>
-<li>A reference <code>population</code>, which will be simulated to
-equilibrium with no fishing.</li>
-<li>A population which will be used to perform simulaitons with
-fishing.</li>
-<li>A <code>simulator</code>, which will simulate the population under
-different management settings (defined via two control parameters -
-minimum size limit and harvest proportion).</li>
+<li>A <code>Population</code> to simulate.</li>
+<li>A <code>Simulator</code>, which will simulate the population under
+different temperature and management settings (defined via two control
+parameters - minimum size limit and harvest proportion).</li>
 </ol>
 <p>The simulator allows for simultaneously simulating multiple
-populations with different control parameters, and also allows for
-calculation of utilties, stakeholder satisfaction, and joint stakeholder
-satisfaction.</p>
-<p>For details on the usage, please see the tutorials <a href="https://jaideep777.github.io/rfish/index.html">here</a>.</p>
+populations with different temperature and control parameters, and also
+allows for calculation of utilties, stakeholder satisfaction, and joint
+stakeholder satisfaction.</p>
+<p>For details on the usage, please see the tutorials <a href="https://jaideep777.github.io/fisheRy/index.html">here</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="documentaion">Documentaion<a class="anchor" aria-label="anchor" href="#documentaion"></a>
 </h2>
 <p>Detailed documentation and totorials are available [here](please see
-the tutorials <a href="https://jaideep777.github.io/rfish/index.html">here</a>.</p>
+the tutorials <a href="https://jaideep777.github.io/fisheRy/index.html">here</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="author-and-contact">Author and contact<a class="anchor" aria-label="anchor" href="#author-and-contact"></a>
@@ -224,7 +224,7 @@ the tutorials <a href="https://jaideep777.github.io/rfish/index.html">here</a>.<
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing rfish</a></li>
+<li><a href="authors.html#citation">Citing fisheRy</a></li>
 </ul>
 </div>
 

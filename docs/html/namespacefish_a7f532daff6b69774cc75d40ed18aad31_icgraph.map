@@ -1,0 +1,6 @@
+<map id="fish::gsi" name="fish::gsi">
+<area shape="rect" id="node2" href="$classFish.html#abe4b5c9e5d1f6d3c56cc6be997db71cd" title="Implement growth, i.e., set new length and effective GSI after 1 year of growth. " alt="" coords="164,5,247,32"/>
+<area shape="rect" id="node3" href="$fish__glue_8cpp.html#a7b6a9b6d94c71377c935b2cfbffdfabc" title="RCPP_MODULE" alt="" coords="337,81,461,108"/>
+<area shape="rect" id="node4" href="$classFishParams.html#a6a7122ea93777817165dfb09c1d840ac" title="FishParams::initFromFile" alt="" coords="121,107,289,133"/>
+<area shape="rect" id="node5" href="$classFishParams.html#aa0812994bb72e90dfa8c4fadc3039f57" title="FishParams::print" alt="" coords="143,157,268,184"/>
+</map>

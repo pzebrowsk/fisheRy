@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -87,12 +93,12 @@ $(document).ready(function(){initNavTree('RcppExports_8cpp.html','');});
 <div class="title">RcppExports.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="rfish_8h_source.html">../inst/include/rfish.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="fisheRy_8h_source.html">../inst/include/fisheRy.h</a>&quot;</code><br />
 <code>#include &lt;Rcpp.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for RcppExports.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="RcppExports_8cpp__incl.svg" width="376" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="RcppExports_8cpp__incl.svg" width="1016" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -106,8 +112,8 @@ Functions</h2></td></tr>
 <tr class="separator:a7d9d52680ffa6e67ae3754347c22bb5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9da42ccddde27d87e53deed1dba87844"><td class="memItemLeft" align="right" valign="top">RcppExport SEXP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RcppExports_8cpp.html#a9da42ccddde27d87e53deed1dba87844">_rcpp_module_boot_simulator_module</a> ()</td></tr>
 <tr class="separator:a9da42ccddde27d87e53deed1dba87844"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fc4a88492a23a1f9511167513d57595"><td class="memItemLeft" align="right" valign="top">RcppExport void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RcppExports_8cpp.html#a0fc4a88492a23a1f9511167513d57595">R_init_rfish</a> (DllInfo *dll)</td></tr>
-<tr class="separator:a0fc4a88492a23a1f9511167513d57595"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a475ac289c7f0475132fe1511d0d166b6"><td class="memItemLeft" align="right" valign="top">RcppExport void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RcppExports_8cpp.html#a475ac289c7f0475132fe1511d0d166b6">R_init_fisheRy</a> (DllInfo *dll)</td></tr>
+<tr class="separator:a475ac289c7f0475132fe1511d0d166b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -166,14 +172,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a0fc4a88492a23a1f9511167513d57595"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fc4a88492a23a1f9511167513d57595">&#9670;&nbsp;</a></span>R_init_rfish()</h2>
+<a id="a475ac289c7f0475132fe1511d0d166b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a475ac289c7f0475132fe1511d0d166b6">&#9670;&nbsp;</a></span>R_init_fisheRy()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">RcppExport void R_init_rfish </td>
+          <td class="memname">RcppExport void R_init_fisheRy </td>
           <td>(</td>
           <td class="paramtype">DllInfo *&#160;</td>
           <td class="paramname"><em>dll</em></td><td>)</td>
@@ -183,7 +189,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="RcppExports_8cpp_source.html#l00026">26</a> of file <a class="el" href="RcppExports_8cpp_source.html">RcppExports.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                                           {</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    R_registerRoutines(dll, NULL, <a class="code" href="RcppExports_8cpp.html#acc66047eee9f1e8112081542de22411c">CallEntries</a>, NULL, NULL);</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    R_useDynamicSymbols(dll, FALSE);</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div><div class="ttc" id="RcppExports_8cpp_html_acc66047eee9f1e8112081542de22411c"><div class="ttname"><a href="RcppExports_8cpp.html#acc66047eee9f1e8112081542de22411c">CallEntries</a></div><div class="ttdeci">static const R_CallMethodDef CallEntries[]</div><div class="ttdef"><b>Definition:</b> <a href="RcppExports_8cpp_source.html#l00019">RcppExports.cpp:19</a></div></div>
+<div class="fragment"><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                                             {</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    R_registerRoutines(dll, NULL, <a class="code" href="RcppExports_8cpp.html#acc66047eee9f1e8112081542de22411c">CallEntries</a>, NULL, NULL);</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    R_useDynamicSymbols(dll, FALSE);</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div><div class="ttc" id="RcppExports_8cpp_html_acc66047eee9f1e8112081542de22411c"><div class="ttname"><a href="RcppExports_8cpp.html#acc66047eee9f1e8112081542de22411c">CallEntries</a></div><div class="ttdeci">static const R_CallMethodDef CallEntries[]</div><div class="ttdef"><b>Definition:</b> <a href="RcppExports_8cpp_source.html#l00019">RcppExports.cpp:19</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

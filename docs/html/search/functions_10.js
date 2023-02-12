@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['update',['update',['../classPopulation.html#aa404f725dcde475806cdb26704b9fbcf',1,'Population']]],
-  ['updatematurity',['updateMaturity',['../classFish.html#a9f59c976d73c231f73b873184262eedc',1,'Fish']]]
+  ['tensor',['Tensor',['../classTensor.html#a49bb771a6c6ff7dafde1b9a2452f0e8f',1,'Tensor']]],
+  ['tensor2array',['tensor2array',['../simulator_8cpp.html#a2a2aec343c151304395503fd8b1d6a78',1,'simulator.cpp']]],
+  ['transform',['transform',['../classTensor.html#a3986d7a50faef0249a8d2da5b1f67a89',1,'Tensor']]],
+  ['transform_5fdim',['transform_dim',['../classTensor.html#a1a9aea97717d687b7d501842efb546d4',1,'Tensor']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['effort',['effort',['../classPopulation.html#a3b95e8954be8c15e3547b5b9c6850e01',1,'Population']]]
+  ['dl_5fpower',['dl_power',['../namespacefish.html#a0ab1c4842d702a0a40bd04f26793ce12',1,'fish']]]
 ];

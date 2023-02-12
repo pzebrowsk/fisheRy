@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -100,7 +106,7 @@ Include dependency graph for functions.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="functions_8h__dep__incl.svg" width="576" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="functions_8h__dep__incl.svg" width="587" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -113,24 +119,66 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9d32a06cd887d748fca34b49b1e8d3d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a9d32a06cd887d748fca34b49b1e8d3d4">fish::length_juvenile</a> (double init_length, double gamma_1, double gamma_2, double alpha_1, double alpha_2)</td></tr>
-<tr class="separator:a9d32a06cd887d748fca34b49b1e8d3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a138fecf39fc899d469d340b073a4daec"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a138fecf39fc899d469d340b073a4daec">fish::length_adult</a> (double init_length, double gamma_1, double gamma_2, double alpha_1, double alpha_2, double gsi)</td></tr>
-<tr class="separator:a138fecf39fc899d469d340b073a4daec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab1c4842d702a0a40bd04f26793ce12"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a0ab1c4842d702a0a40bd04f26793ce12">fish::dl_power</a> (double tsb_ano, double temp_ano, double gamma_1, double gamma_2, double alpha_1, double alpha_2, double beta_1, double beta_2)</td></tr>
+<tr class="memdesc:a0ab1c4842d702a0a40bd04f26793ce12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the nonlinear growth increment \(\Delta l_p = l_a^{\gamma_1 \gamma_2} - l_{a-1}^{\gamma_1 \gamma_2}\), as follows </p><p class="formulaDsp">
+\[ \Delta l_p = \gamma_{1}\alpha_{1}\alpha_{2}^{- \gamma_{1}} e^{(\beta_1\Delta B +\beta_2 \Delta T)} \]
+</p>
+<p>.  <a href="namespacefish.html#a0ab1c4842d702a0a40bd04f26793ce12">More...</a><br /></td></tr>
+<tr class="separator:a0ab1c4842d702a0a40bd04f26793ce12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d06e0358aca1be4446ed148b7ce3d84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a1d06e0358aca1be4446ed148b7ce3d84">fish::length_juvenile</a> (double init_length, double pow_dl, double gamma_1, double gamma_2)</td></tr>
+<tr class="memdesc:a1d06e0358aca1be4446ed148b7ce3d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the new length after growth assuming no allocation to reproduction </p><p class="formulaDsp">
+\[l&#39;_{a} = \left(l_{a - 1}^{\gamma_{1}\gamma_{2}} + \Delta l_p\right)^{\frac{1}{{\gamma_{1}\gamma_{2}}}}\]
+</p>
+<p>.  <a href="namespacefish.html#a1d06e0358aca1be4446ed148b7ce3d84">More...</a><br /></td></tr>
+<tr class="separator:a1d06e0358aca1be4446ed148b7ce3d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc414165e9acd76993cbaaf5140c5f22"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#adc414165e9acd76993cbaaf5140c5f22">fish::length_adult</a> (double init_length, double pow_dl, double gamma_1, double gamma_2, double gsi)</td></tr>
+<tr class="memdesc:adc414165e9acd76993cbaaf5140c5f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the new length after growth for adults, assuming allocation to reproduction </p><p class="formulaDsp">
+\[\text{max}\left\{\frac{l&#39;_{a}}{(1 + \gamma_{1}g)^{\frac{1}{{\gamma_{1}\gamma_{2}}}}},\ l_{a-1}\right\}\]
+</p>
+<p>.  <a href="namespacefish.html#adc414165e9acd76993cbaaf5140c5f22">More...</a><br /></td></tr>
+<tr class="separator:adc414165e9acd76993cbaaf5140c5f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79ee7b63f43f9e9bda95cc04deb3a082"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a79ee7b63f43f9e9bda95cc04deb3a082">fish::maturation_steepness</a> (double pmrn_width, double pmrn_envelope)</td></tr>
+<tr class="memdesc:a79ee7b63f43f9e9bda95cc04deb3a082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the steepness of the probabilistic maturation reaction norm (PMRN) </p><p class="formulaDsp">
+\[d_{m} = \frac{\Delta l_{50}}{\ln{\left( \frac{1 - p}{p} \right) - \ln\left( \frac{p}{1 - p} \right)}}\]
+</p>
+<p>.  <a href="namespacefish.html#a79ee7b63f43f9e9bda95cc04deb3a082">More...</a><br /></td></tr>
 <tr class="separator:a79ee7b63f43f9e9bda95cc04deb3a082"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a708b4fb0fc8a7424ecebdd40f7dbcc4e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a708b4fb0fc8a7424ecebdd40f7dbcc4e">fish::maturation_probability</a> (double age, double body_length, double steepness, double pmrn_slope, double pmrn_intercept)</td></tr>
-<tr class="separator:a708b4fb0fc8a7424ecebdd40f7dbcc4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214a54b82cb48878c083a73958c45847"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a214a54b82cb48878c083a73958c45847">fish::maturation_probability</a> (double age, double body_length, double temp, double Tref, double steepness, double pmrn_slope, double pmrn_intercept, double beta_3)</td></tr>
+<tr class="memdesc:a214a54b82cb48878c083a73958c45847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the maturation probability given age \(a\) and body length \(l_a\), </p><p class="formulaDsp">
+\[m(a,l_a) = \frac{1}{1 + e^{-\left(\frac{l_{a} - (s_{m}a + i_{m})}{d_{m}} + \beta_3(T-T_\text{ref})\right)}}\]
+</p>
+<p>.  <a href="namespacefish.html#a214a54b82cb48878c083a73958c45847">More...</a><br /></td></tr>
+<tr class="separator:a214a54b82cb48878c083a73958c45847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eda92863da99cec25dc0a2f09571998"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a8eda92863da99cec25dc0a2f09571998">fish::weight_fish</a> (double body_length, double alpha_2, double gamma_2)</td></tr>
+<tr class="memdesc:a8eda92863da99cec25dc0a2f09571998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute weight of fish (grams) given length (cm), </p><p class="formulaDsp">
+\[w = \alpha_2 l^{\gamma_2}\]
+</p>
+<p>.  <a href="namespacefish.html#a8eda92863da99cec25dc0a2f09571998">More...</a><br /></td></tr>
 <tr class="separator:a8eda92863da99cec25dc0a2f09571998"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30a5cb4380aecc75b3cf0bf2774a6a4f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a30a5cb4380aecc75b3cf0bf2774a6a4f">fish::fecundity</a> (double body_length, double gamma_2, double alpha_2, double delta, double gsi)</td></tr>
-<tr class="separator:a30a5cb4380aecc75b3cf0bf2774a6a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90c2a586379b7d0521d4ade4e55ee5ec"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a90c2a586379b7d0521d4ade4e55ee5ec">fish::gsi</a> (double body_length, double init_body_length, double gamma_1, double gamma_2, double alpha_1, double alpha_2)</td></tr>
-<tr class="separator:a90c2a586379b7d0521d4ade4e55ee5ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a645c2b636a1dc9e837a5c267f7514027"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a645c2b636a1dc9e837a5c267f7514027">fish::natural_mortality</a> (double body_length, double M0, double gamma_3, double alpha_3, double body_length_ref)</td></tr>
-<tr class="separator:a645c2b636a1dc9e837a5c267f7514027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0499480bb6eb74da282054a5885d04c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#ab0499480bb6eb74da282054a5885d04c">fish::survival_probability</a> (double body_length, double M0, double gamma_3, double alpha_3, double body_length_ref, double fishing_mortality, double dt=1)</td></tr>
-<tr class="separator:ab0499480bb6eb74da282054a5885d04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55881de836369d1af447b740b433e50e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a55881de836369d1af447b740b433e50e">fish::fecundity</a> (double weight, double delta, double gsi)</td></tr>
+<tr class="memdesc:a55881de836369d1af447b740b433e50e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the number of eggs produced per year by a fish of given weight, </p><p class="formulaDsp">
+\[f(a,l_a) = \delta g_{a}^{&#39;} \cdot w(l_a)\]
+</p>
+<p>.  <a href="namespacefish.html#a55881de836369d1af447b740b433e50e">More...</a><br /></td></tr>
+<tr class="separator:a55881de836369d1af447b740b433e50e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f532daff6b69774cc75d40ed18aad31"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a7f532daff6b69774cc75d40ed18aad31">fish::gsi</a> (double body_length, double init_body_length, double pow_dl, double gamma_1, double gamma_2, double alpha_1, double alpha_2)</td></tr>
+<tr class="memdesc:a7f532daff6b69774cc75d40ed18aad31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate effective GSI, given the initial and final body lengths. </p><p class="formulaDsp">
+\[g_{a}^{&#39;} = \frac{ \Delta l_p - (l_{a}^{\gamma_{1}\gamma_{2}} - l_{a - 1}^{\gamma_{1}\gamma_{2}})}{\gamma_{1}l_{a}^{\gamma_{1}\gamma_{2}}}\]
+</p>
+<p>.  <a href="namespacefish.html#a7f532daff6b69774cc75d40ed18aad31">More...</a><br /></td></tr>
+<tr class="separator:a7f532daff6b69774cc75d40ed18aad31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6473cb22340439ec0b60b709880e967f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a6473cb22340439ec0b60b709880e967f">fish::natural_mortality</a> (double body_length, double temp, double M0, double gamma_3, double alpha_3, double body_length_ref, double Tref, double cT)</td></tr>
+<tr class="memdesc:a6473cb22340439ec0b60b709880e967f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the instantaneous natural mortality </p><p class="formulaDsp">
+\[M(a,l_a) = \left( \mu_0 + \alpha_{3}\left( \frac{l_{a}}{l_{\text{ref}}} \right)^{\gamma_{3}} \right)\left(\frac{T}{T_\text{ref}}\right)^{c_T}\]
+</p>
+<p>.  <a href="namespacefish.html#a6473cb22340439ec0b60b709880e967f">More...</a><br /></td></tr>
+<tr class="separator:a6473cb22340439ec0b60b709880e967f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8145736f4c8af31563881d90bf61cbf0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefish.html#a8145736f4c8af31563881d90bf61cbf0">fish::survival_probability</a> (double body_length, double temp, double M0, double gamma_3, double alpha_3, double body_length_ref, double Tref, double cT, double fishing_mortality, double dt=1)</td></tr>
+<tr class="memdesc:a8145736f4c8af31563881d90bf61cbf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate survival probability over a time interval dt (years) </p><p class="formulaDsp">
+\[s(a,l_a) = e^{- (M(a,l_a) + F)}\]
+</p>
+<p> where \(M(a, l_a)\) is the instantaneous <a class="el" href="namespacefish.html#a6473cb22340439ec0b60b709880e967f" title="Calculate the instantaneous natural mortality . ">natural_mortality()</a> rate.  <a href="namespacefish.html#a8145736f4c8af31563881d90bf61cbf0">More...</a><br /></td></tr>
+<tr class="separator:a8145736f4c8af31563881d90bf61cbf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

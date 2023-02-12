@@ -1,5 +1,3 @@
 <map id="runif" name="runif">
-<area shape="rect" id="node2" href="$classFish.html#acf6d815ee242fd3b3ee2412dbe11a2ed" title="Fish::matureNow" alt="" coords="100,5,223,32"/>
-<area shape="rect" id="node4" href="$population_8cpp.html#a61a9d6b6e4939c3d945009e0406dc44f" title="rnorm" alt="" coords="134,56,189,83"/>
-<area shape="rect" id="node3" href="$fish__glue_8cpp.html#a7b6a9b6d94c71377c935b2cfbffdfabc" title="RCPP_MODULE" alt="" coords="271,5,395,32"/>
+<area shape="rect" id="node2" href="$population_8cpp.html#a61a9d6b6e4939c3d945009e0406dc44f" title="rnorm" alt="" coords="100,5,155,32"/>
 </map>

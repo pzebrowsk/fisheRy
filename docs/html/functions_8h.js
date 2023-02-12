@@ -1,12 +1,13 @@
 var functions_8h =
 [
-    [ "fecundity", "functions_8h.html#a30a5cb4380aecc75b3cf0bf2774a6a4f", null ],
-    [ "gsi", "functions_8h.html#a90c2a586379b7d0521d4ade4e55ee5ec", null ],
-    [ "length_adult", "functions_8h.html#a138fecf39fc899d469d340b073a4daec", null ],
-    [ "length_juvenile", "functions_8h.html#a9d32a06cd887d748fca34b49b1e8d3d4", null ],
-    [ "maturation_probability", "functions_8h.html#a708b4fb0fc8a7424ecebdd40f7dbcc4e", null ],
+    [ "dl_power", "functions_8h.html#a0ab1c4842d702a0a40bd04f26793ce12", null ],
+    [ "fecundity", "functions_8h.html#a55881de836369d1af447b740b433e50e", null ],
+    [ "gsi", "functions_8h.html#a7f532daff6b69774cc75d40ed18aad31", null ],
+    [ "length_adult", "functions_8h.html#adc414165e9acd76993cbaaf5140c5f22", null ],
+    [ "length_juvenile", "functions_8h.html#a1d06e0358aca1be4446ed148b7ce3d84", null ],
+    [ "maturation_probability", "functions_8h.html#a214a54b82cb48878c083a73958c45847", null ],
     [ "maturation_steepness", "functions_8h.html#a79ee7b63f43f9e9bda95cc04deb3a082", null ],
-    [ "natural_mortality", "functions_8h.html#a645c2b636a1dc9e837a5c267f7514027", null ],
-    [ "survival_probability", "functions_8h.html#ab0499480bb6eb74da282054a5885d04c", null ],
+    [ "natural_mortality", "functions_8h.html#a6473cb22340439ec0b60b709880e967f", null ],
+    [ "survival_probability", "functions_8h.html#a8145736f4c8af31563881d90bf61cbf0", null ],
     [ "weight_fish", "functions_8h.html#a8eda92863da99cec25dc0a2f09571998", null ]
 ];

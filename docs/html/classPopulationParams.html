@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -92,14 +98,15 @@ $(document).ready(function(){initNavTree('classPopulationParams.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a55835baa283a5a5eca336f251ae1f64e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#a55835baa283a5a5eca336f251ae1f64e">r0</a> = 21.77072</td></tr>
-<tr class="separator:a55835baa283a5a5eca336f251ae1f64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dd66467f82f58b59de16598e6a227d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#a1dd66467f82f58b59de16598e6a227d2">update_env</a> = true</td></tr>
+<tr class="separator:a1dd66467f82f58b59de16598e6a227d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac53863ffb8de683f3c25a2837d2ff8b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#ac53863ffb8de683f3c25a2837d2ff8b3">simulate_bio_only</a> = false</td></tr>
+<tr class="separator:ac53863ffb8de683f3c25a2837d2ff8b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5272a86bb52cc66f250a5ec53bdd276"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#ad5272a86bb52cc66f250a5ec53bdd276">rmax</a> = 1e20</td></tr>
 <tr class="separator:ad5272a86bb52cc66f250a5ec53bdd276"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace36bdbd7a2e67d5ff56ae8eec89ce3b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#ace36bdbd7a2e67d5ff56ae8eec89ce3b">Bhalf</a> = 365426284.0</td></tr>
-<tr class="separator:ace36bdbd7a2e67d5ff56ae8eec89ce3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40239a7a1cc04c3bb6503155614cb23c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#a40239a7a1cc04c3bb6503155614cb23c">recruitmentAge</a> = 3</td></tr>
+<tr class="separator:a40239a7a1cc04c3bb6503155614cb23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47b39d0811de8e5368d1a733a66ab5b1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#a47b39d0811de8e5368d1a733a66ab5b1">sf</a> = 0.1222</td></tr>
-<tr class="memdesc:a47b39d0811de8e5368d1a733a66ab5b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">5000; // Half saturation constant of recruitment  <a href="#a47b39d0811de8e5368d1a733a66ab5b1">More...</a><br /></td></tr>
 <tr class="separator:a47b39d0811de8e5368d1a733a66ab5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87b34c8d70a6c17511a8e8921873cd25"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#a87b34c8d70a6c17511a8e8921873cd25">lf50</a> = 45</td></tr>
 <tr class="separator:a87b34c8d70a6c17511a8e8921873cd25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,7 +140,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab77e0a1ad3d0d36744a43ba78c9e7c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab76e7183a819c22986799b4e1ba4c4cb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#ab76e7183a819c22986799b4e1ba4c4cb">h</a> = 0</td></tr>
 <tr class="separator:ab76e7183a819c22986799b4e1ba4c4cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b9c6a5b69512f129cc98001ae4c9d1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#ab5b9c6a5b69512f129cc98001ae4c9d1">n</a> = 1e5</td></tr>
+<tr class="memitem:ab5b9c6a5b69512f129cc98001ae4c9d1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#ab5b9c6a5b69512f129cc98001ae4c9d1">n</a> = 5e6</td></tr>
 <tr class="separator:ab5b9c6a5b69512f129cc98001ae4c9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a437562c3163033969aeeb8ea562cc4fc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPopulationParams.html#a437562c3163033969aeeb8ea562cc4fc">mort_fishing_mature</a> = 0</td></tr>
 <tr class="separator:a437562c3163033969aeeb8ea562cc4fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,7 +151,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00009">9</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00010">10</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a46be5a275459f9dfbf66fbe179dc8cc0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46be5a275459f9dfbf66fbe179dc8cc0">&#9670;&nbsp;</a></span>a_thresh</h2>
@@ -158,7 +165,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00051">51</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00059">59</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -174,23 +181,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00030">30</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
-
-</div>
-</div>
-<a id="ace36bdbd7a2e67d5ff56ae8eec89ce3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace36bdbd7a2e67d5ff56ae8eec89ce3b">&#9670;&nbsp;</a></span>Bhalf</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double PopulationParams::Bhalf = 365426284.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00014">14</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00035">35</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -206,7 +197,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00028">28</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00033">33</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -222,7 +213,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00027">27</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00032">32</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -238,7 +229,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00029">29</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00034">34</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -254,7 +245,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00038">38</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00043">43</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -270,7 +261,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00039">39</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00044">44</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +277,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00043">43</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00048">48</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -302,7 +293,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00020">20</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00025">25</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -318,7 +309,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00050">50</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00055">55</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -334,7 +325,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00049">49</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00054">54</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -345,12 +336,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double PopulationParams::n = 1e5</td>
+          <td class="memname">double PopulationParams::n = 5e6</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00045">45</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00050">50</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -366,7 +357,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00033">33</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00038">38</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +373,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00034">34</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00039">39</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -398,23 +389,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00026">26</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00031">31</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
-<a id="a55835baa283a5a5eca336f251ae1f64e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55835baa283a5a5eca336f251ae1f64e">&#9670;&nbsp;</a></span>r0</h2>
+<a id="a40239a7a1cc04c3bb6503155614cb23c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40239a7a1cc04c3bb6503155614cb23c">&#9670;&nbsp;</a></span>recruitmentAge</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double PopulationParams::r0 = 21.77072</td>
+          <td class="memname">int PopulationParams::recruitmentAge = 3</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00012">12</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00021">21</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -430,7 +421,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00013">13</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00017">17</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -446,7 +437,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00036">36</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00041">41</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -462,7 +453,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00037">37</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00042">42</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -478,7 +469,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00041">41</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00046">46</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -494,9 +485,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>5000; // Half saturation constant of recruitment </p>
-
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00019">19</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00024">24</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -512,7 +501,39 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00023">23</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00028">28</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+
+</div>
+</div>
+<a id="ac53863ffb8de683f3c25a2837d2ff8b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac53863ffb8de683f3c25a2837d2ff8b3">&#9670;&nbsp;</a></span>simulate_bio_only</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PopulationParams::simulate_bio_only = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00013">13</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+
+</div>
+</div>
+<a id="a1dd66467f82f58b59de16598e6a227d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dd66467f82f58b59de16598e6a227d2">&#9670;&nbsp;</a></span>update_env</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PopulationParams::update_env = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00012">12</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>
@@ -528,7 +549,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00040">40</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population_8h_source.html#l00045">45</a> of file <a class="el" href="population_8h_source.html">population.h</a>.</p>
 
 </div>
 </div>

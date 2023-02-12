@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -87,28 +93,40 @@ $(document).ready(function(){initNavTree('classPopulation.html','');});
 
 <p>This is the complete list of members for <a class="el" href="classPopulation.html">Population</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a970012ca8aefa9c78ecaa172ffc14ebe">calcRealizedFishingMortality</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#af15e7ba23b161c710d4013204b542cb6">calcSSB</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a413a383f94e1d0ead9d8b11f7dbc27ce">calc_athresh</a>(double tsb0, double temp)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#aaae10299ca2e22292f57559380805948">calcSB</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#af15e7ba23b161c710d4013204b542cb6">calcSSB</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#ae942ef70cc9f4dfc40b5d843baf40b1e">calcTSB</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a3405cbe11077ebc2cb490e44577d2fc9">carrying_capacity</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#a573c1d6d1aa0680eee016b5329f605ce">current_year</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a3b95e8954be8c15e3547b5b9c6850e01">effort</a>(double Nr, double F)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#a082c237025a600bed56daa10e419477d">colnames</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a573c1d6d1aa0680eee016b5329f605ce">current_year</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#ad1840de2f00982c35d48b91a1d27ae13">effort</a>(double Nr, double F, double temp)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a62b4bddcd00cc02457a2646fef22a218">env</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classPopulation.html#a42c4b04852bdda937e50f82952106af1">fishableBiomass</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#acaba56624b9cce2d2c25fe622a9b950a">fishes</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#a62f07e15a6d75f0e37e6e24e6a2eaec2">get_state</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a5440cd360f9b6af954085b442327633b">init</a>(int n)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#a5865f4aa9741c6741adf8bdf20e930c6">generator</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a62f07e15a6d75f0e37e6e24e6a2eaec2">get_state</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#a29fa674d9ce3986f71b07f11d2374fde">get_traits</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a012ef586a78b4e7c2082634b316072d0">init</a>(int n, double tsb, double temp)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classPopulation.html#a415f2a11852d33ab6a9d9b457e6b26b7">K_fishableBiomass</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#ac62fc3480d60b055cd1886649809c6a6">nfish</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#a650981877120084dbc53323e34ddfd5e">noFishingEquilibriate</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#aa7eba257f23cbc12aa3673ce012fb2cb">noFishingEquilibriate</a>(double tsb0, double temp)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a06b05a3e490e9bc49e3c9cd341ce07ab">normal_dist</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#ac35942a03daf91992a517eaf09fa8db4">nrecruits_vec</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#aba306f6ae65a93a817a30c361770c355">par</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classPopulation.html#a7258e270dc4eceec80a045eb6bef71bd">Population</a>(Fish f)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a345497aa32fe22f73153a59f469c6a19">print_summary</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classPopulation.html#a333df8b07191c7d08a58b343be283ab5">proto_fish</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#ac8ed845bbda25c937a2fd76b3788e987">selectivity</a>(double len)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#a20696fa511c914e7c8837acb2a254b33">set_harvestProp</a>(double _h)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a343a346cae1413da400c042868c15859">set_minSizeLimit</a>(double _lf50)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#ae8a6455aa45e65bf8bd41312f9caa328">set_superFishSize</a>(double _n)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#af069291adb3fb7b451a36cf0a179398b">summarize</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classPopulation.html#aa404f725dcde475806cdb26704b9fbcf">update</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a2cbbf4e1d4fdfe6fc3f67b96a5aa698d">readEnvironmentFile</a>(std::string filename)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#ac8ed845bbda25c937a2fd76b3788e987">selectivity</a>(double len)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a20696fa511c914e7c8837acb2a254b33">set_harvestProp</a>(double _h)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#a343a346cae1413da400c042868c15859">set_minSizeLimit</a>(double _lf50)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#ae8a6455aa45e65bf8bd41312f9caa328">set_superFishSize</a>(double _n)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#af069291adb3fb7b451a36cf0a179398b">summarize</a>()</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a1728a1250d8878b8949d26e84e6e814f">t_env</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#a81c19d1c80cfb1d54d3872ecdefd0872">update</a>(double temp=5.6)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a59c8a171470f0cca4453940e07c3c1df">updateEnv</a>(double t)</td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classPopulation.html#ae08c41a3144ba1a81daf5c81907e4b05">v_env</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a7281d683d0c589ceba4dff4a859a8ffc">vage</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr><td class="entry"><a class="el" href="classPopulation.html#a132bc549c8c79fe0f49ec6072e72d3b2">verbose</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPopulation.html#a686b8e1ee406b30e39f8a9461225c1e0">vfreq</a></td><td class="entry"><a class="el" href="classPopulation.html">Population</a></td><td class="entry"><span class="mlabel">private</span></td></tr>

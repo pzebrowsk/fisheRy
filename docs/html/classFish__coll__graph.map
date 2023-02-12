@@ -1,3 +1,5 @@
 <map id="Fish" name="Fish">
-<area shape="rect" id="node2" href="$structFishParams.html" title="FishParams" alt="" coords="33,124,125,151"/>
+<area shape="rect" id="node2" href="$classFishParams.html" title="FishParams" alt="" coords="728,265,820,291"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="181,258,261,285"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="5,251,132,292"/>
 </map>

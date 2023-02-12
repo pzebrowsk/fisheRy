@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['simulator',['Simulator',['../classSimulator.html',1,'']]]
+  ['population',['Population',['../classPopulation.html',1,'']]],
+  ['populationparams',['PopulationParams',['../classPopulationParams.html',1,'']]],
+  ['populationsummary',['PopulationSummary',['../classPopulationSummary.html',1,'']]]
 ];

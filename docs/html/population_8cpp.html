@@ -19,6 +19,12 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,10 +97,12 @@ $(document).ready(function(){initNavTree('population_8cpp.html','');});
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for population.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="population_8cpp__incl.svg" width="458" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="population_8cpp__incl.svg" width="1028" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -142,8 +150,8 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8cpp_source.html#l00123">123</a> of file <a class="el" href="population_8cpp_source.html">population.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                                             {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">double</span> u = <a class="code" href="population_8cpp.html#a448644b6a3a0fa7cd89a6ce52b9bd3aa">runif</a>(), v = <a class="code" href="population_8cpp.html#a448644b6a3a0fa7cd89a6ce52b9bd3aa">runif</a>();        <span class="comment">// uniform rn&#39;s [0,1] for box-muller</span></div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">double</span> x = sqrt(-2.0*log(u)) * cos(2*M_PI*v);</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">return</span> mu + sd*x;</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div><div class="ttc" id="population_8cpp_html_a448644b6a3a0fa7cd89a6ce52b9bd3aa"><div class="ttname"><a href="population_8cpp.html#a448644b6a3a0fa7cd89a6ce52b9bd3aa">runif</a></div><div class="ttdeci">double runif(double rmin=0, double rmax=1)</div><div class="ttdef"><b>Definition:</b> <a href="population_8cpp_source.html#l00118">population.cpp:118</a></div></div>
+<p class="definition">Definition at line <a class="el" href="population_8cpp_source.html#l00199">199</a> of file <a class="el" href="population_8cpp_source.html">population.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                                             {</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordtype">double</span> u = <a class="code" href="population_8cpp.html#a448644b6a3a0fa7cd89a6ce52b9bd3aa">runif</a>(), v = <a class="code" href="population_8cpp.html#a448644b6a3a0fa7cd89a6ce52b9bd3aa">runif</a>();        <span class="comment">// uniform rn&#39;s [0,1] for box-muller</span></div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordtype">double</span> x = sqrt(-2.0*log(u)) * cos(2*M_PI*v);</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">return</span> mu + sd*x;</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;}</div><div class="ttc" id="population_8cpp_html_a448644b6a3a0fa7cd89a6ce52b9bd3aa"><div class="ttname"><a href="population_8cpp.html#a448644b6a3a0fa7cd89a6ce52b9bd3aa">runif</a></div><div class="ttdeci">double runif(double rmin=0, double rmax=1)</div><div class="ttdef"><b>Definition:</b> <a href="population_8cpp_source.html#l00194">population.cpp:194</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -187,11 +195,11 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="population_8cpp_source.html#l00118">118</a> of file <a class="el" href="population_8cpp_source.html">population.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                                                 {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordtype">double</span> r = double(rand())/RAND_MAX; </div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">return</span> rmin + (rmax-rmin)*r;</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div></div><!-- fragment --><div class="dynheader">
+<p class="definition">Definition at line <a class="el" href="population_8cpp_source.html#l00194">194</a> of file <a class="el" href="population_8cpp_source.html">population.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                                                 {</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordtype">double</span> r = double(rand())/RAND_MAX; </div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">return</span> rmin + (rmax-rmin)*r;</div><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div></div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="population_8cpp_a448644b6a3a0fa7cd89a6ce52b9bd3aa_icgraph.svg" width="400" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="population_8cpp_a448644b6a3a0fa7cd89a6ce52b9bd3aa_icgraph.svg" width="160" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 

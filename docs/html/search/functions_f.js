@@ -1,7 +1,21 @@
 var searchData=
 [
-  ['tensor',['Tensor',['../classTensor.html#a49bb771a6c6ff7dafde1b9a2452f0e8f',1,'Tensor']]],
-  ['tensor2array',['tensor2array',['../simulator_8cpp.html#a2a2aec343c151304395503fd8b1d6a78',1,'simulator.cpp']]],
-  ['transform',['transform',['../classTensor.html#a3986d7a50faef0249a8d2da5b1f67a89',1,'Tensor']]],
-  ['transform_5fdim',['transform_dim',['../classTensor.html#a1a9aea97717d687b7d501842efb546d4',1,'Tensor']]]
+  ['selectivity',['selectivity',['../classPopulation.html#ac8ed845bbda25c937a2fd76b3788e987',1,'Population']]],
+  ['set_5fage',['set_age',['../classFish.html#ab9b673887514b9d446232e0019c6034a',1,'Fish']]],
+  ['set_5fharvestprop',['set_harvestProp',['../classPopulation.html#a20696fa511c914e7c8837acb2a254b33',1,'Population']]],
+  ['set_5flength',['set_length',['../classFish.html#a0a1f9fe15dae9fc71e5abbc2a03de9aa',1,'Fish']]],
+  ['set_5fminsizelimit',['set_minSizeLimit',['../classPopulation.html#a343a346cae1413da400c042868c15859',1,'Population']]],
+  ['set_5fsuperfishsize',['set_superFishSize',['../classPopulation.html#ae8a6455aa45e65bf8bd41312f9caa328',1,'Population']]],
+  ['set_5ftraits',['set_traits',['../classFish.html#aaa3e67187a587efc7a99485b4a6ee248',1,'Fish']]],
+  ['setnaturalpopulation',['setNaturalPopulation',['../classSimulator.html#a1e385d56b6ae6694463f127b5f1d98d5',1,'Simulator']]],
+  ['simulate_5fmulti',['simulate_multi',['../classSimulator.html#a7540919b97662be7deacba9194c0ed60',1,'Simulator']]],
+  ['simulate_5fmulti_5f2d',['simulate_multi_2d',['../classSimulator.html#ab21d1c6b0af00931f9a8fa5e0b6d417f',1,'Simulator']]],
+  ['simulate_5fmulti_5f2d_5fr',['simulate_multi_2d_r',['../classSimulator.html#af1b0a9562ecf0ad8f98d61576efba28b',1,'Simulator']]],
+  ['simulate_5fmulti_5fr',['simulate_multi_r',['../classSimulator.html#a1a5454ee4736819d709398b225d7876d',1,'Simulator']]],
+  ['simulate_5fr',['simulate_r',['../classSimulator.html#aa6e6cfd73fd8d3200e7f515b473e88f2',1,'Simulator']]],
+  ['simulator',['Simulator',['../classSimulator.html#a1b65fa1ed6538201dffcba8bce997d82',1,'Simulator']]],
+  ['stakeholder_5fsatisfaction',['stakeholder_satisfaction',['../classSimulator.html#a1b66b7260ff50758884d1f7361a1b988',1,'Simulator']]],
+  ['stakeholder_5fsatisfaction_5f2d',['stakeholder_satisfaction_2d',['../classSimulator.html#aac842e5498b4c9731910ce9a93fa555d',1,'Simulator']]],
+  ['summarize',['summarize',['../classPopulation.html#af069291adb3fb7b451a36cf0a179398b',1,'Population']]],
+  ['survival_5fprobability',['survival_probability',['../namespacefish.html#a8145736f4c8af31563881d90bf61cbf0',1,'fish']]]
 ];
