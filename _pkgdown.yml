@@ -40,18 +40,24 @@ navbar:
       text: Tutorials
       icon: fa-book fa-lg
       menu:
-        - text: Simulating a single fish
-          icon: fa-fish
-          href: articles/single_fish.html
+        # - text: Simulating a single fish
+        #   icon: fa-fish
+        #   href: articles/single_fish.html
         - text: Simulating an unfished population
           icon: fa-fish
           href: articles/unfished_population.html
-        - text: Simulating a fished population
+        - text: Simulating an unfished fished population with evolution
+          icon: fa-fish
+          href: articles/evolving_unfished_population.html
+        - text: Simulating a fished population (biological model only)
           icon: fa-fish
           href: articles/fished_population.html
         - text: Simulating multiple populations at once
           icon: fa-fish
-          href: articles/multi_populations.html
+          href: articles/compare_hscans.html
+        - text: Calculating JSS
+          icon: fa-fish
+          href: articles/jss_calcs_h.html
     api:
       text: API
       icon: fa-code fa-lg

@@ -70,6 +70,26 @@ void Fish::set_length(double s){
 	
 }
 
+void Fish::set_traits(vector<double> traits){
+	vector<double>::iterator it = traits.begin();
+	par.alpha1         = *it++;
+	par.gsi            = *it++;
+	par.pmrn_intercept = *it++;
+	par.pmrn_slope     = *it++;
+	par.pmrn_width     = *it++;
+	par.s0             = *it++;
+}
+
+vector<double> Fish::get_traits(){
+	return {
+		  par.alpha1        
+		, par.gsi
+		, par.pmrn_intercept
+		, par.pmrn_slope
+		, par.pmrn_width
+		, par.s0
+		};
+}
 
 
 double Fish::naturalMortalityRate(double temp){
@@ -227,21 +247,9 @@ std::vector<double> Fish::get_state(){
 
 
 void FishParams::init(){
-	gamma1 = 1-beta;
-	gamma2 = alpha;
-	alpha1 = c;
-	alpha2 = k;
-	gsi = r/q;
-	
-	pmrn_intercept = pmrn_lp50;
 	steepness = fish::maturation_steepness(pmrn_width, pmrn_envelope);
 	assert(steepness > 0);
 
-	delta = E1;
-	
-	alpha3 = Mref;
-	gamma3 = -b;
-	
 	growth_model = growth_names_map.at(growth_model_name);
 	maturation_model = maturation_names_map.at(maturation_model_name);
 	mortality_model = mortality_names_map.at(mortality_model_name);
@@ -294,7 +302,18 @@ void FishParams::initFromFile(std::string params_file){
 	READ_PAR(beta4); // = 0.196;
 
 	#undef READ_PAR
+
+	gamma1 = 1-beta;
+	gamma2 = alpha;
+	alpha1 = c;
+	alpha2 = k;
+	gsi = r/q;
+	pmrn_intercept = pmrn_lp50;  // The variable name in params file provided by Mikko is lp50, but the description says "Intercept of the PMRN midpoint curve". So I'm treating this as the intercept - anyway, lp50 is age-dependent
+	delta = E1;
+	alpha3 = Mref;
+	gamma3 = -b;
 	
+
 	growth_model_name = I.get<string>("growth_model_name");
 	recruitment_model_name = I.get<string>("recruitment_model_name");
 	mortality_model_name = I.get<string>("mortality_model_name");

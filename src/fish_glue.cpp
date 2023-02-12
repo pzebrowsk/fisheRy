@@ -55,6 +55,7 @@ RCPP_MODULE(fish_module) {
 		.field("weight", &Fish::weight)
 		.field_readonly("t_birth", &Fish::t_birth)
 		.field("par", &Fish::par)
+		.field("trait_variances", &Fish::trait_variances)
 
 		.method("print", &Fish::print)
 		.method("print_line", &Fish::print_line)
@@ -74,6 +75,7 @@ RCPP_MODULE(fish_module) {
 		//.method("survivalProbability", &Fish::survivalProbability)
 
 		.method("get_state", &Fish::get_state)
+
 
 	;
 }	
@@ -99,6 +101,7 @@ RCPP_MODULE(population_module){
 //		.field("mort_fishing_mature", &PopulationParams::mort_fishing_mature) 
 //		.field("mort_fishing_immature", &PopulationParams::mort_fishing_immature) 
 		.field("dsea", &PopulationParams::dsea)
+		.field("dmax", &PopulationParams::dmax)
 		.field("recruitmentAge", &PopulationParams::recruitmentAge)
 		.field("update_env", &PopulationParams::update_env)
 		.field("simulate_bio_only", &PopulationParams::simulate_bio_only)
@@ -126,6 +129,7 @@ RCPP_MODULE(population_module){
 		.method("noFishingEquilibriate", &Population::noFishingEquilibriate)
 
 		.method("get_state", &Population::get_state)
+		.method("get_traits", &Population::get_traits)
 		.method("summarize", &Population::summarize)
 		.method("print_summary", &Population::print_summary)
 		.method("nfish", &Population::nfish)

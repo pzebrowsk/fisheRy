@@ -13,19 +13,23 @@ enum class RecruitmentModel  {BevertonHoltDirect, BevertonHoltBioenergetic, Rick
 
 class FishParams {
 	private:
-	std::map<std::string, GrowthModel> growth_names_map{{"Dankel22", GrowthModel::Dankel22}, 
-	                                                    {"Bioenergetic", GrowthModel::Bioenergetic}};
+	std::map<std::string, GrowthModel> growth_names_map{
+		{"Dankel22",     GrowthModel::Dankel22}, 
+	    {"Bioenergetic", GrowthModel::Bioenergetic}};
 
-	std::map<std::string, MaturationModel> maturation_names_map{{"Dankel22", MaturationModel::Dankel22}, 
-	                                                            {"Bioenergetic", MaturationModel::Bioenergetic}};
+	std::map<std::string, MaturationModel> maturation_names_map{
+		{"Dankel22",     MaturationModel::Dankel22}, 
+	    {"Bioenergetic", MaturationModel::Bioenergetic}};
 
-	std::map<std::string, MortalityModel> mortality_names_map{{"Dankel22", MortalityModel::Dankel22}, 
-	                                                          {"Bioenergetic", MortalityModel::Bioenergetic}};
+	std::map<std::string, MortalityModel> mortality_names_map{
+		{"Dankel22",     MortalityModel::Dankel22}, 
+	    {"Bioenergetic", MortalityModel::Bioenergetic}};
 
-	std::map<std::string, RecruitmentModel> recruitment_names_map{{"BevertonHoltDirect", RecruitmentModel::BevertonHoltDirect}, 
-	                                                              {"BevertonHoltBioenergetic", RecruitmentModel::BevertonHoltBioenergetic},
-	                                                              {"RickerDirect", RecruitmentModel::RickerDirect}, 
-	                                                              {"RickerBioenergetic", RecruitmentModel::RickerBioenergetic}};
+	std::map<std::string, RecruitmentModel> recruitment_names_map{
+		{"BevertonHoltDirect",       RecruitmentModel::BevertonHoltDirect}, 
+	    {"BevertonHoltBioenergetic", RecruitmentModel::BevertonHoltBioenergetic},
+	    {"RickerDirect",             RecruitmentModel::RickerDirect}, 
+	    {"RickerBioenergetic",       RecruitmentModel::RickerBioenergetic}};
 	
 	public:
 	// Original parameters (from file) North Arctic cod
@@ -164,6 +168,9 @@ class Fish{
 
 	double t_birth;            ///< Year of birth (not used)
 
+	std::vector<double> trait_scalars = {6.5, 0.09, 150, 6.6, 50, 0.06};
+	std::vector<double> trait_variances = {0, 0, 0, 0, 0, 0};
+	std::vector<std::string> trait_names = {"alpha1", "gsi", "pmrn_intercept", "pmrn_slope", "pmrn_width", "s0"};
 
 	Fish(double tb = 0);
 	
@@ -174,6 +181,9 @@ class Fish{
 	void set_age(int _a);      
 	/// @brief Set fish length and other variables that scale directly with length
 	void set_length(double s); 
+
+	void set_traits(std::vector<double> traits);
+	std::vector<double> get_traits();
 
 	/// @brief Initializes the fish, i.e., initializes parameters and sets the initial state (age = 1, length)
 	/// @param tsb Total stock biomass at birth (kT i.e. 10^6 kg)
