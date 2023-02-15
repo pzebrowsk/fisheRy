@@ -3,7 +3,7 @@
 TARGET := 1
 
 # files
-SRCFILES  :=   
+SRCFILES  :=  src/fish.cpp # $(filter-out src/RcppExports.cpp src/fish_glue.cpp, $(wildcard src/*.cpp))
 HEADERS := $(wildcard inst/include/*.h) $(wildcard tests/*.h)
 # ------------------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ TEST_TARGETS = $(patsubst tests/%.cpp, tests/%.test, $(TEST_FILES))
 TEST_RUNS = $(patsubst tests/%.cpp, tests/%.run, $(TEST_FILES))
 ADD_OBJECTS = 
 
-check: $(OBJECTS) compile_tests clean_log run_tests
+check: dir $(OBJECTS) compile_tests clean_log run_tests
 
 compile_tests: $(TEST_TARGETS)
 	

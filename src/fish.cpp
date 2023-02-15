@@ -248,7 +248,7 @@ std::vector<double> Fish::get_state(){
 
 void FishParams::init(){
 	steepness = fish::maturation_steepness(pmrn_width, pmrn_envelope);
-	assert(steepness > 0);
+	if (steepness <= 0) throw std::runtime_error("Calculated steepness values is <= 0");
 
 	growth_model = growth_names_map.at(growth_model_name);
 	maturation_model = maturation_names_map.at(maturation_model_name);
