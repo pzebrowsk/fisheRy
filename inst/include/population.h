@@ -3,7 +3,10 @@
 
 #include <vector>
 #include <random>
+
+#ifndef NATIVE_CPP
 #include <Rcpp.h>
+#endif
 
 #include "fish.h"
 
@@ -150,8 +153,11 @@ class Population{
 	int nfish();
 	void summarize();
 	void print_summary();
+
+#ifndef NATIVE_CPP
 	Rcpp::DataFrame get_state();
 	Rcpp::DataFrame get_traits();
+#endif
 
 };
 

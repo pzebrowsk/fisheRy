@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cassert>
 
 using namespace std;
 
@@ -408,7 +409,7 @@ void Population::print_summary(){
 }
 
 
-
+#ifndef NATIVE_CPP
 
 Rcpp::DataFrame Population::get_state(){
 	vector<double> col(fishes.size());
@@ -484,3 +485,5 @@ Rcpp::DataFrame Population::get_traits(){
 	// df.push_back(nrecruits_vec, "nrecruits");
 	return df;
 }
+
+#endif
